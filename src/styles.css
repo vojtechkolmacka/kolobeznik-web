@@ -1,0 +1,64 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #12140f;
+  --color-paper: #f3efe4;
+  --color-lime: #c6f04d;
+  --color-moss: #2a4a34;
+  --color-muted: #6a6f64;
+  --color-fg: #12140f;
+  --color-surface: #ece6d6;
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Barlow Condensed", ui-sans-serif, sans-serif;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.875rem;
+  --shadow-border:
+    0px 0px 0px 1px rgba(18, 20, 15, 0.08), 0px 1px 2px -1px rgba(18, 20, 15, 0.08),
+    0px 2px 4px 0px rgba(18, 20, 15, 0.05);
+  --shadow-border-hover:
+    0px 0px 0px 1px rgba(18, 20, 15, 0.14), 0px 6px 16px -8px rgba(18, 20, 15, 0.22);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  img {
+    outline: 1px solid rgba(18, 20, 15, 0.1);
+    outline-offset: -1px;
+  }
+
+  ::selection {
+    background: var(--color-lime);
+    color: var(--color-ink);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

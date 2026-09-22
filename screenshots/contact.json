@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/kontakt",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Kontakt · Koloběžník",
+      "hasCanvas": false,
+      "bodyTextLen": 1018,
+      "bodyTextHash": "fd2851a8c525d6a6113d8ece21f46212567cc01c232f64c3f4c3db1a275057ef",
+      "bodyTextPrefix": "KOLOBĚŽNÍK ÚVOD TESTY CENÍK O MNĚ TIPY NOVINKY ZNAČKY ODKAZY KON",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/contact.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Kontakt · Koloběžník",
+      "hasCanvas": false,
+      "bodyTextLen": 1018,
+      "bodyTextHash": "fd2851a8c525d6a6113d8ece21f46212567cc01c232f64c3f4c3db1a275057ef",
+      "bodyTextPrefix": "KOLOBĚŽNÍK ÚVOD TESTY CENÍK O MNĚ TIPY NOVINKY ZNAČKY ODKAZY KON",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/contact-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/contact.json"
+}

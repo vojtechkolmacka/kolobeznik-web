@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/o-mne",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "O mně · Koloběžník",
+      "hasCanvas": false,
+      "bodyTextLen": 2058,
+      "bodyTextHash": "56136fdb2789421666160a203930bd2304774ae1e71a9088dc6607bd0d7699a2",
+      "bodyTextPrefix": "KOLOBĚŽNÍK ÚVOD TESTY CENÍK O MNĚ TIPY NOVINKY ZNAČKY ODKAZY KON",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/about.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "O mně · Koloběžník",
+      "hasCanvas": false,
+      "bodyTextLen": 2058,
+      "bodyTextHash": "56136fdb2789421666160a203930bd2304774ae1e71a9088dc6607bd0d7699a2",
+      "bodyTextPrefix": "KOLOBĚŽNÍK ÚVOD TESTY CENÍK O MNĚ TIPY NOVINKY ZNAČKY ODKAZY KON",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/about-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/about.json"
+}

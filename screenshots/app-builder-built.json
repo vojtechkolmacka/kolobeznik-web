@@ -1,0 +1,38 @@
+{
+  "url": "http://127.0.0.1:8081/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Koloběžník — testy skládacích koloběžek",
+      "hasCanvas": false,
+      "bodyTextLen": 2649,
+      "bodyTextHash": "5f526b3ac169f62e677b536ec8463d1d28556cd3bfda56e506507f3cde525bae",
+      "bodyTextPrefix": "KOLOBĚŽNÍK ÚVOD TESTY CENÍK O MNĚ TIPY NOVINKY ZNAČKY ODKAZY KON",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Koloběžník — testy skládacích koloběžek",
+      "hasCanvas": false,
+      "bodyTextLen": 2649,
+      "bodyTextHash": "5f526b3ac169f62e677b536ec8463d1d28556cd3bfda56e506507f3cde525bae",
+      "bodyTextPrefix": "KOLOBĚŽNÍK ÚVOD TESTY CENÍK O MNĚ TIPY NOVINKY ZNAČKY ODKAZY KON",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-built.json",
+  "divergesFromBaseline": false,
+  "baselineReasons": []
+}

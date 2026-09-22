@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/testy",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Moje koloběžky a testy · Koloběžník",
+      "hasCanvas": false,
+      "bodyTextLen": 3817,
+      "bodyTextHash": "68e2d9f8b81db1072dbe69cc015b1603a23bd7dd80a57ab3c86086fe6410bcc1",
+      "bodyTextPrefix": "KOLOBĚŽNÍK ÚVOD TESTY CENÍK O MNĚ TIPY NOVINKY ZNAČKY ODKAZY KON",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/tests.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Moje koloběžky a testy · Koloběžník",
+      "hasCanvas": false,
+      "bodyTextLen": 3817,
+      "bodyTextHash": "68e2d9f8b81db1072dbe69cc015b1603a23bd7dd80a57ab3c86086fe6410bcc1",
+      "bodyTextPrefix": "KOLOBĚŽNÍK ÚVOD TESTY CENÍK O MNĚ TIPY NOVINKY ZNAČKY ODKAZY KON",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/tests-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/tests.json"
+}
