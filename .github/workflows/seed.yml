@@ -1,0 +1,33 @@
+name: Naplnit databazi kolobezek
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+    steps:
+      - name: Nacist repozitar
+        uses: actions/checkout@v6
+
+      - name: Nastavit Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22.18.0'
+          cache: npm
+
+      - name: Nainstalovat zavislosti
+        run: npm ci
+
+      - name: Provest migrace databaze
+        run: npm run db:migrate
+
+      - name: Importovat kolobezky
+        run: node scripts/seed-scooters.mjs
