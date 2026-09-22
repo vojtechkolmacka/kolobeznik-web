@@ -1,0 +1,48 @@
+name: Rozbalit původní projekt
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Načíst repozitář
+        uses: actions/checkout@v4
+
+      - name: Rozbalit ZIP
+        run: |
+          rm -rf /tmp/kolobeznik
+          mkdir -p /tmp/kolobeznik
+
+          unzip -q kolobeznikczweb.zip -d /tmp/kolobeznik
+
+          count=$(find /tmp/kolobeznik -mindepth 1 -maxdepth 1 -print | wc -l)
+          top=$(find /tmp/kolobeznik -mindepth 1 -maxdepth 1 -print -quit)
+
+          if [ "$count" -eq 1 ] && [ -d "$top" ]; then
+            cp -a "$top"/. .
+          else
+            cp -a /tmp/kolobeznik/. .
+          fi
+
+          rm -f kolobeznikczweb.zip
+
+      - name: Uložit rozbalený projekt
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "Žádné změny."
+            exit 0
+          fi
+
+          git commit -m "Rozbalení původního projektu"
+          git push
