@@ -5,13 +5,18 @@ import { PageHero } from "@/components/layout/PageHero";
 import { ScooterCard } from "@/components/scooters/ScooterCard";
 import {
   categories,
-  scooters,
   type Category,
 } from "@/lib/content/scooters";
+import { getScootersFromDb } from "@/lib/content/scooters-db.server";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/testy/")({
   component: TestsPage,
+
+  loader: async () => ({
+    scooters: await getScootersFromDb(),
+  }),
+
   head: () => ({
     meta: [
       { title: "Moje koloběžky a testy · Koloběžník" },
@@ -25,20 +30,25 @@ export const Route = createFileRoute("/testy/")({
 });
 
 export function TestsPage() {
+  const { scooters } = Route.useLoaderData();
+
   const [cat, setCat] = useState<Category | "all">("all");
   const [q, setQ] = useState("");
 
   const list = useMemo(() => {
     const query = q.trim().toLowerCase();
+
     return scooters.filter((s) => {
       if (cat !== "all" && s.category !== cat) return false;
+
       if (!query) return true;
+
       return (
         s.name.toLowerCase().includes(query) ||
         s.blurb.toLowerCase().includes(query)
       );
     });
-  }, [cat, q]);
+  }, [scooters, cat, q]);
 
   return (
     <main>
@@ -48,9 +58,14 @@ export function TestsPage() {
         lead="Modely, které jsem si osobně vyzkoušel a porovnal. Koloběžky jsou skvělý způsob dopravy po městě i do přírody — zábava, pohyb, úspora času i peněz."
         image="/images/garage.jpg"
       />
+
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div className="flex flex-wrap gap-2" role="tablist" aria-label="Kategorie">
+          <div
+            className="flex flex-wrap gap-2"
+            role="tablist"
+            aria-label="Kategorie"
+          >
             {categories.map((c) => (
               <button
                 key={c.id}
@@ -69,9 +84,12 @@ export function TestsPage() {
               </button>
             ))}
           </div>
+
           <label className="relative block w-full md:w-72 md:shrink-0">
             <span className="sr-only">Hledat model</span>
+
             <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted" />
+
             <input
               type="search"
               value={q}
@@ -81,9 +99,15 @@ export function TestsPage() {
             />
           </label>
         </div>
-        <p className="mt-6 text-sm text-muted">{list.length} modelů</p>
+
+        <p className="mt-6 text-sm text-muted">
+          {list.length} modelů
+        </p>
+
         {list.length === 0 ? (
-          <p className="py-16 text-center text-muted">Nic takového jsem ještě neotestoval.</p>
+          <p className="py-16 text-center text-muted">
+            Nic takového jsem ještě neotestoval.
+          </p>
         ) : (
           <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {list.map((s) => (
@@ -94,4 +118,4 @@ export function TestsPage() {
       </div>
     </main>
   );
-}
+                  }
