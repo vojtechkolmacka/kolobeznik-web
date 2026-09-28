@@ -24,7 +24,7 @@ jobs:
           cache: npm
 
       - name: Nainstalovat zavislosti
-        run: npm ci
+        run: npm install
 
       - name: Provest migrace databaze
         run: npm run db:migrate
