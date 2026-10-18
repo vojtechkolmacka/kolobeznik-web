@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Koloběžník — Kompletní Administrace</title>
+  <title>Koloběžník — Kompletní Správa</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,10 +21,10 @@
   <div>
     <div class="flex items-center justify-between mb-6 border-b border-stone-800 pb-4">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl lime-bg flex items-center justify-center text-black font-black text-xl">⚡</div>
+        <div class="w-10 h-10 rounded-xl lime-bg flex items-center justify-center text-black font-black text-xl">🛠️</div>
         <div>
           <span class="text-[10px] uppercase font-bold text-lime-400 tracking-widest block">MASTER ADMIN</span>
-          <h1 class="heading-font text-2xl text-white">SPRÁVA A FOTKY</h1>
+          <h1 class="heading-font text-2xl text-white">SPRÁVA OBSAHU</h1>
         </div>
       </div>
       <a href="./index.html" class="text-xs text-stone-400 hover:text-white underline">Zpět na web &rarr;</a>
@@ -42,15 +42,19 @@
 
     <!-- Přepínání záložek adminu -->
     <div class="flex gap-1.5 mb-6 overflow-x-auto pb-1">
-      <button onclick="switchTab('scooters')" id="tab-scooters" class="admin-tab active py-2 px-3 rounded-xl text-xs font-bold uppercase heading-font bg-stone-800 text-stone-300 whitespace-nowrap">Koloběžka</button>
-      <button onclick="switchTab('tips')" id="tab-tips" class="admin-tab py-2 px-3 rounded-xl text-xs font-bold uppercase heading-font bg-stone-800 text-stone-300 whitespace-nowrap">Tip / Článek</button>
+      <button onclick="switchTab('scooters')" id="tab-scooters" class="admin-tab active py-2 px-3 rounded-xl text-xs font-bold uppercase heading-font bg-stone-800 text-stone-300 whitespace-nowrap">Koloběžky</button>
+      <button onclick="switchTab('tips')" id="tab-tips" class="admin-tab py-2 px-3 rounded-xl text-xs font-bold uppercase heading-font bg-stone-800 text-stone-300 whitespace-nowrap">Tipy & Články</button>
       <button onclick="switchTab('sections')" id="tab-sections" class="admin-tab py-2 px-3 rounded-xl text-xs font-bold uppercase heading-font bg-stone-800 text-stone-300 whitespace-nowrap">➕ Rubrika</button>
     </div>
 
-    <!-- SEKCE 1: KOLOBĚŽKA -->
+    <!-- SEKCE 1: KOLOBĚŽKY -->
     <div id="sec-scooters" class="space-y-6">
       <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 shadow-xl space-y-4">
-        <h2 class="heading-font text-lg text-white">Přidat novou koloběžku</h2>
+        <div class="flex justify-between items-center">
+          <h2 id="s-form-title" class="heading-font text-lg text-white">Přidat / Upravit koloběžku</h2>
+          <button id="s-cancel" onclick="resetScooterForm()" class="hidden text-xs bg-stone-800 text-stone-300 px-2.5 py-1 rounded">Zrušit</button>
+        </div>
+        <input type="hidden" id="s-edit-id" value="">
         <div class="space-y-3 text-xs">
           <input type="text" id="s-name" placeholder="Název stroje" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
           <div class="grid grid-cols-2 gap-2">
@@ -70,36 +74,58 @@
           <input type="text" id="s-pros" placeholder="Klady (čárkou)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
           <input type="text" id="s-cons" placeholder="Zápory (čárkou)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
           
-          <!-- Nahrání fotky pro koloběžku -->
           <div class="bg-stone-950 p-3 rounded-xl border border-stone-800 space-y-2">
             <label class="block font-bold text-stone-300">Fotka koloběžky:</label>
             <input type="file" id="s-img-file" accept="image/*" class="w-full text-white file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#C6F135] file:text-black">
-            <input type="text" id="s-img" value="./public/images/hero.jpg" placeholder="./public/images/foto.jpg" class="w-full bg-stone-900 border border-stone-800 rounded-lg p-2 text-white font-mono text-[11px]">
+            <input type="text" id="s-img" value="./public/images/hero.jpg" class="w-full bg-stone-900 border border-stone-800 rounded-lg p-2 text-white font-mono text-[11px]">
           </div>
 
-          <button onclick="addScooter()" class="lime-btn w-full py-3 rounded-xl font-bold uppercase text-xs shadow">Přidat koloběžku</button>
+          <button onclick="saveScooter()" class="lime-btn w-full py-3 rounded-xl font-bold uppercase text-xs shadow">Uložit koloběžku</button>
+        </div>
+      </div>
+
+      <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 shadow-xl space-y-4">
+        <div class="flex justify-between items-center">
+          <h2 class="heading-font text-lg text-white">Seznam koloběžek na webu</h2>
+          <button onclick="loadScootersList()" class="bg-stone-800 text-stone-200 text-xs px-3 py-1.5 rounded-xl">Načíst seznam</button>
+        </div>
+        <div id="scooters-admin-list" class="space-y-2 max-h-80 overflow-y-auto text-xs">
+          <p class="text-stone-500 italic">Klikni na „Načíst seznam“...</p>
         </div>
       </div>
     </div>
 
-    <!-- SEKCE 2: TIP / ČLÁNEK -->
+    <!-- SEKCE 2: TIPY -->
     <div id="sec-tips" class="space-y-6 hidden">
       <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 shadow-xl space-y-4">
-        <h2 class="heading-font text-lg text-white">Přidat článek do Tipech</h2>
+        <div class="flex justify-between items-center">
+          <h2 id="t-form-title" class="heading-font text-lg text-white">Přidat / Upravit článek</h2>
+          <button id="t-cancel" onclick="resetTipForm()" class="hidden text-xs bg-stone-800 text-stone-300 px-2.5 py-1 rounded">Zrušit</button>
+        </div>
+        <input type="hidden" id="t-edit-id" value="">
         <div class="space-y-3 text-xs">
           <input type="text" id="t-title" placeholder="Název článku" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
           <input type="text" id="t-cat" placeholder="Štítek (např. VÝBAVA)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
           <textarea id="t-perex" rows="2" placeholder="Perex..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
           <textarea id="t-text" rows="4" placeholder="Plný text..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
           
-          <!-- Nahrání fotky pro tip -->
           <div class="bg-stone-950 p-3 rounded-xl border border-stone-800 space-y-2">
             <label class="block font-bold text-stone-300">Fotka k článku:</label>
             <input type="file" id="t-img-file" accept="image/*" class="w-full text-white file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#C6F135] file:text-black">
-            <input type="text" id="t-img" value="./public/images/hero.jpg" placeholder="./public/images/tip.jpg" class="w-full bg-stone-900 border border-stone-800 rounded-lg p-2 text-white font-mono text-[11px]">
+            <input type="text" id="t-img" value="./public/images/hero.jpg" class="w-full bg-stone-900 border border-stone-800 rounded-lg p-2 text-white font-mono text-[11px]">
           </div>
 
-          <button onclick="addTip()" class="lime-btn w-full py-3 rounded-xl font-bold uppercase text-xs shadow">Přidat článek</button>
+          <button onclick="saveTip()" class="lime-btn w-full py-3 rounded-xl font-bold uppercase text-xs shadow">Uložit článek</button>
+        </div>
+      </div>
+
+      <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 shadow-xl space-y-4">
+        <div class="flex justify-between items-center">
+          <h2 class="heading-font text-lg text-white">Seznam tipů na webu</h2>
+          <button onclick="loadTipsList()" class="bg-stone-800 text-stone-200 text-xs px-3 py-1.5 rounded-xl">Načíst seznam</button>
+        </div>
+        <div id="tips-admin-list" class="space-y-2 max-h-80 overflow-y-auto text-xs">
+          <p class="text-stone-500 italic">Klikni na „Načíst seznam“...</p>
         </div>
       </div>
     </div>
@@ -108,7 +134,6 @@
     <div id="sec-sections" class="space-y-6 hidden">
       <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 shadow-xl space-y-4">
         <h2 class="heading-font text-lg text-white">Vytvořit novou rubriku / záložku</h2>
-        <p class="text-xs text-stone-400">Automaticky přidá nové tlačítko do horního menu webu a vytvoří pro něj prázdnou stránku.</p>
         <div class="space-y-3 text-xs">
           <input type="text" id="sec-name" placeholder="Název rubriky (např. Servis)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
           <input type="text" id="sec-id" placeholder="ID bez mezer (např. servis)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white font-mono">
@@ -141,173 +166,267 @@
       document.getElementById(`sec-${tab}`).classList.remove('hidden');
     }
 
-    // Okamžité nahrání fotky při výběru u koloběžky
+    // Nahrávání fotek
     document.getElementById('s-img-file').addEventListener('change', async (e) => {
       if (e.target.files.length > 0) {
         const file = e.target.files[0];
         const filename = file.name.toLowerCase().replace(/\s+/g, '-');
         document.getElementById('s-img').value = `./public/images/${filename}`;
-        await uploadFileDirectly(file, filename, 'Obrázek koloběžky nahrán!');
+        await uploadFileDirectly(file, filename, 'Fotka koloběžky nahrána!');
       }
     });
 
-    // Okamžité nahrání fotky při výběru u tipu
     document.getElementById('t-img-file').addEventListener('change', async (e) => {
       if (e.target.files.length > 0) {
         const file = e.target.files[0];
         const filename = file.name.toLowerCase().replace(/\s+/g, '-');
         document.getElementById('t-img').value = `./public/images/${filename}`;
-        await uploadFileDirectly(file, filename, 'Obrázek k článku nahrán!');
+        await uploadFileDirectly(file, filename, 'Fotka k článku nahrána!');
       }
     });
 
     async function uploadFileDirectly(file, filename, successMsg) {
       const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo'), status = document.getElementById('global-status');
       if (!token || !repo) { alert('Vyplň token nahoře!'); return; }
-
-      status.innerText = 'Nahrávám fotku na GitHub...';
+      status.innerText = 'Nahrávám fotku...';
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = async function() {
         const base64 = reader.result.split(',')[1];
         const path = `public/images/${filename}`;
         const url = `https://api.github.com/repos/${repo}/contents/${path}`;
-
         let sha = null;
         const check = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
         if (check.ok) sha = (await check.json()).sha;
-
         const body = { message: `Admin: Nahrána fotka ${filename}`, content: base64 };
         if (sha) body.sha = sha;
-
-        const put = await fetch(url, {
-          method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify(body)
-        });
-
-        if (put.ok) status.innerText = successMsg;
-        else status.innerText = 'Chyba při nahrávání fotky.';
+        const put = await fetch(url, { method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        if (put.ok) status.innerText = successMsg; else status.innerText = 'Chyba nahrávání.';
       };
     }
 
-    async function addScooter() {
-      const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo'), status = document.getElementById('global-status');
-      if (!token || !repo) { alert('Vyplň připojení nahoře!'); return; }
+    async function fetchIndex() {
+      const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo');
+      const res = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, { headers: { 'Authorization': `token ${token}` } });
+      if (!res.ok) throw new Error('Chyba stahování index.html');
+      const fileData = await res.json();
+      const htmlContent = new TextDecoder().decode(Uint8Array.from(atob(fileData.content), c => c.codePointAt(0)));
+      return { fileData, htmlContent };
+    }
 
-      const name = document.getElementById('s-name').value.trim();
-      const cat = document.getElementById('s-cat').value;
-      const verdict = document.getElementById('s-verdict').value;
-      const blurb = document.getElementById('s-blurb').value.trim();
-      const pros = document.getElementById('s-pros').value.split(',').map(x => x.trim()).filter(Boolean);
-      const cons = document.getElementById('s-cons').value.split(',').map(x => x.trim()).filter(Boolean);
-      const img = document.getElementById('s-img').value.trim();
+    function extractArray(html, marker) {
+      const startIdx = html.indexOf(marker);
+      if (startIdx === -1) return [];
+      const bracketIdx = html.indexOf('[', startIdx);
+      let bracketCount = 0, endIdx = -1;
+      for (let i = bracketIdx; i < html.length; i++) {
+        if (html[i] === '[') bracketCount++;
+        if (html[i] === ']') { bracketCount--; if (bracketCount === 0) { endIdx = i + 1; break; } }
+      }
+      if (endIdx === -1) return [];
+      try { return eval(html.substring(bracketIdx, endIdx)); } catch (e) { return []; }
+    }
 
-      if (!name || !blurb) { alert('Vyplň název a popis.'); return; }
-      status.innerText = 'Odesílám koloběžku...';
-
+    // --- KOLOBĚŽKY: NAČTENÍ, ÚPRAVA, SMAZÁNÍ ---
+    async function loadScootersList() {
+      const box = document.getElementById('scooters-admin-list');
+      box.innerHTML = 'Načítám...';
       try {
-        const res = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, { headers: { 'Authorization': `token ${token}` } });
-        if (!res.ok) throw new Error('Chyba čtení index.html');
-        const fileData = await res.json();
-        const htmlContent = new TextDecoder().decode(Uint8Array.from(atob(fileData.content), c => c.codePointAt(0)));
+        const { htmlContent } = await fetchIndex();
+        const scooters = extractArray(htmlContent, "const scooters = [");
+        box.innerHTML = '';
+        scooters.forEach(s => {
+          const row = document.createElement('div');
+          row.className = "bg-stone-950 p-2.5 rounded-xl flex items-center justify-between border border-stone-800";
+          row.innerHTML = `<span class="text-white font-bold">${s.name}</span><div class="flex gap-1"><button onclick="editScooter(${s.id})" class="bg-stone-800 text-lime-400 px-2 py-1 rounded font-bold">Upravit</button><button onclick="deleteScooter(${s.id})" class="bg-rose-950 text-rose-300 px-2 py-1 rounded font-bold">Smazat</button></div>`;
+          box.appendChild(row);
+        });
+      } catch (err) { box.innerHTML = `<p class="text-rose-400">${err.message}</p>`; }
+    }
 
-        let catLabel = cat === 'sport' ? 'SPORTOVNÍ' : cat === 'electric' ? 'ELEKTRICKÉ' : cat === 'special' ? 'SPECIÁLY' : 'SKLÁDACÍ';
-        const newItemStr = `      { id: ${Date.now()}, name: "${name}", cat: "${cat}", catLabel: "${catLabel}", verdict: "${verdict}", img: "${img}", blurb: "${blurb}", pros: ${JSON.stringify(pros)}, cons: ${JSON.stringify(cons)}, specs: ["Zátěžový test"] },\n`;
+    async function editScooter(id) {
+      const { htmlContent } = await fetchIndex();
+      const scooters = extractArray(htmlContent, "const scooters = [");
+      const s = scooters.find(x => x.id === id);
+      if (!s) return;
+      document.getElementById('s-edit-id').value = s.id;
+      document.getElementById('s-name').value = s.name || '';
+      document.getElementById('s-cat').value = s.cat || 'folding';
+      document.getElementById('s-verdict').value = s.verdict || 'Doporučuji';
+      document.getElementById('s-blurb').value = s.blurb || '';
+      document.getElementById('s-pros').value = s.pros ? s.pros.join(', ') : '';
+      document.getElementById('s-cons').value = s.cons ? s.cons.join(', ') : '';
+      document.getElementById('s-img').value = s.img || '';
+      document.getElementById('s-form-title').innerText = `Úprava: ${s.name}`;
+      document.getElementById('s-cancel').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
+    function resetScooterForm() {
+      document.getElementById('s-edit-id').value = '';
+      document.getElementById('s-name').value = '';
+      document.getElementById('s-blurb').value = '';
+      document.getElementById('s-pros').value = '';
+      document.getElementById('s-cons').value = '';
+      document.getElementById('s-form-title').innerText = 'Přidat / Upravit koloběžku';
+      document.getElementById('s-cancel').classList.add('hidden');
+    }
+
+    async function deleteScooter(id) { if (confirm('Smazat koloběžku?')) await saveScooterData(id, true); }
+    async function saveScooter() { await saveScooterData(); }
+
+    async function saveScooterData(delId = null, isDel = false) {
+      const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo'), status = document.getElementById('global-status');
+      status.innerText = 'Ukládám změny...';
+      try {
+        const { fileData, htmlContent } = await fetchIndex();
+        let scooters = extractArray(htmlContent, "const scooters = [");
+        const editId = document.getElementById('s-edit-id').value;
+
+        if (isDel) scooters = scooters.filter(x => x.id !== delId);
+        else {
+          const name = document.getElementById('s-name').value.trim();
+          const cat = document.getElementById('s-cat').value;
+          const verdict = document.getElementById('s-verdict').value;
+          const blurb = document.getElementById('s-blurb').value.trim();
+          const pros = document.getElementById('s-pros').value.split(',').map(x => x.trim()).filter(Boolean);
+          const cons = document.getElementById('s-cons').value.split(',').map(x => x.trim()).filter(Boolean);
+          const img = document.getElementById('s-img').value.trim();
+          let catLabel = cat === 'sport' ? 'SPORTOVNÍ' : cat === 'electric' ? 'ELEKTRICKÉ' : cat === 'special' ? 'SPECIÁLY' : 'SKLÁDACÍ';
+          const item = { id: editId ? Number(editId) : Date.now(), name, cat, catLabel, verdict, img, blurb, pros, cons, specs: ["Zátěžový test"] };
+          
+          if (editId) {
+            const idx = scooters.findIndex(x => x.id === Number(editId));
+            if (idx !== -1) scooters[idx] = item; else scooters.push(item);
+          } else { scooters.push(item); }
+        }
+
+        const newCode = "const scooters = " + JSON.stringify(scooters, null, 2) + ";";
         const marker = "const scooters = [";
         const startIdx = htmlContent.indexOf(marker);
-        if (startIdx === -1) throw new Error('Nenalezeno pole koloběžek');
-
-        const insertPos = startIdx + marker.length;
-        const updatedHtml = htmlContent.slice(0, insertPos) + "\n" + newItemStr + htmlContent.slice(insertPos);
+        let bracketCount = 0, endIdx = -1;
+        for (let i = htmlContent.indexOf('[', startIdx); i < htmlContent.length; i++) {
+          if (htmlContent[i] === '[') bracketCount++;
+          if (htmlContent[i] === ']') { bracketCount--; if (bracketCount === 0) { endIdx = i + 1; break; } }
+        }
+        const updatedHtml = htmlContent.substring(0, startIdx) + newCode + htmlContent.substring(endIdx);
 
         const put = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, {
           method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: `Admin: Přidána koloběžka ${name}`, content: btoa(unescape(encodeURIComponent(updatedHtml))), sha: fileData.sha })
+          body: JSON.stringify({ message: 'Admin: Úprava koloběžek', content: btoa(unescape(encodeURIComponent(updatedHtml))), sha: fileData.sha })
         });
-
-        if (put.ok) { status.innerText = 'Koloběžka úspěšně přidána!'; document.getElementById('s-name').value = ''; document.getElementById('s-blurb').value = ''; }
-        else { status.innerText = 'Chyba ukládání.'; }
+        if (put.ok) { status.innerText = 'Uloženo!'; resetScooterForm(); loadScootersList(); } else status.innerText = 'Chyba ukládání.';
       } catch (err) { status.innerText = 'Chyba: ' + err.message; }
     }
 
-    async function addTip() {
-      const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo'), status = document.getElementById('global-status');
-      if (!token || !repo) { alert('Vyplň připojení nahoře!'); return; }
-
-      const title = document.getElementById('t-title').value.trim();
-      const category = document.getElementById('t-cat').value.trim().toUpperCase();
-      const perex = document.getElementById('t-perex').value.trim();
-      const text = document.getElementById('t-text').value.trim();
-      const img = document.getElementById('t-img').value.trim();
-
-      if (!title || !text) { alert('Vyplň název a text.'); return; }
-      status.innerText = 'Odesílám tip...';
-
+    // --- TIPY: NAČTENÍ, ÚPRAVA, SMAZÁNÍ ---
+    async function loadTipsList() {
+      const box = document.getElementById('tips-admin-list');
+      box.innerHTML = 'Načítám...';
       try {
-        const res = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, { headers: { 'Authorization': `token ${token}` } });
-        if (!res.ok) throw new Error('Chyba čtení index.html');
-        const fileData = await res.json();
-        const htmlContent = new TextDecoder().decode(Uint8Array.from(atob(fileData.content), c => c.codePointAt(0)));
+        const { htmlContent } = await fetchIndex();
+        const tips = extractArray(htmlContent, "const tipsData = [");
+        box.innerHTML = '';
+        tips.forEach(t => {
+          const row = document.createElement('div');
+          row.className = "bg-stone-950 p-2.5 rounded-xl flex items-center justify-between border border-stone-800";
+          row.innerHTML = `<span class="text-white font-bold">${t.title}</span><div class="flex gap-1"><button onclick="editTip(${t.id})" class="bg-stone-800 text-lime-400 px-2 py-1 rounded font-bold">Upravit</button><button onclick="deleteTip(${t.id})" class="bg-rose-950 text-rose-300 px-2 py-1 rounded font-bold">Smazat</button></div>`;
+          box.appendChild(row);
+        });
+      } catch (err) { box.innerHTML = `<p class="text-rose-400">${err.message}</p>`; }
+    }
 
-        const newItemStr = `      { id: ${Date.now()}, title: "${title}", category: "${category}", img: "${img}", perex: "${perex}", text: \`${text}\` },\n`;
+    async function editTip(id) {
+      const { htmlContent } = await fetchIndex();
+      const tips = extractArray(htmlContent, "const tipsData = [");
+      const t = tips.find(x => x.id === id);
+      if (!t) return;
+      document.getElementById('t-edit-id').value = t.id;
+      document.getElementById('t-title').value = t.title || '';
+      document.getElementById('t-cat').value = t.category || '';
+      document.getElementById('t-perex').value = t.perex || '';
+      document.getElementById('t-text').value = t.text || '';
+      document.getElementById('t-img').value = t.img || '';
+      document.getElementById('t-form-title').innerText = `Úprava: ${t.title}`;
+      document.getElementById('t-cancel').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
+    function resetTipForm() {
+      document.getElementById('t-edit-id').value = '';
+      document.getElementById('t-title').value = '';
+      document.getElementById('t-perex').value = '';
+      document.getElementById('t-text').value = '';
+      document.getElementById('t-form-title').innerText = 'Přidat / Upravit článek';
+      document.getElementById('t-cancel').classList.add('hidden');
+    }
+
+    async function deleteTip(id) { if (confirm('Smazat článek?')) await saveTipData(id, true); }
+    async function saveTip() { await saveTipData(); }
+
+    async function saveTipData(delId = null, isDel = false) {
+      const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo'), status = document.getElementById('global-status');
+      status.innerText = 'Ukládám článek...';
+      try {
+        const { fileData, htmlContent } = await fetchIndex();
+        let tips = extractArray(htmlContent, "const tipsData = [");
+        const editId = document.getElementById('t-edit-id').value;
+
+        if (isDel) tips = tips.filter(x => x.id !== delId);
+        else {
+          const title = document.getElementById('t-title').value.trim();
+          const category = document.getElementById('t-cat').value.trim().toUpperCase();
+          const perex = document.getElementById('t-perex').value.trim();
+          const text = document.getElementById('t-text').value.trim();
+          const img = document.getElementById('t-img').value.trim();
+          const item = { id: editId ? Number(editId) : Date.now(), title, category, img, perex, text };
+
+          if (editId) {
+            const idx = tips.findIndex(x => x.id === Number(editId));
+            if (idx !== -1) tips[idx] = item; else tips.push(item);
+          } else { tips.push(item); }
+        }
+
+        const newCode = "const tipsData = " + JSON.stringify(tips, null, 2) + ";";
         const marker = "const tipsData = [";
         const startIdx = htmlContent.indexOf(marker);
-        if (startIdx === -1) throw new Error('Nenalezeno pole tipů');
-
-        const insertPos = startIdx + marker.length;
-        const updatedHtml = htmlContent.slice(0, insertPos) + "\n" + newItemStr + htmlContent.slice(insertPos);
+        let bracketCount = 0, endIdx = -1;
+        for (let i = htmlContent.indexOf('[', startIdx); i < htmlContent.length; i++) {
+          if (htmlContent[i] === '[') bracketCount++;
+          if (htmlContent[i] === ']') { bracketCount--; if (bracketCount === 0) { endIdx = i + 1; break; } }
+        }
+        const updatedHtml = htmlContent.substring(0, startIdx) + newCode + htmlContent.substring(endIdx);
 
         const put = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, {
           method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: `Admin: Přidán tip ${title}`, content: btoa(unescape(encodeURIComponent(updatedHtml))), sha: fileData.sha })
+          body: JSON.stringify({ message: 'Admin: Úprava tipů', content: btoa(unescape(encodeURIComponent(updatedHtml))), sha: fileData.sha })
         });
-
-        if (put.ok) { status.innerText = 'Tip úspěšně přidán!'; document.getElementById('t-title').value = ''; document.getElementById('t-text').value = ''; }
-        else { status.innerText = 'Chyba ukládání.'; }
+        if (put.ok) { status.innerText = 'Článek uložen!'; resetTipForm(); loadTipsList(); } else status.innerText = 'Chyba ukládání.';
       } catch (err) { status.innerText = 'Chyba: ' + err.message; }
     }
 
+    // --- RUBRIKY ---
     async function addNewSection() {
       const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo'), status = document.getElementById('global-status');
       const name = document.getElementById('sec-name').value.trim();
       const id = document.getElementById('sec-id').value.trim().toLowerCase();
-
-      if (!token || !repo) { alert('Vyplň připojení nahoře!'); return; }
-      if (!name || !id) { alert('Vyplň název i ID rubriky.'); return; }
-
-      status.innerText = 'Vytvářím novou rubriku na webu...';
-
+      if (!token || !repo || !name || !id) { alert('Vyplň všechny údaje.'); return; }
+      status.innerText = 'Vytvářím rubriku...';
       try {
-        const res = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, { headers: { 'Authorization': `token ${token}` } });
-        if (!res.ok) throw new Error('Chyba čtení index.html');
-        const fileData = await res.json();
-        const htmlContent = new TextDecoder().decode(Uint8Array.from(atob(fileData.content), c => c.codePointAt(0)));
-
+        const { fileData, htmlContent } = await fetchIndex();
         const navMarker = '<button onclick="navigateTo(\'kontakt\')"';
         const newNavBtn = `<button onclick="navigateTo('${id}')" class="nav-link hover:text-[#C6F135] transition" data-target="${id}">${name}</button>\n        ` + navMarker;
-        
         const pageMarker = '<!-- ==================== KONTAKT ==================== -->';
-        const newPageDiv = `<!-- ==================== ${name.toUpperCase()} ==================== -->\n    <div id="page-${id}" class="page-view py-14 px-5 max-w-xl mx-auto">\n      <div class="bg-white rounded-3xl p-6 border border-stone-300 shadow-sm space-y-4">\n        <h2 class="heading-font text-3xl font-bold text-stone-950">${name}</h2>\n        <p class="text-stone-700 text-sm">Zde budou články a obsah pro rubriku ${name}.</p>\n      </div>\n    </div>\n\n    ` + pageMarker;
+        const newPageDiv = `<!-- ==================== ${name.toUpperCase()} ==================== -->\n    <div id="page-${id}" class="page-view py-14 px-5 max-w-xl mx-auto">\n      <div class="bg-white rounded-3xl p-6 border border-stone-300 shadow-sm space-y-4">\n        <h2 class="heading-font text-3xl font-bold text-stone-950">${name}</h2>\n        <p class="text-stone-700 text-sm">Obsah pro rubriku ${name}.</p>\n      </div>\n    </div>\n\n    ` + pageMarker;
 
         const updatedHtml = htmlContent.replace(navMarker, newNavBtn).replace(pageMarker, newPageDiv);
-
         const put = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, {
           method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: `Admin: Vytvořena nová rubrika ${name}`, content: btoa(unescape(encodeURIComponent(updatedHtml))), sha: fileData.sha })
+          body: JSON.stringify({ message: `Admin: Rubrika ${name}`, content: btoa(unescape(encodeURIComponent(updatedHtml))), sha: fileData.sha })
         });
-
-        if (put.ok) {
-          status.innerText = `Rubrika "${name}" byla úspěšně vytvořena!`;
-          document.getElementById('sec-name').value = '';
-          document.getElementById('sec-id').value = '';
-        } else {
-          status.innerText = 'Chyba při vytváření rubriky.';
-        }
-      } catch (err) {
-        status.innerText = 'Chyba: ' + err.message;
-      }
+        if (put.ok) { status.innerText = `Rubrika "${name}" vytvořena!`; document.getElementById('sec-name').value = ''; document.getElementById('sec-id').value = ''; }
+        else status.innerText = 'Chyba.';
+      } catch (err) { status.innerText = 'Chyba: ' + err.message; }
     }
   </script>
 </body>
