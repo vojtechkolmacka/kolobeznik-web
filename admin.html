@@ -3,297 +3,476 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Koloběžník — Administrace</title>
+  <title>Koloběžník — testy skládacích a elektrických koloběžek</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#C6F135">
   <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #1C1F1A; color: #F0ECE1; }
-    .heading-font { font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: -0.01em; }
+    body { 
+      font-family: 'Plus Jakarta Sans', sans-serif; 
+      background-color: #F0ECE1;
+      color: #1c1c1a;
+    }
+    .heading-font {
+      font-family: 'Oswald', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+    }
     .lime-bg { background-color: #C6F135; }
-    .lime-btn { background-color: #C6F135; color: #111827; font-family: 'Oswald', sans-serif; letter-spacing: 0.05em; }
+    .lime-btn {
+      background-color: #C6F135;
+      color: #111827;
+      font-family: 'Oswald', sans-serif;
+      letter-spacing: 0.05em;
+    }
     .lime-btn:hover { background-color: #b3df22; }
+    .forest-green { background-color: #1e3a2b; }
+    .cream-card { background-color: #E8E3D7; }
+    .tab-btn.active { background-color: #C6F135; color: #000; border-color: #C6F135; }
+    .page-view { display: none; }
+    .page-view.active { display: block; }
   </style>
 </head>
-<body class="p-4 sm:p-8 max-w-xl mx-auto min-h-screen flex flex-col justify-between">
-  <div>
-    <div class="flex items-center justify-between mb-6 border-b border-stone-800 pb-4">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl lime-bg flex items-center justify-center text-black font-black text-xl">🛠️</div>
-        <div>
-          <span class="text-[10px] uppercase font-bold text-lime-400 tracking-widest block">ADMIN</span>
-          <h1 class="heading-font text-2xl text-white">SPRÁVA KOLOBĚŽEK</h1>
+<body class="antialiased selection:bg-[#C6F135] selection:text-black min-h-screen flex flex-col justify-between">
+
+  <!-- Horní lišta -->
+  <header class="sticky top-0 z-50 bg-[#1C1F1A] text-white px-4 py-3 border-b border-stone-800 shadow-md">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      <a href="javascript:void(0)" onclick="navigateTo('home')" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl lime-bg flex items-center justify-center text-black font-black text-xl shadow-sm">
+          🛴
         </div>
-      </div>
-      <a href="./index.html" class="text-xs text-stone-400 hover:text-white underline">Zpět na web &rarr;</a>
+        <span class="heading-font text-2xl tracking-wider text-white">KOLOBĚŽNÍK</span>
+      </a>
+
+      <!-- Desktop záložky -->
+      <nav class="hidden md:flex items-center space-x-6 text-sm font-bold uppercase heading-font tracking-wider text-stone-300">
+        <button onclick="navigateTo('home')" class="nav-link hover:text-[#C6F135] transition text-[#C6F135]" data-target="home">Úvod</button>
+        <button onclick="navigateTo('testy')" class="nav-link hover:text-[#C6F135] transition" data-target="testy">Testy</button>
+        <button onclick="navigateTo('tipy')" class="nav-link hover:text-[#C6F135] transition" data-target="tipy">Tipy & Výbava</button>
+        <button onclick="navigateTo('pribeh')" class="nav-link hover:text-[#C6F135] transition" data-target="pribeh">O mně</button>
+        <button onclick="navigateTo('kontakt')" class="nav-link hover:text-[#C6F135] transition" data-target="kontakt">Kontakt</button>
+      </nav>
+
+      <!-- Mobilní hamburger -->
+      <button onclick="toggleMenu()" class="md:hidden text-white p-1 focus:outline-none" aria-label="Menu">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
     </div>
 
-    <!-- Připojení -->
-    <div class="bg-stone-900 border border-stone-800 rounded-3xl p-5 mb-6 shadow-xl space-y-3">
-      <h2 class="heading-font text-base text-white">GitHub Připojení</h2>
-      <div class="space-y-2 text-xs">
-        <input type="password" id="admin-token" placeholder="GitHub Token (PAT)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-2.5 text-white font-mono">
-        <input type="text" id="admin-repo" value="vojtechkolmacka/kolobeznik-web" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-2.5 text-white font-mono">
-        <button onclick="saveSettings()" class="lime-btn w-full py-2.5 rounded-xl font-bold uppercase text-xs">Uložit připojení</button>
-      </div>
+    <!-- Mobilní menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-[#1C1F1A] text-white pt-4 pb-2 border-t border-stone-800 mt-2 space-y-3 font-bold text-sm uppercase heading-font tracking-wider">
+      <button onclick="navigateTo('home'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">Úvod</button>
+      <button onclick="navigateTo('testy'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">Testy koloběžek</button>
+      <button onclick="navigateTo('tipy'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">Zajímavosti a tipy</button>
+      <button onclick="navigateTo('pribeh'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">O mně</button>
+      <button onclick="navigateTo('kontakt'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">Kontakt</button>
+    </div>
+  </header>
+
+  <main class="flex-grow">
+    <!-- ==================== ÚVOD ==================== -->
+    <div id="page-home" class="page-view active">
+      <section class="relative bg-stone-900 text-white overflow-hidden">
+        <div class="absolute inset-0 z-0 opacity-40">
+          <img src="./public/images/cyclers.jpg" alt="Koloběžka v přírodě" class="w-full h-full object-cover" onerror="this.src='./public/images/hero.jpg'">
+        </div>
+        <div class="relative z-10 px-5 pt-12 pb-14 max-w-xl mx-auto">
+          <h1 class="heading-font text-4xl sm:text-5xl font-bold leading-[1.05] tracking-tight mb-5">
+            ZAČNĚTE JEZDIT NA KOLOBĚŽCE UŽ DNES
+          </h1>
+          <p class="text-sm sm:text-base text-stone-200 leading-relaxed font-normal mb-8">
+            Teprve na koloběžce je to ten pravý relax, zažijte radost z přirozeného pohybu. Odpočinete od ruchu, uděláte něco pro zdraví — a když to vezmete z kopce, je to adrenalin.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <button onclick="navigateTo('testy')" class="lime-btn px-6 py-3.5 rounded-xl font-bold text-sm uppercase flex items-center justify-center gap-2 shadow-md">
+              MOJE TESTY &rarr;
+            </button>
+            <button onclick="navigateTo('kontakt')" class="bg-stone-950/80 hover:bg-stone-900 border border-stone-700 px-6 py-3.5 rounded-xl font-bold text-sm uppercase heading-font flex items-center justify-center tracking-wider transition">
+              OBJEDNAT TEST
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="lime-bg text-black py-10 px-5">
+        <div class="max-w-xl mx-auto grid grid-cols-2 gap-y-8 gap-x-6">
+          <div>
+            <div class="heading-font text-4xl sm:text-5xl font-bold leading-none">78 KM/H</div>
+            <p class="text-xs font-semibold text-stone-900 mt-2 leading-snug">osobní rekord na skládačce</p>
+          </div>
+          <div>
+            <div class="heading-font text-4xl sm:text-5xl font-bold leading-none">27</div>
+            <p class="text-xs font-semibold text-stone-900 mt-2 leading-snug">odjetých a popsaných modelů</p>
+          </div>
+          <div>
+            <div class="heading-font text-4xl sm:text-5xl font-bold leading-none">3 ZIMY</div>
+            <p class="text-xs font-semibold text-stone-900 mt-2 leading-snug">na jedné JD Bug MS132</p>
+          </div>
+          <div>
+            <div class="heading-font text-4xl sm:text-5xl font-bold leading-none">24/7</div>
+            <p class="text-xs font-semibold text-stone-900 mt-2 leading-snug">podmínky, které výrobce nezkouší</p>
+          </div>
+        </div>
+      </section>
     </div>
 
-    <!-- Formulář pro přidání / úpravu -->
-    <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 mb-6 shadow-xl space-y-4">
-      <div class="flex justify-between items-center">
-        <h2 id="form-title" class="heading-font text-lg text-white">Přidat novou koloběžku</h2>
-        <button id="cancel-btn" onclick="resetForm()" class="hidden text-xs bg-stone-800 text-stone-300 px-3 py-1 rounded">Zrušit</button>
-      </div>
-      <input type="hidden" id="edit-id" value="">
-      <div class="space-y-3 text-xs">
-        <input type="text" id="s-name" placeholder="Název stroje" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
-        <div class="grid grid-cols-2 gap-2">
-          <select id="s-cat" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
-            <option value="folding">Skládací</option>
-            <option value="sport">Sportovní</option>
-            <option value="electric">Elektro</option>
-            <option value="special">Speciály</option>
-          </select>
-          <select id="s-verdict" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
-            <option value="Doporučuji">Doporučuji</option>
-            <option value="Nedoporučuji">Nedoporučuji</option>
-            <option value="Bestie">⚡ Bestie</option>
-          </select>
+    <!-- ==================== TESTY ==================== -->
+    <div id="page-testy" class="page-view">
+      <section class="py-10 px-5 max-w-xl mx-auto">
+        <div class="mb-4">
+          <span class="heading-font text-xs tracking-widest text-stone-500 font-bold block mb-1">KATALOG RECENZÍ</span>
+          <h2 class="heading-font text-3xl sm:text-4xl font-bold text-stone-950 leading-none">
+            ODJETÉ KILOMETRY
+          </h2>
         </div>
-        <textarea id="s-blurb" rows="2" placeholder="Popis / perex..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
-        <input type="text" id="s-pros" placeholder="Klady oddělené čárkou" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
-        <input type="text" id="s-cons" placeholder="Zápory oddělené čárkou" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
         
-        <div class="bg-stone-950 p-3 rounded-xl border border-stone-800 space-y-2">
-          <label class="block font-bold text-stone-300">Fotka koloběžky:</label>
-          <input type="file" id="s-img-file" accept="image/*" class="w-full text-white file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#C6F135] file:text-black">
-          <input type="text" id="s-img" value="./public/images/hero.jpg" class="w-full bg-stone-900 border border-stone-800 rounded-lg p-2 text-white font-mono text-[11px]">
+        <p class="text-xs sm:text-sm text-stone-600 mb-6 leading-relaxed">
+          Modely jsou rozděleny do záložek a označeny podle tvrdé praxe: <span class="bg-[#C6F135] text-black font-bold px-1.5 py-0.5 rounded text-[11px]">DOPORUČUJI</span>, <span class="bg-rose-600 text-white font-bold px-1.5 py-0.5 rounded text-[11px]">NEDOPORUČUJI</span> nebo <span class="bg-stone-950 text-[#C6F135] border border-stone-700 font-bold px-1.5 py-0.5 rounded text-[11px]">⚡ BESTIE</span>.
+        </p>
+
+        <div class="flex flex-wrap gap-2 mb-6" id="category-tabs">
+          <button onclick="switchTab('folding', event)" class="tab-btn active px-3.5 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800 border border-stone-300 transition">Skládací</button>
+          <button onclick="switchTab('sport', event)" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800 border border-stone-300 transition">Sportovní</button>
+          <button onclick="switchTab('electric', event)" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800 border border-stone-300 transition">Elektro</button>
+          <button onclick="switchTab('special', event)" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800 border border-stone-300 transition">Speciály</button>
         </div>
 
-        <button onclick="saveScooter()" class="lime-btn w-full py-3 rounded-xl font-bold uppercase text-xs shadow">Uložit na GitHub</button>
+        <div class="space-y-6" id="scooter-list"></div>
+      </section>
+    </div>
+
+    <!-- ==================== TIPY ==================== -->
+    <div id="page-tipy" class="page-view bg-white py-12 px-5 min-h-[70vh]">
+      <div class="max-w-xl mx-auto">
+        <span class="heading-font text-xs tracking-widest text-lime-700 font-bold block mb-1">MIKROMOBILITA</span>
+        <h2 class="heading-font text-3xl sm:text-4xl font-bold text-stone-950 leading-tight mb-2">
+          ZAJÍMAVOSTI A TIPY
+        </h2>
+        <p class="text-xs sm:text-sm text-stone-600 mb-8 leading-relaxed">
+          Praktické rady, ověřená výbava a zkušenosti z každodenního koloběhu v terénu, ve městě i v mrazu.
+        </p>
+        <div class="space-y-5" id="tips-list"></div>
       </div>
     </div>
 
-    <!-- Seznam koloběžek pro úpravu a mazání -->
-    <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 shadow-xl space-y-4">
-      <div class="flex justify-between items-center">
-        <h2 class="heading-font text-lg text-white">Seznam koloběžek</h2>
-        <button onclick="loadScooters()" class="bg-stone-800 text-stone-200 text-xs px-3 py-1.5 rounded-xl">Načíst seznam</button>
-      </div>
-      <div id="list-scooters" class="space-y-2 max-h-80 overflow-y-auto text-xs">
-        <p class="text-stone-500 italic">Klikni na „Načíst seznam“...</p>
+    <!-- ==================== O MNĚ ==================== -->
+    <div id="page-pribeh" class="page-view py-14 px-5">
+      <div class="max-w-xl mx-auto bg-white rounded-3xl p-6 sm:p-8 border border-stone-300 shadow-sm space-y-5 text-sm sm:text-base leading-relaxed">
+        <span class="heading-font text-xs tracking-widest text-lime-700 font-bold block">PŘÍBĚH KOLOBĚŽNÍKA</span>
+        <h2 class="heading-font text-3xl sm:text-4xl font-bold text-stone-950 leading-tight">
+          KOLOBĚŽKA JAKO VÝCHODISKO, PAK JAKO POSEDLOST
+        </h2>
+        <p class="text-stone-700">
+          Začínal jsem tak, že mi byl takřka ze dne na den posunut spoj, kterým jsem několik let běžně jezdil do práce. Na výběr jsem měl několik variant: koupit auto (leasing, nebo starší jezdící pokladničku) — do čehož se mi moc nechtělo. Nebo být na místě o dvě hodiny dříve a vstávat o tři a půl hodiny dřív. Tak to už vůbec.
+        </p>
+        <p class="text-stone-700">
+          Nakonec zvítězila koloběžka jako levné a rychlé řešení. Ráno skočím na kolobrndu, dojedu na ní dolů z kopce, složím ji a nasednu na svůj spoj do práce.
+        </p>
+        <div class="heading-font text-3xl font-bold text-emerald-950 my-2">
+          ZÁKLAD JE HLAVNĚ NEBRZDIT.
+        </div>
+        <p class="text-stone-700">
+          Je to sice adrenalin, ale nic, co by nešlo zvládnout. A když jsem překonal strach, začalo to i bavit. V současné době se bavím tím, že zkouším, jakou největší rychlost jsem schopen se skládací koloběžkou vyvinout — osobní rekord je 78 km/h.
+        </p>
       </div>
     </div>
 
-    <p id="status-msg" class="text-center font-bold text-lime-400 my-4 text-xs"></p>
+    <!-- ==================== KONTAKT ==================== -->
+    <div id="page-kontakt" class="page-view forest-green text-white py-16 px-5 min-h-[60vh] flex items-center">
+      <div class="max-w-xl mx-auto w-full">
+        <span class="heading-font text-xs tracking-widest text-[#C6F135] font-bold block mb-1">PŘI KRAJI LESA SMĚREM NA BRDO</span>
+        <h2 class="heading-font text-4xl sm:text-5xl font-bold mb-4 leading-tight">
+          CHCETE OTESTOVAT STROJ?
+        </h2>
+        <p class="text-stone-200 text-sm sm:text-base leading-relaxed mb-8 font-normal">
+          Zátěžový test, servis nebo zaučení. Napište, zavolejte, nebo se stavte — při kraji lesa směrem na Brdo nad Růžďkou.
+        </p>
+        <a href="mailto:kolobeznik@email.cz" class="lime-btn px-8 py-4 rounded-xl font-bold text-sm uppercase inline-flex items-center gap-2 shadow-lg">
+          NAPSAT KOLOBĚŽNÍKOVI &rarr;
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Patička -->
+  <footer class="bg-[#11130F] text-stone-400 py-10 px-5">
+    <div class="max-w-xl mx-auto">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-8 h-8 rounded-lg lime-bg flex items-center justify-center text-black font-black text-sm">
+          🛴
+        </div>
+        <span class="heading-font text-xl tracking-wider text-white">KOLOBĚŽNÍK</span>
+      </div>
+      <p class="text-xs leading-relaxed text-stone-400 mb-4">
+        Nezávislé testy skládacích a elektrických koloběžek. Servis, zaučení a zátěžovky z kraje lesa nad Růžďkou.
+      </p>
+      <div class="heading-font text-lg font-bold text-[#C6F135] tracking-wider mb-6">
+        VŠEM KOLOBĚŽNÍKŮM R.E.S.P.E.C.T.
+      </div>
+      <div class="border-t border-stone-800 pt-4 text-[11px] text-stone-500 flex justify-between items-center">
+        <span>&copy; 2026 Koloběžník.cz</span>
+        <span>Všechna práva vyhrazena</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modály -->
+  <div id="tip-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-[#F0ECE1] text-stone-900 max-w-xl w-full rounded-2xl overflow-hidden shadow-2xl max-h-[92vh] flex flex-col">
+      <div class="bg-[#1C1F1A] text-white p-4 px-6 flex items-center justify-between">
+        <span id="tip-modal-badge" class="heading-font text-xs uppercase px-2.5 py-0.5 rounded lime-bg text-black font-bold"></span>
+        <button onclick="closeTipModal()" class="text-white text-2xl leading-none">&times;</button>
+      </div>
+      <div class="p-6 overflow-y-auto space-y-4 text-sm leading-relaxed">
+        <div class="h-60 bg-white rounded-xl overflow-hidden p-2 flex items-center justify-center border border-stone-300">
+          <img id="tip-modal-image" src="" alt="" class="w-full h-full object-contain rounded-lg" onerror="this.src='./public/images/hero.jpg'">
+        </div>
+        <h3 id="tip-modal-title" class="heading-font text-2xl sm:text-3xl font-bold text-stone-950"></h3>
+        <div id="tip-modal-content" class="text-stone-700 space-y-3 font-normal whitespace-pre-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="scooter-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-[#F0ECE1] text-stone-900 max-w-xl w-full rounded-2xl overflow-hidden shadow-2xl max-h-[92vh] flex flex-col">
+      <div class="bg-[#1C1F1A] text-white p-4 px-6 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span id="modal-category-badge" class="heading-font text-xs uppercase px-2 py-0.5 rounded bg-stone-700 text-stone-200 font-bold"></span>
+          <span id="modal-verdict-badge"></span>
+        </div>
+        <button onclick="closeScooterModal()" class="text-white text-2xl leading-none">&times;</button>
+      </div>
+      <div class="p-6 overflow-y-auto space-y-5 text-sm">
+        <div class="h-60 bg-white rounded-xl overflow-hidden p-2 flex items-center justify-center border border-stone-300">
+          <img id="modal-image" src="" alt="" class="w-full h-full object-contain rounded-lg" onerror="this.src='./public/images/hero.jpg'">
+        </div>
+        <div>
+          <h3 id="modal-title" class="heading-font text-3xl font-bold text-stone-950 mb-1"></h3>
+          <p id="modal-blurb" class="text-stone-700 leading-relaxed font-normal"></p>
+        </div>
+
+        <div id="modal-specs-wrap" class="bg-white p-4 rounded-xl border border-stone-300 text-xs hidden">
+          <span class="heading-font text-sm font-bold text-stone-950 block mb-2">SPECIFIKACE</span>
+          <ul id="modal-specs-list" class="space-y-1 text-stone-600"></ul>
+        </div>
+
+        <div class="space-y-3">
+          <div class="p-4 rounded-xl lime-bg/30 border border-lime-400/80">
+            <span class="heading-font text-sm font-bold text-emerald-950 block mb-2">VÝHODY</span>
+            <ul id="modal-pros-list" class="space-y-1 text-xs text-stone-800"></ul>
+          </div>
+          <div class="p-4 rounded-xl bg-stone-200/90 border border-stone-300">
+            <span class="heading-font text-sm font-bold text-stone-900 block mb-2">NEVÝHODY</span>
+            <ul id="modal-cons-list" class="space-y-1 text-xs text-stone-700"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
-    document.getElementById('admin-token').value = localStorage.getItem('kol_token') || '';
-    document.getElementById('admin-repo').value = localStorage.getItem('kol_repo') || 'vojtechkolmacka/kolobeznik-web';
+    const tipsData = [
+      { id: 1, title: "Batoh na koloběžku", category: "VÝBAVA", img: "./public/images/tip-backpack.jpg", perex: "Při jízdě na koloběžce jste v neustálém pohybu. Základem je batoh, který pevně sedí a nerozhodí vás.", text: `Při jízdě na koloběžce jste v neustálém pohybu — neustále se střídají nohy, trup jde dopředu a dozadu a pracují i ramena. Obyčejný školní nebo městský batoh se okamžitě začne přesouvat ze strany na stranu, bouchá do zad a vyvádí z rovnováhy.\n\nIdeální batoh na koloběžku musí mít:\n1. Pevný hrudní popruh\n2. Bederní pás\n3. Odvětrávaná záda` },
+      { id: 2, title: "Pouzdro a brašna na řídítka Wildman", category: "DOPLŇKY", img: "./public/images/tip-wildman.jpg", perex: "Kam s telefonem, klíči a nářadím na skládací koloběžce? Test pevných skořepinových brašen Wildman.", text: `Skořepinová pouzdra Wildman z lisovaného tvrzeného EVA materiálu jsou osvědčeným řešením pro uchycení telefonu a nářadí na řídítka.` },
+      { id: 3, title: "Chytrá přilba Livall a bezpečnost", category: "BEZPEČNOST", img: "./public/images/tip-helmet.jpg", perex: "Při rychlostech nad 30 km/h nebo nočních přejezdech je přilba absolutní nutností.", text: `Chytré přilby s integrovaným osvětlením, blinkry a senzorem pádu pro maximální bezpečí.` },
+      { id: 4, title: "Airbagový límec Hövding 3 na koloběžce", category: "TECHNOLOGIE", img: "./public/images/tip-hovding.jpg", perex: "Nafukovací airbag kolem krku místo klasické skořepiny.", text: `Revoluční ochrana hlavy kolem krku. V létě se v něm nepotí hlava.` },
+      { id: 5, title: "Kombinéza Dirtlej do každého počasí", category: "VÝBAVA", img: "./public/images/tip-dirtsuit.jpg", perex: "Celoroční ježdění v dešti, blátě a mrazu bez promočených zad.", text: `Jednodílný nepromokavý oblek, který vás ochrání před bahnem a stříkající vodou.` },
+      { id: 6, title: "Správná technika odrazu a střídání nohou", category: "TECHNIKA", img: "./public/images/field.jpg", perex: "Pravidelná výměna stojné nohy po 5 až 6 odrazech je základ bezbolestné jízdy.", text: `Střídejte nohy pravidelně po 5–6 odrazech, ať předejdete přetížení jedné strany těla.` }
+    ];
 
-    function saveSettings() {
-      localStorage.setItem('kol_token', document.getElementById('admin-token').value);
-      localStorage.setItem('kol_repo', document.getElementById('admin-repo').value);
-      alert('Uloženo!');
-    }
+    const scooters = [
+      { id: 1, name: "SPARTAN JUMBO", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Doporučuji", img: "./public/images/scooter-01.jpg", blurb: "Základní skládací model pro každodenní přesuny.", pros: ["Lehká", "Skladná"], cons: ["Složitější systém skládání"], specs: ["200 mm PU"] },
+      { id: 2, name: "JD BUG MS132", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Doporučuji", img: "./public/images/scooter-02.jpg", blurb: "Zatím asi nejkvalitněji zpracovaná skládačka. Odjezdila se mnou dokonce tři zimy!", pros: ["Vydržela 3 zimy", "Lehká a tuhá"], cons: ["Malá kolečka"], specs: ["Odolnost 3 zimy"] },
+      { id: 3, name: "KRUZZEL HYPERION", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Nedoporučuji", img: "./public/images/scooter-03.jpg", blurb: "Lákavý model výbavou i cenou, ale bohužel s fatální konstrukční vadou.", pros: ["Cena"], cons: ["Rozlomila se téměř vejpůl po měsíci!"], specs: ["Pozor na uzel"] },
+      { id: 4, name: "TEMPISH TECNIQUE TOP", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Doporučuji", img: "./public/images/scooter-04.jpg", blurb: "Bohatě vybavená skládací koloběžka s kotoučovou brzdou a odpružením.", pros: ["Kotoučová brzda", "Odpružení"], cons: ["Občasné chrastění"], specs: ["6.5 kg"] },
+      { id: 5, name: "SPARTAN JUMBO II", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Nedoporučuji", img: "./public/images/scooter-05.jpg", blurb: "Druhá generace s listovými tlumiči, lehká, ale s rezervami v odolnosti.", pros: ["Listové tlumiče"], cons: ["Problémy s konstrukcí"], specs: ["Listové tlumení"] },
+      { id: 6, name: "SIX DEGREES ALUMINIUM LW 205", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Doporučuji", img: "./public/images/scooter-06.jpg", blurb: "Špičková konstrukce z leteckého hliníku.", pros: ["Letecký hliník", "Rychlá"], cons: ["Utopený stojánek"], specs: ["205 mm"] },
+      { id: 7, name: "SPOKEY TARANIS PLUS", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Doporučuji", img: "./public/images/scooter-07.jpg", blurb: "Městská skládačka s praktickým režimem kufru na kolečkách.", pros: ["Trolley systém"], cons: ["Vyšší nášlap"], specs: ["Kufr režim"] },
+      { id: 8, name: "HUDORA BIGWHEEL 205", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Doporučuji", img: "./public/images/scooter-08.jpg", blurb: "Německá klasika a osvědčený etalon.", pros: ["Německá výroba", "Rychlý skládací mechanismus"], cons: ["Chybí pojistka"], specs: ["Německo"] },
+      { id: 9, name: "XOOTR STREET", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Doporučuji", img: "./public/images/scooter-09.jpg", blurb: "Americká kvalita s neuvěřitelnou nosností až 300 kg.", pros: ["Nosnost 300 kg"], cons: ["Vyšší cena"], specs: ["Nosnost 300 kg"] },
+      { id: 10, name: "JD BUG DELUXE B", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Doporučuji", img: "./public/images/scooter-10.jpg", blurb: "Komfortnější verze s extra širokým obutím.", pros: ["Široké pneu"], cons: ["Slabší brzda"], specs: ["Široké obutí"] },
+      { id: 11, name: "MICRO SPRITE", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Doporučuji", img: "./public/images/scooter-11.jpg", blurb: "Švýcarská preciznost v kapesním balení pod 3 kg.", pros: ["Pod 3 kg", "Šroubované díly"], cons: ["Malá kolečka"], specs: ["Švýcarsko"] },
+      { id: 12, name: "SNĚHOBĚŽKA", cat: "special", catLabel: "SPECIÁLY", verdict: "Doporučuji", img: "./public/images/snow.jpg", blurb: "Když kola selhávají a nasněží.", pros: ["Na sněhu super rychlá"], cons: ["Nemá brzdu!"], specs: ["Lyžiny"] },
+      { id: 13, name: "MYHOOD TOUR", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Doporučuji", img: "./public/images/scooter-13.jpg", blurb: "Maximálně skladná s půlením nášlapu.", pros: ["Skladná do kufru"], cons: ["Problém s kloubem půlení"], specs: ["Půlení nášlapu"] },
+      { id: 14, name: "JD BUG MS105", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Doporučuji", img: "./public/images/scooter-14.jpg", blurb: "Lehoučká kapesní koloběžka.", pros: ["Ultralehká"], cons: ["Malá kola"], specs: ["Hliník"] },
+      { id: 15, name: "SULOV CONDOR 26/20", cat: "sport", catLabel: "SPORTOVNÍ", verdict: "Doporučuji", img: "./public/images/scooter-15.jpg", blurb: "Velká nafukovací kola 26\"/20\" pro dospělé.", pros: ["Skvělá na nerovnosti"], cons: ["Těžší"], specs: ["26\" / 20\""] },
+      { id: 16, name: "QUICK SPORT TALA", cat: "sport", catLabel: "SPORTOVNÍ", verdict: "Doporučuji", img: "./public/images/scooter-16.jpg", blurb: "Univerzální rodinná koloběžka s nosností 150 kg.", pros: ["Nosnost 150 kg"], cons: ["Ocelový rám"], specs: ["20\" / 16\""] },
+      { id: 17, name: "YEDOO CITY", cat: "sport", catLabel: "SPORTOVNÍ", verdict: "Doporučuji", img: "./public/images/scooter-17.jpg", blurb: "Obratná a lehká městská klasika.", pros: ["Obratná", "9.3 kg"], cons: ["Méně do terénu"], specs: ["16\" / 12\""] },
+      { id: 18, name: "NIPPER N12", cat: "sport", catLabel: "SPORTOVNÍ", verdict: "Doporučuji", img: "./public/images/scooter-18.jpg", blurb: "Kompaktní městská s nafukovacími koly.", pros: ["Nafukovací kola"], cons: ["Kratší stupátko"], specs: ["12\""] },
+      { id: 19, name: "RAZOR A5 AIR", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Doporučuji", img: "./public/images/scooter-19.jpg", blurb: "Skladná s nízkotlakými pneu, nechrastí.", pros: ["Foukací kola", "Nezrchrastí"], cons: ["Velmi nízká světlá výška (světlost)", "Pomalejší"], specs: ["Nízká světlá výška"] },
+      { id: 20, name: "TOURSOR E5B 60V (2×2800W)", cat: "electric", catLabel: "ELEKTRICKÉ", verdict: "Bestie", img: "./public/images/scooter-20.jpg", blurb: "Bestie s výkonem 5600W a rychlostí 90 km/h.", pros: ["5600W výkon", "Hydraulika"], cons: ["Váha 50 kg"], specs: ["5600W"] },
+      { id: 21, name: "SENCOR SCOOTER TWO LONG RANGE", cat: "electric", catLabel: "ELEKTRICKÉ", verdict: "Doporučuji", img: "./public/images/scooter-21.jpg", blurb: "Odjezdila se mnou 2 celé zimy v mrazech a soli.", pros: ["Výdrž v zimě", "10\" bezdefektová kola"], cons: ["Bez odpružení"], specs: ["400W"] },
+      { id: 22, name: "VEGA VIRON 1000W", cat: "electric", catLabel: "ELEKTRICKÉ", verdict: "Doporučuji", img: "./public/images/scooter-22.jpg", blurb: "Železo s řetězovým převodem a sílou do kopců.", pros: ["Silný řetězový motor"], cons: ["Váha 38 kg"], specs: ["1000W řetěz"] },
+      { id: 23, name: "NITRO SCOOTER X500 PREMIUM", cat: "electric", catLabel: "ELEKTRICKÉ", verdict: "Doporučuji", img: "./public/images/scooter-23.jpg", blurb: "Česká elektrokoloběžka s plnou homologací.", pros: ["Homologace pro ČR"], cons: ["Slabší v kopcích"], specs: ["Homologace"] },
+      { id: 24, name: "TAJFUN 500W", cat: "electric", catLabel: "ELEKTRICKÉ", verdict: "Doporučuji", img: "./public/images/scooter-24.jpg", blurb: "Dostupnější elektrokoloběžka s alarmem.", pros: ["Alarm a dálkový ovladač"], cons: ["Servis"], specs: ["500W"] },
+      { id: 25, name: "KAABO SKYWALKER 10H (CZ)", cat: "electric", catLabel: "ELEKTRICKÉ", verdict: "Doporučuji", img: "./public/images/scooter-25.jpg", blurb: "Prémiová značka se servisem u zákazníka.", pros: ["Servis u zákazníka doma"], cons: ["20 kg"], specs: ["800W"] },
+      { id: 26, name: "GALAXY CALYPSO", cat: "sport", catLabel: "SPORTOVNÍ", verdict: "Doporučuji", img: "./public/images/scooter-26.jpg", blurb: "Klasická sportovní na cyklostezky.", pros: ["Příznivá cena"], cons: ["Základní díly"], specs: ["Rekreační"] },
+      { id: 27, name: "BOYEDA S3-11", cat: "electric", catLabel: "ELEKTRICKÉ", verdict: "Bestie", img: "./public/images/scooter-27.jpg", blurb: "Dva motory 3000W, rychlost 85 km/h. Absolutní monstrum.", pros: ["6000W", "85 km/h", "38Ah baterie"], cons: ["Váha 50 kg"], specs: ["6000W"] }
+    ];
 
-    // Okamžité nahrání fotky
-    document.getElementById('s-img-file').addEventListener('change', async (e) => {
-      if (e.target.files.length > 0) {
-        const file = e.target.files[0];
-        const filename = file.name.toLowerCase().replace(/\s+/g, '-');
-        document.getElementById('s-img').value = `./public/images/${filename}`;
-        
-        const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo'), status = document.getElementById('status-msg');
-        if (!token || !repo) { alert('Vyplň token nahoře!'); return; }
-        status.innerText = 'Nahrávám fotku na GitHub...';
-        
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = async function() {
-          const base64 = reader.result.split(',')[1];
-          const path = `public/images/${filename}`;
-          const url = `https://api.github.com/repos/${repo}/contents/${path}`;
-          let sha = null;
-          const check = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
-          if (check.ok) sha = (await check.json()).sha;
-          const body = { message: `Admin: Nahrána fotka ${filename}`, content: base64 };
-          if (sha) body.sha = sha;
-          const put = await fetch(url, { method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-          if (put.ok) status.innerText = 'Fotka úspěšně nahrána!'; else status.innerText = 'Chyba nahrávání fotky.';
-        };
+    function getVerdictBadge(verdict) {
+      if (verdict === 'Bestie') {
+        return `<span class="bg-[#11130F] text-[#C6F135] border border-[#C6F135]/60 font-black text-[11px] heading-font tracking-wider px-2.5 py-1 rounded shadow">⚡ BESTIE</span>`;
+      } else if (verdict === 'Nedoporučuji') {
+        return `<span class="bg-rose-600 text-white font-black text-[11px] heading-font tracking-wider px-2.5 py-1 rounded shadow">✕ NEDOPORUČUJI</span>`;
       }
-    });
-
-    async function fetchIndex() {
-      const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo');
-      const res = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, { headers: { 'Authorization': `token ${token}` } });
-      if (!res.ok) throw new Error('Chyba při stahování index.html');
-      const fileData = await res.json();
-      const htmlContent = new TextDecoder().decode(Uint8Array.from(atob(fileData.content), c => c.codePointAt(0)));
-      return { fileData, htmlContent };
+      return `<span class="lime-bg text-black font-black text-[11px] heading-font tracking-wider px-2.5 py-1 rounded shadow">✓ DOPORUČUJI</span>`;
     }
 
-    function extractScooters(html) {
-      const marker = "const scooters = [";
-      const startIdx = html.indexOf(marker);
-      if (startIdx === -1) return [];
+    function renderCategory(cat) {
+      const list = document.getElementById('scooter-list');
+      list.innerHTML = '';
+      const items = scooters.filter(s => s.cat === cat);
 
-      const bracketIdx = html.indexOf('[', startIdx);
-      let bracketCount = 0, endIdx = -1;
-      for (let i = bracketIdx; i < html.length; i++) {
-        if (html[i] === '[') bracketCount++;
-        if (html[i] === ']') {
-          bracketCount--;
-          if (bracketCount === 0) { endIdx = i + 1; break; }
+      items.forEach(s => {
+        const card = document.createElement('div');
+        card.className = "bg-white rounded-3xl overflow-hidden border border-stone-300 shadow-sm cursor-pointer hover:border-black transition";
+        card.onclick = () => openScooterModal(s.id);
+
+        card.innerHTML = `
+          <div class="relative bg-stone-100 h-72 p-4 flex items-center justify-center">
+            <img src="${s.img}" alt="${s.name}" class="w-full h-full object-contain" onerror="this.src='./public/images/hero.jpg'">
+            <div class="absolute top-4 left-4">
+              ${getVerdictBadge(s.verdict)}
+            </div>
+          </div>
+          <div class="p-6 bg-[#EFECE4]">
+            <span class="text-[11px] font-bold text-stone-500 uppercase tracking-widest block mb-1">${s.catLabel}</span>
+            <h3 class="heading-font text-2xl font-bold text-stone-950 mb-2 leading-tight">${s.name}</h3>
+            <p class="text-xs sm:text-sm text-stone-700 leading-relaxed font-normal">${s.blurb}</p>
+            <div class="mt-4 pt-3 border-t border-stone-300 flex items-center justify-between text-xs font-bold">
+              <span class="text-stone-500">Klady: <strong class="text-emerald-800">${s.pros.length}</strong> | Zápory: <strong class="text-rose-800">${s.cons.length}</strong></span>
+              <span class="heading-font text-stone-900 tracking-wider">ZOBRAZIT RECENZI &rarr;</span>
+            </div>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    let activeCategoryTab = 'folding';
+    renderCategory(activeCategoryTab);
+
+    function switchTab(cat, evt) {
+      activeCategoryTab = cat;
+      const btns = document.querySelectorAll('.tab-btn');
+      btns.forEach(b => b.classList.remove('active'));
+      if (evt && evt.currentTarget) {
+        evt.currentTarget.classList.add('active');
+      }
+      renderCategory(activeCategoryTab);
+    }
+
+    function renderTips() {
+      const list = document.getElementById('tips-list');
+      list.innerHTML = '';
+
+      tipsData.forEach(t => {
+        const item = document.createElement('div');
+        item.className = "bg-white rounded-3xl overflow-hidden border border-stone-300 shadow-sm hover:border-black transition flex flex-col sm:flex-row cursor-pointer";
+        item.onclick = () => openTipModal(t.id);
+
+        item.innerHTML = `
+          <div class="sm:w-48 h-48 sm:h-auto bg-stone-100 shrink-0 p-3 flex items-center justify-center border-b sm:border-b-0 sm:border-r border-stone-200">
+            <img src="${t.img}" alt="${t.title}" class="w-full h-full object-contain rounded-xl" onerror="this.src='./public/images/hero.jpg'">
+          </div>
+          <div class="p-5 sm:p-6 bg-[#EFECE4] flex-1 flex flex-col justify-between">
+            <div>
+              <span class="text-[10px] font-black uppercase tracking-wider text-black lime-bg px-2.5 py-0.5 rounded inline-block mb-2">${t.category}</span>
+              <h3 class="heading-font text-xl sm:text-2xl font-bold text-stone-950 mb-2 leading-tight">${t.title}</h3>
+              <p class="text-xs sm:text-sm text-stone-700 leading-relaxed font-normal">${t.perex}</p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-stone-300 text-xs font-bold flex justify-end">
+              <span class="heading-font text-stone-900 tracking-wider">ČÍST ČLÁNEK &rarr;</span>
+            </div>
+          </div>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    renderTips();
+
+    function navigateTo(pageId) {
+      document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+      const targetPage = document.getElementById('page-' + pageId);
+      if (targetPage) {
+        targetPage.classList.add('active');
+      }
+
+      document.querySelectorAll('.nav-link').forEach(link => {
+        if (link.getAttribute('data-target') === pageId) {
+          link.classList.add('text-[#C6F135]');
+        } else {
+          link.classList.remove('text-[#C6F135]');
         }
-      }
-      if (endIdx === -1) return [];
-      try {
-        return eval(html.substring(bracketIdx, endIdx));
-      } catch (e) {
-        console.error(e);
-        return [];
-      }
-    }
+      });
 
-    async function loadScooters() {
-      const box = document.getElementById('list-scooters');
-      box.innerHTML = 'Načítám...';
-      try {
-        const { htmlContent } = await fetchIndex();
-        const scooters = extractScooters(htmlContent);
-
-        if (scooters.length === 0) {
-          box.innerHTML = '<p class="text-stone-400">Žádné koloběžky nenalezeny.</p>';
-          return;
-        }
-
-        box.innerHTML = '';
-        scooters.forEach(s => {
-          const row = document.createElement('div');
-          row.className = "bg-stone-950 p-2.5 rounded-xl flex items-center justify-between border border-stone-800 mb-1";
-          row.innerHTML = `<div><strong class="text-white">${s.name}</strong> <span class="text-[10px] text-stone-400 block">${s.verdict}</span></div><div class="flex gap-1"><button onclick="editScooter(${s.id})" class="bg-stone-800 text-lime-400 px-2 py-1 rounded font-bold">Upravit</button><button onclick="deleteScooter(${s.id})" class="bg-rose-950 text-rose-300 px-2 py-1 rounded font-bold">Smazat</button></div>`;
-          box.appendChild(row);
-        });
-      } catch (err) {
-        box.innerHTML = `<p class="text-rose-400">Chyba: ${err.message}</p>`;
-      }
-    }
-
-    async function editScooter(id) {
-      const { htmlContent } = await fetchIndex();
-      const scooters = extractScooters(htmlContent);
-      const s = scooters.find(x => x.id === id);
-      if (!s) return;
-
-      document.getElementById('edit-id').value = s.id;
-      document.getElementById('s-name').value = s.name || '';
-      document.getElementById('s-cat').value = s.cat || 'folding';
-      document.getElementById('s-verdict').value = s.verdict || 'Doporučuji';
-      document.getElementById('s-blurb').value = s.blurb || '';
-      document.getElementById('s-pros').value = s.pros ? s.pros.join(', ') : '';
-      document.getElementById('s-cons').value = s.cons ? s.cons.join(', ') : '';
-      document.getElementById('s-img').value = s.img || './public/images/hero.jpg';
-
-      document.getElementById('form-title').innerText = `Úprava: ${s.name}`;
-      document.getElementById('cancel-btn').classList.remove('hidden');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function resetForm() {
-      document.getElementById('edit-id').value = '';
-      document.getElementById('s-name').value = '';
-      document.getElementById('s-blurb').value = '';
-      document.getElementById('s-pros').value = '';
-      document.getElementById('s-cons').value = '';
-      document.getElementById('s-img').value = './public/images/hero.jpg';
-      document.getElementById('form-title').innerText = 'Přidat novou koloběžku';
-      document.getElementById('cancel-btn').classList.add('hidden');
+    function openTipModal(id) {
+      const tip = tipsData.find(item => item.id === id);
+      if (!tip) return;
+      document.getElementById('tip-modal-badge').innerText = tip.category;
+      document.getElementById('tip-modal-image').src = tip.img;
+      document.getElementById('tip-modal-title').innerText = tip.title;
+      document.getElementById('tip-modal-content').innerText = tip.text;
+      const m = document.getElementById('tip-modal');
+      m.classList.remove('hidden');
+      m.classList.add('flex');
     }
 
-    async function deleteScooter(id) {
-      if (confirm('Opravdu tuto koloběžku smazat?')) {
-        await saveScooterData(id, true);
+    function closeTipModal() {
+      document.getElementById('tip-modal').classList.add('hidden');
+      document.getElementById('tip-modal').classList.remove('flex');
+    }
+
+    function openScooterModal(id) {
+      const s = scooters.find(item => item.id === id);
+      if (!s) return;
+      document.getElementById('modal-category-badge').innerText = s.catLabel;
+      document.getElementById('modal-verdict-badge').innerHTML = getVerdictBadge(s.verdict);
+      document.getElementById('modal-image').src = s.img;
+      document.getElementById('modal-title').innerText = s.name;
+      document.getElementById('modal-blurb').innerText = s.blurb;
+
+      const specsWrap = document.getElementById('modal-specs-wrap');
+      const specsList = document.getElementById('modal-specs-list');
+      if (s.specs && s.specs.length > 0) {
+        specsList.innerHTML = s.specs.map(item => `<li>• ${item}</li>`).join('');
+        specsWrap.classList.remove('hidden');
+      } else {
+        specsWrap.classList.add('hidden');
       }
+
+      document.getElementById('modal-pros-list').innerHTML = s.pros.map(p => `<li>✓ ${p}</li>`).join('');
+      document.getElementById('modal-cons-list').innerHTML = s.cons.map(c => `<li>— ${c}</li>`).join('');
+
+      const m = document.getElementById('scooter-modal');
+      m.classList.remove('hidden');
+      m.classList.add('flex');
     }
 
-    async function saveScooter() {
-      await saveScooterData();
+    function closeScooterModal() {
+      document.getElementById('scooter-modal').classList.add('hidden');
+      document.getElementById('scooter-modal').classList.remove('flex');
     }
 
-    async function saveScooterData(delId = null, isDel = false) {
-      const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo'), status = document.getElementById('status-msg');
-      if (!token || !repo) { alert('Vyplň token!'); return; }
-
-      status.innerText = 'Ukládám změny na GitHub...';
-
-      try {
-        const { fileData, htmlContent } = await fetchIndex();
-        let scooters = extractScooters(htmlContent);
-        const editId = document.getElementById('edit-id').value;
-
-        if (isDel) {
-          scooters = scooters.filter(x => x.id !== delId);
-        } else {
-          const name = document.getElementById('s-name').value.trim();
-          const cat = document.getElementById('s-cat').value;
-          const verdict = document.getElementById('s-verdict').value;
-          const blurb = document.getElementById('s-blurb').value.trim();
-          const pros = document.getElementById('s-pros').value.split(',').map(x => x.trim()).filter(Boolean);
-          const cons = document.getElementById('s-cons').value.split(',').map(x => x.trim()).filter(Boolean);
-          const img = document.getElementById('s-img').value.trim();
-          
-          let catLabel = cat === 'sport' ? 'SPORTOVNÍ' : cat === 'electric' ? 'ELEKTRICKÉ' : cat === 'special' ? 'SPECIÁLY' : 'SKLÁDACÍ';
-
-          const item = { id: editId ? Number(editId) : Date.now(), name, cat, catLabel, verdict, img, blurb, pros, cons, specs: ["Zátěžový test"] };
-
-          if (editId) {
-            const idx = scooters.findIndex(x => x.id === Number(editId));
-            if (idx !== -1) scooters[idx] = item; else scooters.push(item);
-          } else {
-            scooters.push(item);
-          }
-        }
-
-        const newCode = "const scooters = " + JSON.stringify(scooters, null, 2) + ";";
-        const marker = "const scooters = [";
-        const startIdx = htmlContent.indexOf(marker);
-        let bracketCount = 0, endIdx = -1;
-        for (let i = startIdx + marker.length - 1; i < htmlContent.length; i++) {
-          if (htmlContent[i] === '[') bracketCount++;
-          if (htmlContent[i] === ']') {
-            bracketCount--;
-            if (bracketCount === 0) { endIdx = i + 1; break; }
-          }
-        }
-
-        const updatedHtml = htmlContent.substring(0, startIdx) + newCode + htmlContent.substring(endIdx);
-
-        const put = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, {
-          method: 'PUT',
-          headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            message: isDel ? 'Admin: Smazána koloběžka' : 'Admin: Aktualizovány koloběžky',
-            content: btoa(unescape(encodeURIComponent(updatedHtml))),
-            sha: fileData.sha
-          })
-        });
-
-        if (put.ok) {
-          status.innerText = 'Úspěšně uloženo na GitHub!';
-          resetForm();
-          loadScooters();
-        } else {
-          status.innerText = 'Chyba při ukládání.';
-        }
-
-      } catch (err) {
-        status.innerText = 'Chyba: ' + err.message;
-      }
+    function toggleMenu() {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
     }
+
+    window.onclick = function(e) {
+      if (e.target === document.getElementById('scooter-modal')) closeScooterModal();
+      if (e.target === document.getElementById('tip-modal')) closeTipModal();
+    };
   </script>
 </body>
 </html>
