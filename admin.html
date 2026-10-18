@@ -33,7 +33,7 @@
     <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 mb-6 shadow-xl space-y-4">
       <h2 class="heading-font text-lg text-white">1. Připojení k GitHubu</h2>
       <p class="text-xs text-stone-400 leading-relaxed">
-        Zadej svůj GitHub token (PAT) s právy pro zápis do repozitáře. Údaje se uloží pouze do paměti tvého telefonu.
+        Zadej svůj GitHub token (PAT) s oprávněním <code>repo</code>. Údaje se ukládají pouze do paměti tvého telefonu.
       </p>
       <div class="space-y-3 text-xs">
         <div>
@@ -48,19 +48,20 @@
       </div>
     </div>
 
-    <!-- Přidání obsahu -->
+    <!-- Přidání poznámky / souboru -->
     <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 shadow-xl space-y-4">
-      <h2 class="heading-font text-lg text-white">2. Rychlý zápis poznámky / článku</h2>
+      <h2 class="heading-font text-lg text-white">2. Rychlý zápis poznámky</h2>
+      <p class="text-xs text-stone-400">Vytvoří nový textový soubor ve složce repozitáře.</p>
       <div class="space-y-3 text-xs">
         <div>
-          <label class="block font-bold mb-1 text-stone-300">Nadpis:</label>
-          <input type="text" id="post-title" placeholder="Např. Nový poznatek z terénu" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
+          <label class="block font-bold mb-1 text-stone-300">Název souboru (např. clanek.txt):</label>
+          <input type="text" id="file-name" placeholder="zapis.txt" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white font-mono">
         </div>
         <div>
-          <label class="block font-bold mb-1 text-stone-300">Text:</label>
-          <textarea id="post-text" rows="4" placeholder="Sem napiš podrobnosti..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
+          <label class="block font-bold mb-1 text-stone-300">Obsah:</label>
+          <textarea id="file-content" rows="4" placeholder="Sem napiš text..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
         </div>
-        <button onclick="publishPost()" class="bg-white text-stone-950 w-full py-3 rounded-xl font-bold uppercase text-xs hover:bg-stone-200 transition">Odeslat na GitHub</button>
+        <button onclick="pushToGitHub()" class="bg-white text-stone-950 w-full py-3 rounded-xl font-bold uppercase text-xs hover:bg-stone-200 transition">Odeslat na GitHub</button>
         <p id="status-msg" class="text-center font-bold text-lime-400 mt-2"></p>
       </div>
     </div>
@@ -80,27 +81,64 @@
       alert('Nastavení uloženo v paměti telefonu!');
     }
 
-    function publishPost() {
+    async function pushToGitHub() {
       const token = localStorage.getItem('kol_token');
       const repo = localStorage.getItem('kol_repo');
-      const title = document.getElementById('post-title').value;
-      const text = document.getElementById('post-text').value;
+      const filename = document.getElementById('file-name').value.trim();
+      const content = document.getElementById('file-content').value;
+      const statusEl = document.getElementById('status-msg');
 
       if (!token || !repo) {
-        alert('Nejprve vyplň a ulož GitHub token!');
+        alert('Nejprve vyplň a ulož GitHub token nahoře!');
         return;
       }
-      if (!title || !text) {
-        alert('Vyplň nadpis i text.');
+      if (!filename || !content) {
+        alert('Vyplň název souboru i obsah.');
         return;
       }
 
-      document.getElementById('status-msg').innerText = 'Odesílám na GitHub...';
+      statusEl.innerText = 'Odesílám požadavek na GitHub...';
 
-      // Zde připraveno pro GitHub API commit (např. vytvoření zápisu)
-      setTimeout(() => {
-        document.getElementById('status-msg').innerText = 'Úspěšně odesláno!';
-      }, 1000);
+      // GitHub API vyžaduje obsah zakódovaný v Base64
+      const encodedContent = btoa(unescape(encodeURIComponent(content)));
+      const url = `https://api.github.com/repos/${repo}/contents/${filename}`;
+
+      try {
+        // Nejprve zkontrolujeme, jestli soubor už existuje (kvůli SHA)
+        let sha = null;
+        const checkRes = await fetch(url, {
+          headers: { 'Authorization': `token ${token}` }
+        });
+        if (checkRes.ok) {
+          const fileData = await checkRes.json();
+          sha = fileData.sha;
+        }
+
+        // Odeslání nového obsahu
+        const bodyData = {
+          message: `Admin PWA: Automatický zápis ${filename}`,
+          content: encodedContent
+        };
+        if (sha) bodyData.sha = sha; // Pokud soubor existuje, musíme poslat jeho SHA
+
+        const response = await fetch(url, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `token ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(bodyData)
+        });
+
+        if (response.ok) {
+          statusEl.innerText = 'Úspěšně uloženo na GitHub! Web se za chvíli aktualizuje.';
+        } else {
+          const err = await response.json();
+          statusEl.innerText = 'Chyba: ' + (err.message || 'Nepodařilo se uložit.');
+        }
+      } catch (error) {
+        statusEl.innerText = 'Chyba připojení: ' + error.message;
+      }
     }
   </script>
 </body>
