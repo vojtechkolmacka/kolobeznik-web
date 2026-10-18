@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Koloběžník — Administrace</title>
+  <title>Koloběžník — Kompletní Administrace</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,16 +39,48 @@
       </div>
     </div>
 
+    <!-- Formulář pro přidání / úpravu -->
+    <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 mb-6 shadow-xl space-y-4">
+      <div class="flex justify-between items-center">
+        <h2 id="form-title" class="heading-font text-lg text-white">Přidat novou koloběžku</h2>
+        <button id="cancel-btn" onclick="resetForm()" class="hidden text-xs bg-stone-800 text-stone-300 px-3 py-1 rounded">Zrušit</button>
+      </div>
+      <input type="hidden" id="edit-id" value="">
+      <div class="space-y-3 text-xs">
+        <input type="text" id="s-name" placeholder="Název stroje" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
+        <div class="grid grid-cols-2 gap-2">
+          <select id="s-cat" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
+            <option value="folding">Skládací</option>
+            <option value="sport">Sportovní</option>
+            <option value="electric">Elektro</option>
+            <option value="special">Speciály</option>
+          </select>
+          <select id="s-verdict" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
+            <option value="Doporučuji">Doporučuji</option>
+            <option value="Nedoporučuji">Nedoporučuji</option>
+            <option value="Bestie">⚡ Bestie</option>
+          </select>
+        </div>
+        <textarea id="s-blurb" rows="2" placeholder="Popis / perex..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
+        <input type="text" id="s-pros" placeholder="Klady oddělené čárkou" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
+        <input type="text" id="s-cons" placeholder="Zápory oddělené čárkou" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
+        <input type="text" id="s-img" value="./public/images/hero.jpg" placeholder="Cesta k fotce" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white font-mono">
+        <button onclick="saveScooter()" class="lime-btn w-full py-3 rounded-xl font-bold uppercase text-xs shadow">Uložit na GitHub</button>
+      </div>
+    </div>
+
     <!-- Seznam koloběžek -->
     <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 shadow-xl space-y-4">
       <div class="flex justify-between items-center">
         <h2 class="heading-font text-lg text-white">Seznam koloběžek</h2>
         <button onclick="loadScooters()" class="bg-stone-800 text-stone-200 text-xs px-3 py-1.5 rounded-xl">Načíst</button>
       </div>
-      <div id="list-scooters" class="space-y-2 max-h-96 overflow-y-auto text-xs">
+      <div id="list-scooters" class="space-y-2 max-h-80 overflow-y-auto text-xs">
         <p class="text-stone-500 italic">Klikni na „Načíst“...</p>
       </div>
     </div>
+
+    <p id="status-msg" class="text-center font-bold text-lime-400 my-4 text-xs"></p>
   </div>
 
   <script>
@@ -61,55 +93,171 @@
       alert('Uloženo!');
     }
 
+    async function fetchIndex() {
+      const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo');
+      const res = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, { headers: { 'Authorization': `token ${token}` } });
+      if (!res.ok) throw new Error('Chyba při stahování index.html');
+      const fileData = await res.json();
+      const htmlContent = new TextDecoder().decode(Uint8Array.from(atob(fileData.content), c => c.codePointAt(0)));
+      return { fileData, htmlContent };
+    }
+
+    function extractScooters(html) {
+      const marker = "const scooters = [";
+      const startIdx = html.indexOf(marker);
+      if (startIdx === -1) return [];
+
+      const bracketIdx = html.indexOf('[', startIdx);
+      let bracketCount = 0, endIdx = -1;
+      for (let i = bracketIdx; i < html.length; i++) {
+        if (html[i] === '[') bracketCount++;
+        if (html[i] === ']') {
+          bracketCount--;
+          if (bracketCount === 0) { endIdx = i + 1; break; }
+        }
+      }
+      if (endIdx === -1) return [];
+      try {
+        return eval(html.substring(bracketIdx, endIdx));
+      } catch (e) {
+        console.error(e);
+        return [];
+      }
+    }
+
     async function loadScooters() {
       const box = document.getElementById('list-scooters');
       box.innerHTML = 'Načítám...';
       try {
-        const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo');
-        const res = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, { headers: { 'Authorization': `token ${token}` } });
-        if (!res.ok) throw new Error('Chyba při stahování index.html');
-        
-        const fileData = await res.json();
-        const htmlContent = new TextDecoder().decode(Uint8Array.from(atob(fileData.content), c => c.codePointAt(0)));
+        const { htmlContent } = await fetchIndex();
+        const scooters = extractScooters(htmlContent);
 
-        const marker = "scooters";
-        const startIdx = htmlContent.indexOf(marker);
-        let scooters = [];
-
-        if (startIdx !== -1) {
-          const bracketIdx = htmlContent.indexOf('[', startIdx);
-          if (bracketIdx !== -1) {
-            let bracketCount = 0, endIdx = -1;
-            for (let i = bracketIdx; i < htmlContent.length; i++) {
-              if (htmlContent[i] === '[') bracketCount++;
-              if (htmlContent[i] === ']') {
-                bracketCount--;
-                if (bracketCount === 0) { endIdx = i + 1; break; }
-              }
-            }
-            if (endIdx !== -1) {
-              try {
-                scooters = eval(htmlContent.substring(bracketIdx, endIdx));
-              } catch (e) { console.error(e); }
-            }
-          }
-        }
-
-        if (!scooters || scooters.length === 0) {
-          box.innerHTML = '<p class="text-amber-400">V index.html nebyly nalezeny žádné koloběžky. Můžeš je začít přidávat!</p>';
+        if (scooters.length === 0) {
+          box.innerHTML = '<p class="text-stone-400">Žádné koloběžky nenalezeny.</p>';
           return;
         }
 
-        box.innerHTML = `<p class="text-lime-400 font-bold mb-2">Načteno položek: ${scooters.length}</p>`;
+        box.innerHTML = '';
         scooters.forEach(s => {
           const row = document.createElement('div');
           row.className = "bg-stone-950 p-2.5 rounded-xl flex items-center justify-between border border-stone-800 mb-1";
-          row.innerHTML = `<span class="text-white font-bold">${s.name || 'Neznámý'}</span> <span class="text-[10px] text-stone-400">${s.verdict || ''}</span>`;
+          row.innerHTML = `<div><strong class="text-white">${s.name}</strong> <span class="text-[10px] text-stone-400 block">${s.verdict}</span></div><div class="flex gap-1"><button onclick="editScooter(${s.id})" class="bg-stone-800 text-lime-400 px-2 py-1 rounded font-bold">Upravit</button><button onclick="deleteScooter(${s.id})" class="bg-rose-950 text-rose-300 px-2 py-1 rounded font-bold">Smazat</button></div>`;
           box.appendChild(row);
         });
-
       } catch (err) {
         box.innerHTML = `<p class="text-rose-400">Chyba: ${err.message}</p>`;
+      }
+    }
+
+    async function editScooter(id) {
+      const { htmlContent } = await fetchIndex();
+      const scooters = extractScooters(htmlContent);
+      const s = scooters.find(x => x.id === id);
+      if (!s) return;
+
+      document.getElementById('edit-id').value = s.id;
+      document.getElementById('s-name').value = s.name || '';
+      document.getElementById('s-cat').value = s.cat || 'folding';
+      document.getElementById('s-verdict').value = s.verdict || 'Doporučuji';
+      document.getElementById('s-blurb').value = s.blurb || '';
+      document.getElementById('s-pros').value = s.pros ? s.pros.join(', ') : '';
+      document.getElementById('s-cons').value = s.cons ? s.cons.join(', ') : '';
+      document.getElementById('s-img').value = s.img || './public/images/hero.jpg';
+
+      document.getElementById('form-title').innerText = `Úprava: ${s.name}`;
+      document.getElementById('cancel-btn').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function resetForm() {
+      document.getElementById('edit-id').value = '';
+      document.getElementById('s-name').value = '';
+      document.getElementById('s-blurb').value = '';
+      document.getElementById('s-pros').value = '';
+      document.getElementById('s-cons').value = '';
+      document.getElementById('s-img').value = './public/images/hero.jpg';
+      document.getElementById('form-title').innerText = 'Přidat novou koloběžku';
+      document.getElementById('cancel-btn').classList.add('hidden');
+    }
+
+    async function deleteScooter(id) {
+      if (confirm('Opravdu tuto koloběžku smazat?')) {
+        await saveScooterData(id, true);
+      }
+    }
+
+    async function saveScooter() {
+      await saveScooterData();
+    }
+
+    async function saveScooterData(delId = null, isDel = false) {
+      const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo'), status = document.getElementById('status-msg');
+      if (!token || !repo) { alert('Vyplň token!'); return; }
+
+      status.innerText = 'Ukládám změny na GitHub...';
+
+      try {
+        const { fileData, htmlContent } = await fetchIndex();
+        let scooters = extractScooters(htmlContent);
+        const editId = document.getElementById('edit-id').value;
+
+        if (isDel) {
+          scooters = scooters.filter(x => x.id !== delId);
+        } else {
+          const name = document.getElementById('s-name').value.trim();
+          const cat = document.getElementById('s-cat').value;
+          const verdict = document.getElementById('s-verdict').value;
+          const blurb = document.getElementById('s-blurb').value.trim();
+          const pros = document.getElementById('s-pros').value.split(',').map(x => x.trim()).filter(Boolean);
+          const cons = document.getElementById('s-cons').value.split(',').map(x => x.trim()).filter(Boolean);
+          const img = document.getElementById('s-img').value.trim();
+          
+          let catLabel = cat === 'sport' ? 'SPORTOVNÍ' : cat === 'electric' ? 'ELEKTRICKÉ' : cat === 'special' ? 'SPECIÁLY' : 'SKLÁDACÍ';
+
+          const item = { id: editId ? Number(editId) : Date.now(), name, cat, catLabel, verdict, img, blurb, pros, cons, specs: ["Zátěžový test"] };
+
+          if (editId) {
+            const idx = scooters.findIndex(x => x.id === Number(editId));
+            if (idx !== -1) scooters[idx] = item; else scooters.push(item);
+          } else {
+            scooters.push(item);
+          }
+        }
+
+        const newCode = "const scooters = " + JSON.stringify(scooters, null, 2) + ";";
+        const marker = "const scooters = [";
+        const startIdx = htmlContent.indexOf(marker);
+        let bracketCount = 0, endIdx = -1;
+        for (let i = startIdx + marker.length - 1; i < htmlContent.length; i++) {
+          if (htmlContent[i] === '[') bracketCount++;
+          if (htmlContent[i] === ']') {
+            bracketCount--;
+            if (bracketCount === 0) { endIdx = i + 1; break; }
+          }
+        }
+
+        const updatedHtml = htmlContent.substring(0, startIdx) + newCode + htmlContent.substring(endIdx);
+
+        const put = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, {
+          method: 'PUT',
+          headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: isDel ? 'Admin: Smazána koloběžka' : 'Admin: Aktualizovány koloběžky',
+            content: btoa(unescape(encodeURIComponent(updatedHtml))),
+            sha: fileData.sha
+          })
+        });
+
+        if (put.ok) {
+          status.innerText = 'Úspěšně uloženo na GitHub!';
+          resetForm();
+          loadScooters();
+        } else {
+          status.innerText = 'Chyba při ukládání.';
+        }
+
+      } catch (err) {
+        status.innerText = 'Chyba: ' + err.message;
       }
     }
   </script>
