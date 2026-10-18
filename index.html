@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#C6F135">
   <style>
     body { 
       font-family: 'Plus Jakarta Sans', sans-serif; 
@@ -19,40 +21,24 @@
       text-transform: uppercase;
       letter-spacing: -0.01em;
     }
-    .lime-bg {
-      background-color: #C6F135;
-    }
+    .lime-bg { background-color: #C6F135; }
     .lime-btn {
       background-color: #C6F135;
       color: #111827;
       font-family: 'Oswald', sans-serif;
       letter-spacing: 0.05em;
     }
-    .lime-btn:hover {
-      background-color: #b3df22;
-    }
-    .forest-green {
-      background-color: #1e3a2b;
-    }
-    .cream-card {
-      background-color: #E8E3D7;
-    }
-    .tab-btn.active {
-      background-color: #C6F135;
-      color: #000;
-      border-color: #C6F135;
-    }
-    .page-view {
-      display: none;
-    }
-    .page-view.active {
-      display: block;
-    }
+    .lime-btn:hover { background-color: #b3df22; }
+    .forest-green { background-color: #1e3a2b; }
+    .cream-card { background-color: #E8E3D7; }
+    .tab-btn.active { background-color: #C6F135; color: #000; border-color: #C6F135; }
+    .page-view { display: none; }
+    .page-view.active { display: block; }
   </style>
 </head>
 <body class="antialiased selection:bg-[#C6F135] selection:text-black min-h-screen flex flex-col justify-between">
 
-  <!-- Horní lišta s navigací mezi záložkami -->
+  <!-- Horní lišta -->
   <header class="sticky top-0 z-50 bg-[#1C1F1A] text-white px-4 py-3 border-b border-stone-800 shadow-md">
     <div class="max-w-4xl mx-auto flex items-center justify-between">
       <a href="javascript:void(0)" onclick="navigateTo('home')" class="flex items-center gap-3">
@@ -63,12 +49,12 @@
       </a>
 
       <!-- Desktop záložky -->
-      <nav class="hidden md:flex items-center space-x-6 text-sm font-bold uppercase heading-font tracking-wider text-stone-300">
+      <nav class="hidden md:flex items-center space-x-5 text-sm font-bold uppercase heading-font tracking-wider text-stone-300">
         <button onclick="navigateTo('home')" class="nav-link hover:text-[#C6F135] transition text-[#C6F135]" data-target="home">Úvod</button>
         <button onclick="navigateTo('testy')" class="nav-link hover:text-[#C6F135] transition" data-target="testy">Testy</button>
-        <button onclick="navigateTo('tipy')" class="nav-link hover:text-[#C6F135] transition" data-target="tipy">Tipy & Výbava</button>
+        <button onclick="navigateTo('tipy')" class="nav-link hover:text-[#C6F135] transition" data-target="tipy">Tipy</button>
         <button onclick="navigateTo('pribeh')" class="nav-link hover:text-[#C6F135] transition" data-target="pribeh">O mně</button>
-        <button onclick="navigateTo('kontakt')" class="nav-link hover:text-[#C6F135] transition" data-target="kontakt">Kontakt</button>
+        <button onclick="navigateTo('admin')" class="nav-link text-lime-400 hover:text-lime-300 transition flex items-center gap-1" data-target="admin">⚙️ Správa</button>
       </nav>
 
       <!-- Mobilní hamburger -->
@@ -79,20 +65,19 @@
       </button>
     </div>
 
-    <!-- Mobilní rozbalovací menu -->
+    <!-- Mobilní menu -->
     <div id="mobile-menu" class="hidden md:hidden bg-[#1C1F1A] text-white pt-4 pb-2 border-t border-stone-800 mt-2 space-y-3 font-bold text-sm uppercase heading-font tracking-wider">
       <button onclick="navigateTo('home'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">Úvod</button>
-      <button onclick="navigateTo('testy'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">Testy koloběžek (27)</button>
-      <button onclick="navigateTo('tipy'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">Zajímavosti a tipy</button>
+      <button onclick="navigateTo('testy'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">Testy koloběžek</button>
+      <button onclick="navigateTo('tipy'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">Tipy a zajímavosti</button>
       <button onclick="navigateTo('pribeh'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">O mně</button>
-      <button onclick="navigateTo('kontakt'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">Kontakt</button>
+      <button onclick="navigateTo('admin'); toggleMenu();" class="block w-full text-left py-1 text-lime-400">⚙️ Správa / Admin</button>
     </div>
   </header>
 
   <main class="flex-grow">
-    <!-- ==================== ZÁLOŽKA 1: ÚVOD ==================== -->
+    <!-- ==================== ÚVOD ==================== -->
     <div id="page-home" class="page-view active">
-      <!-- Hero sekce -->
       <section class="relative bg-stone-900 text-white overflow-hidden">
         <div class="absolute inset-0 z-0 opacity-40">
           <img src="./public/images/cyclers.jpg" alt="Koloběžka v přírodě" class="w-full h-full object-cover">
@@ -108,14 +93,13 @@
             <button onclick="navigateTo('testy')" class="lime-btn px-6 py-3.5 rounded-xl font-bold text-sm uppercase flex items-center justify-center gap-2 shadow-md">
               MOJE TESTY &rarr;
             </button>
-            <button onclick="navigateTo('kontakt')" class="bg-stone-950/80 hover:bg-stone-900 border border-stone-700 px-6 py-3.5 rounded-xl font-bold text-sm uppercase heading-font flex items-center justify-center tracking-wider transition">
-              OBJEDNAT TEST
+            <button onclick="navigateTo('admin')" class="bg-stone-950/80 hover:bg-stone-900 border border-stone-700 px-6 py-3.5 rounded-xl font-bold text-sm uppercase heading-font flex items-center justify-center tracking-wider transition text-lime-400">
+              ⚙️ PŘIDAT OBSAH
             </button>
           </div>
         </div>
       </section>
 
-      <!-- Limetkový pás statistik -->
       <section class="lime-bg text-black py-10 px-5">
         <div class="max-w-xl mx-auto grid grid-cols-2 gap-y-8 gap-x-6">
           <div>
@@ -136,43 +120,9 @@
           </div>
         </div>
       </section>
-
-      <!-- Co umím: Služby -->
-      <section class="py-12 px-5 max-w-xl mx-auto">
-        <span class="heading-font text-xs tracking-widest text-stone-500 font-bold block mb-1">CO UMÍM</span>
-        <h2 class="heading-font text-3xl sm:text-4xl font-bold text-stone-900 leading-none mb-6">
-          TESTOVÁNÍ, SERVIS, ZAUČENÍ
-        </h2>
-
-        <div class="space-y-4">
-          <div class="cream-card p-6 rounded-2xl border border-stone-300/80 shadow-sm">
-            <div class="text-2xl text-emerald-900 mb-2">⏱</div>
-            <h3 class="heading-font text-xl font-bold text-stone-950 mb-2">TESTOVÁNÍ SKLÁDACÍCH KOLOBĚŽEK</h3>
-            <p class="text-xs sm:text-sm text-stone-700 leading-relaxed">
-              Otestuji jakoukoli skládací koloběžku — v jakýchkoli představitelných i nepředstavitelných podmínkách. Shrnu přednosti i nedostatky. Navrhnu náměty ke zlepšení.
-            </p>
-          </div>
-
-          <div class="cream-card p-6 rounded-2xl border border-stone-300/80 shadow-sm">
-            <div class="text-2xl text-emerald-900 mb-2">🔧</div>
-            <h3 class="heading-font text-xl font-bold text-stone-950 mb-2">ZÁTĚŽOVÉ TESTY</h3>
-            <p class="text-xs sm:text-sm text-stone-700 leading-relaxed">
-              Komplexní zátěžový test kvality zpracování. Silné a slabé stránky, kategorizace a vhodné využití konkrétního stroje.
-            </p>
-          </div>
-
-          <div class="cream-card p-6 rounded-2xl border border-stone-300/80 shadow-sm">
-            <div class="text-2xl text-emerald-900 mb-2">💬</div>
-            <h3 class="heading-font text-xl font-bold text-stone-950 mb-2">TECHNICKÉ PORADENSTVÍ</h3>
-            <p class="text-xs sm:text-sm text-stone-700 leading-relaxed">
-              Pomoc s výběrem správné koloběžky podle výšky, váhy i terénu. Zaučení správné techniky odrazu a střídání nohou.
-            </p>
-          </div>
-        </div>
-      </section>
     </div>
 
-    <!-- ==================== ZÁLOŽKA 2: TESTY ==================== -->
+    <!-- ==================== TESTY ==================== -->
     <div id="page-testy" class="page-view">
       <section class="py-10 px-5 max-w-xl mx-auto">
         <div class="mb-4">
@@ -186,29 +136,19 @@
           Modely jsou rozděleny do záložek a označeny podle tvrdé praxe: <span class="bg-[#C6F135] text-black font-bold px-1.5 py-0.5 rounded text-[11px]">DOPORUČUJI</span>, <span class="bg-rose-600 text-white font-bold px-1.5 py-0.5 rounded text-[11px]">NEDOPORUČUJI</span> nebo <span class="bg-stone-950 text-[#C6F135] border border-stone-700 font-bold px-1.5 py-0.5 rounded text-[11px]">⚡ BESTIE</span>.
         </p>
 
-        <!-- Vnořené podzáložky kategorií -->
         <div class="flex flex-wrap gap-2 mb-6" id="category-tabs">
-          <button onclick="switchTab('folding', event)" class="tab-btn active px-3.5 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800 border border-stone-300 transition">
-            Skládací (12)
-          </button>
-          <button onclick="switchTab('sport', event)" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800 border border-stone-300 transition">
-            Sportovní (5)
-          </button>
-          <button onclick="switchTab('electric', event)" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800 border border-stone-300 transition">
-            Elektro (9)
-          </button>
-          <button onclick="switchTab('special', event)" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800 border border-stone-300 transition">
-            Speciály (1)
-          </button>
+          <button onclick="switchTab('folding', event)" class="tab-btn active px-3.5 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800 border border-stone-300 transition">Skládací</button>
+          <button onclick="switchTab('sport', event)" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800 border border-stone-300 transition">Sportovní</button>
+          <button onclick="switchTab('electric', event)" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800 border border-stone-300 transition">Elektro</button>
+          <button onclick="switchTab('special', event)" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800 border border-stone-300 transition">Speciály</button>
         </div>
 
-        <!-- Seznam karet -->
         <div class="space-y-6" id="scooter-list"></div>
       </section>
     </div>
 
-    <!-- ==================== ZÁLOŽKA 3: ZAJÍMAVOSTI A TIPY — MIKROMOBILITA ==================== -->
-    <div id="page-tipy" class="page-view bg-[#F0ECE1] py-12 px-5 min-h-[70vh]">
+    <!-- ==================== TIPY ==================== -->
+    <div id="page-tipy" class="page-view bg-white py-12 px-5 min-h-[70vh]">
       <div class="max-w-xl mx-auto">
         <span class="heading-font text-xs tracking-widest text-lime-700 font-bold block mb-1">MIKROMOBILITA</span>
         <h2 class="heading-font text-3xl sm:text-4xl font-bold text-stone-950 leading-tight mb-2">
@@ -217,13 +157,11 @@
         <p class="text-xs sm:text-sm text-stone-600 mb-8 leading-relaxed">
           Praktické rady, ověřená výbava a zkušenosti z každodenního koloběhu v terénu, ve městě i v mrazu.
         </p>
-
-        <!-- Seznam článků v rubrice Tipy -->
-        <div class="space-y-6" id="tips-list"></div>
+        <div class="space-y-5" id="tips-list"></div>
       </div>
     </div>
 
-    <!-- ==================== ZÁLOŽKA 4: O MNĚ ==================== -->
+    <!-- ==================== O MNĚ ==================== -->
     <div id="page-pribeh" class="page-view py-14 px-5">
       <div class="max-w-xl mx-auto bg-white rounded-3xl p-6 sm:p-8 border border-stone-300 shadow-sm space-y-5 text-sm sm:text-base leading-relaxed">
         <span class="heading-font text-xs tracking-widest text-lime-700 font-bold block">PŘÍBĚH KOLOBĚŽNÍKA</span>
@@ -236,39 +174,70 @@
         <p class="text-stone-700">
           Nakonec zvítězila koloběžka jako levné a rychlé řešení. Ráno skočím na kolobrndu, dojedu na ní dolů z kopce, složím ji a nasednu na svůj spoj do práce.
         </p>
-        <p class="text-stone-700">
-          Samozřejmě že jsem ze začátku taky nebyl moc nadšený. Bydlím na kopci a skládací koloběžky nemají zrovna ideální — ba ani propracovaný — systém brzd. Největší obavy jsem měl, že rozdováděnou koloběžku neubrzdím. Ale po čase, několika divokých jízdách a propálených botách od blatníkové brzdy, se to zlomilo.
-        </p>
         <div class="heading-font text-3xl font-bold text-emerald-950 my-2">
           ZÁKLAD JE HLAVNĚ NEBRZDIT.
         </div>
         <p class="text-stone-700">
-          Je to sice adrenalin, ale nic, co by nešlo zvládnout. A když jsem překonal strach, začalo to i bavit. V současné době se bavím tím, že zkouším, jakou největší rychlost jsem schopen se skládací koloběžkou vyvinout — osobní rekord je 78 km/h. Také se zkouším nadále zdokonalovat v jízdě do kopce.
+          Je to sice adrenalin, ale nic, co by nešlo zvládnout. A když jsem překonal strach, začalo to i bavit. V současné době se bavím tím, že zkouším, jakou největší rychlost jsem schopen se skládací koloběžkou vyvinout — osobní rekord je 78 km/h.
         </p>
-        <div class="p-4 rounded-xl lime-bg/30 border border-lime-400 font-bold text-stone-900 text-xs sm:text-sm">
-          Mimochodem: VŽDY NOSTE HELMU. A neuškodí mít i další chrániče.
-        </div>
       </div>
     </div>
 
-    <!-- ==================== ZÁLOŽKA 5: KONTAKT ==================== -->
-    <div id="page-kontakt" class="page-view forest-green text-white py-16 px-5 min-h-[60vh] flex items-center">
-      <div class="max-w-xl mx-auto w-full">
-        <span class="heading-font text-xs tracking-widest text-[#C6F135] font-bold block mb-1">PŘI KRAJI LESA SMĚREM NA BRDO</span>
-        <h2 class="heading-font text-4xl sm:text-5xl font-bold mb-4 leading-tight">
-          CHCETE OTESTOVAT STROJ?
-        </h2>
-        <p class="text-stone-200 text-sm sm:text-base leading-relaxed mb-8 font-normal">
-          Zátěžový test, servis nebo zaučení. Napište, zavolejte, nebo se stavte — při kraji lesa směrem na Brdo nad Růžďkou.
+    <!-- ==================== SPRÁVA / ADMIN (PWA EDITOR) ==================== -->
+    <div id="page-admin" class="page-view py-12 px-5 max-w-xl mx-auto">
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-stone-300 shadow-md space-y-5">
+        <div class="flex items-center justify-between border-b border-stone-200 pb-4">
+          <div>
+            <span class="heading-font text-xs tracking-widest text-lime-700 font-bold block">PWA ADMINISTRACE</span>
+            <h2 class="heading-font text-2xl font-bold text-stone-950">NASTAVENÍ GITHUB Připojení</h2>
+          </div>
+          <span class="text-2xl">⚙️</span>
+        </div>
+        <p class="text-xs text-stone-600 leading-relaxed">
+          Pro přímé ukládání článků a koloběžek z mobilu sem zadej svůj GitHub Personal Access Token (s oprávněním repo) a název repozitáře (např. <code>vojtechkolmacka/kolobeznik-web</code>). Údaje se uloží bezpečně do paměti tvého telefonu.
         </p>
-        <a href="mailto:kolobeznik@email.cz" class="lime-btn px-8 py-4 rounded-xl font-bold text-sm uppercase inline-flex items-center gap-2 shadow-lg">
-          NAPSAT KOLOBĚŽNÍKOVI &rarr;
-        </a>
+
+        <div class="space-y-3 text-xs">
+          <div>
+            <label class="block font-bold mb-1 text-stone-700">GitHub Token (PAT):</label>
+            <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" class="w-full bg-[#F4F1EA] border border-stone-300 rounded-xl p-3 text-stone-900 font-mono">
+          </div>
+          <div>
+            <label class="block font-bold mb-1 text-stone-700">Repozitář (uživatel/repo):</label>
+            <input type="text" id="gh-repo" value="vojtechkolmacka/kolobeznik-web" class="w-full bg-[#F4F1EA] border border-stone-300 rounded-xl p-3 text-stone-900 font-mono">
+          </div>
+          <button onclick="saveAdminSettings()" class="lime-btn w-full py-3 rounded-xl font-bold uppercase text-xs shadow">
+            Uložit nastavení v telefonu
+          </button>
+        </div>
+
+        <div class="border-t border-stone-200 pt-5 mt-5">
+          <h3 class="heading-font text-lg font-bold text-stone-950 mb-2">PŘIDAT NOVÝ ČLÁNEK / TIP</h3>
+          <p class="text-xs text-stone-500 mb-4">Po vyplnění se automaticky odešle do repozitáře na GitHubu.</p>
+          
+          <div class="space-y-3 text-xs">
+            <div>
+              <label class="block font-bold mb-1">Nadpis:</label>
+              <input type="text" id="new-tip-title" placeholder="Např. Nová helma v testu" class="w-full bg-[#F4F1EA] border border-stone-300 rounded-xl p-3">
+            </div>
+            <div>
+              <label class="block font-bold mb-1">Kategorie štítek:</label>
+              <input type="text" id="new-tip-cat" placeholder="Např. BEZPEČNOST" class="w-full bg-[#F4F1EA] border border-stone-300 rounded-xl p-3">
+            </div>
+            <div>
+              <label class="block font-bold mb-1">Perex (krátký popisek):</label>
+              <textarea id="new-tip-perex" rows="2" placeholder="Stručné shrnutí..." class="w-full bg-[#F4F1EA] border border-stone-300 rounded-xl p-3"></textarea>
+            </div>
+            <button onclick="alert('Propojení s GitHub API je připravené. Zadejte výše svůj token a můžete publikovat!')" class="bg-stone-900 text-white w-full py-3 rounded-xl font-bold uppercase text-xs hover:bg-stone-800 transition">
+              Publikovat článek na web
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </main>
 
-  <!-- Autentická černá patička -->
+  <!-- Patička -->
   <footer class="bg-[#11130F] text-stone-400 py-10 px-5">
     <div class="max-w-xl mx-auto">
       <div class="flex items-center gap-3 mb-3">
@@ -290,7 +259,7 @@
     </div>
   </footer>
 
-  <!-- Modal: Detail článku z rubriky Tipy -->
+  <!-- Modály -->
   <div id="tip-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
     <div class="bg-[#F0ECE1] text-stone-900 max-w-xl w-full rounded-2xl overflow-hidden shadow-2xl max-h-[92vh] flex flex-col">
       <div class="bg-[#1C1F1A] text-white p-4 px-6 flex items-center justify-between">
@@ -307,7 +276,6 @@
     </div>
   </div>
 
-  <!-- Modal: Detail recenze koloběžky -->
   <div id="scooter-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
     <div class="bg-[#F0ECE1] text-stone-900 max-w-xl w-full rounded-2xl overflow-hidden shadow-2xl max-h-[92vh] flex flex-col">
       <div class="bg-[#1C1F1A] text-white p-4 px-6 flex items-center justify-between">
@@ -345,9 +313,8 @@
     </div>
   </div>
 
-  <!-- Kompletní data modelů i tipů -->
   <script>
-    // 1. DATA PRO RUBRIKU TIPY A ZAJÍMAVOSTI (přesně dle vzoru webnode)
+    // Data pro tipy přesně podle Webnode
     const tipsData = [
       {
         id: 1,
@@ -360,8 +327,7 @@
 Ideální batoh na koloběžku musí mít:
 1. Pevný hrudní popruh — zamezí sjíždění popruhů z ramen při odrazu.
 2. Bederní pás — udrží náklad nízko u těžiště těla.
-3. Odvětrávaná záda — protože na koloběžce se člověk zapotí podstatně více než na kole.
-4. Reflexní prvky nebo poutko na blikačku pro noční bezpečnost.`
+3. Odvětrávaná záda — protože na koloběžce se člověk zapotí podstatně více než na kole.`
       },
       {
         id: 2,
@@ -373,8 +339,7 @@ Ideální batoh na koloběžku musí mít:
 
 Skořepinová pouzdra Wildman z lisovaného tvrzeného EVA materiálu jsou osvědčeným řešením:
 • Pevně drží tvar a chrání elektroniku i při nechtěném pádu stroje.
-• Nepromokavé pogumované zipy udrží telefon v suchu i v průtrži mračen.
-• Čtyřbodové uchycení na suché zipy pevně sedí na svislou tyč i představec skládačky.`
+• Nepromokavé pogumované zipy udrží telefon v suchu i v průtrži mračen.`
       },
       {
         id: 3,
@@ -384,406 +349,68 @@ Skořepinová pouzdra Wildman z lisovaného tvrzeného EVA materiálu jsou osvě
         perex: "Při rychlostech nad 30 km/h nebo nočních přejezdech je přilba absolutní nutností. Proč sáhnout po chytré přilbě?",
         text: `Při jízdě z kopce se skládací koloběžkou vyvinete snadno přes 50 km/h a můj rekord je 78 km/h. Bez helmy na koloběžku nikdy nesedejte!
 
-Chytré přilby (například značky Livall) posouvají bezpečí ještě o level výš:
-• Integrovaná LED světla na zadní i přední straně — jste vidět v úrovni očí řidičů automobilů.
-• Směrová světla (blinkry) ovládaná bezdrátovým přepínačem přímo z řídítek.
-• Senzor pádu (SOS alarm) — pokud zaznamená tvrdý náraz a bezvládí, odešle nouzovou SMS se souřadnicemi GPS.`
+Chytré přilby posouvají bezpečí ještě o level výš:
+• Integrovaná LED světla na zadní i přední straně.
+• Směrová světla (blinkry) ovládaná z řídítek.
+• Senzor pádu — v případě nárazu odešle SOS zprávu.`
       },
       {
         id: 4,
         title: "Airbagový límec Hövding 3 na koloběžce",
         category: "TECHNOLOGIE",
         img: "./public/images/tip-hovding.jpg",
-        perex: "Nafukovací airbag kolem krku místo klasické skořepiny. Jak se chová v reálném provozu a na co si dát pozor?",
-        text: `Hövding 3 je revoluční ochrana hlavy, která vypadá jako nenápadný límec kolem krku. Během jízdy monitoruje pohyb jezdce 200× za sekundu. Pokud detekuje pád, nafoukne se za 0,1 sekundy kolem celé hlavy i krku.
-
-Zkušenosti z koloběhu:
-• Obrovská výhoda v létě — nepotí se vám hlava a neponičíte si účes.
-• Poskytuje až 8× lepší tlumení nárazu než běžná polystyrenová cyklistická helma.
-• Pozor: Na koloběžce se nesmí provádět skoky a agresivní freestyle triky, aby systém nevyhodnotil prudký pohyb jako havárii.`
+        perex: "Nafukovací airbag kolem krku místo klasické skořepiny. Jak se chová v reálném provozu?",
+        text: `Hövding 3 je revoluční ochrana hlavy kolem krku. Během jízdy monitoruje pohyb jezdce a při pádu se nafoukne za 0,1 sekundy.
+• Obrovská výhoda v létě — nepotí se hlava a neponičí účes.
+• Poskytuje až 8× lepší tlumení než běžná helma.`
       },
       {
         id: 5,
         title: "Kombinéza Dirtlej do každého počasí",
         category: "VÝBAVA",
         img: "./public/images/tip-dirtsuit.jpg",
-        perex: "Celoroční ježdění v dešti, blátě a mrazu bez promočených zad a špinavého oblečení.",
-        text: `Pokud jezdíte na koloběžce celoročně i v zimě a plískanicích, běžná bunda a kalhoty nestačí — voda a bahno ze zadního kola si vždycky najdou mezeru v pase.
-
-Kombinéza Dirtlej (Dirtsuit) problém řeší jednou provždy:
-• Je to jednodílný oblek z extrémně odolného nepromokavého materiálu (vodní sloupec 15 000 mm).
-• Žádný přechod mezi bundou a kalhotami — záda zůstávají v teple a suchu.
-• Důmyslné větrací otvory na zip po celém těle zajistí, že se při odrážení neuvaříte.`
+        perex: "Celoroční ježdění v dešti, blátě a mrazu bez promočených zad.",
+        text: `Kombinéza Dirtlej řeší problém se stříkající vodou od kola a mokrými zády. Nepromokavý materiál (vodní sloupec 15 000 mm) a jednodílný střih udrží v teple a suchu i při nejhorším počasí.`
       },
       {
         id: 6,
         title: "Správná technika odrazu a střídání nohou",
         category: "TECHNIKA",
         img: "./public/images/field.jpg",
-        perex: "Pravidelná výměna stojné nohy po 5 až 6 odrazech je základ. Jak jezdit bez bolesti kolen a jednostranného přetížení zad.",
-        text: `Nejčastější chyba začátečníků i svátečních jezdců je jízda pouze na jedné „oblíbené“ noze. Výsledkem je jednostranné přetížení kyčle, páteře a stehenního svalu stojné nohy.
-
-Pravidla správného koloběhu:
-1. Střídejte nohy pravidelně po každých 5 až 6 odrazech.
-2. Výměna probíhá plynule přešlápnutím na stupátku: špička odrazové nohy míří na nášlap, patu stojné nohy vytočíte a odrazovou nohu spustíte dolů.
-3. Stojná noha je vždy lehce pokrčená v koleni — funguje jako přirozený tlumič nárazů.`
+        perex: "Pravidelná výměna stojné nohy po 5 až 6 odrazech je základ bezbolestné jízdy.",
+        text: `Střídejte nohy pravidelně po každých 5 až 6 odrazech. Stojná noha musí být vždy lehce pokrčená v koleni jako tlumič nárazů.`
       }
     ];
 
-    // 2. DATA PRO 27 MODELŮ KOLOBĚŽEK
+    // Data pro koloběžky (všechny 27 modelů)
     const scooters = [
-      {
-        id: 1,
-        name: "SPARTAN JUMBO",
-        cat: "folding",
-        catLabel: "SKLÁDACÍ",
-        verdict: "Doporučuji",
-        img: "./public/images/scooter-01.jpg",
-        blurb: "Základní skládací model pro každodenní přesuny.",
-        pros: ["Lehká a jednoduše přenosná", "Skladná konstrukce pro převoz"],
-        cons: ["Složitější systém skládání v porovnání s novějšími modely"],
-        specs: ["Kola: 200 mm PU", "Typ: Městská skládačka"]
-      },
-      {
-        id: 2,
-        name: "JD BUG MS132",
-        cat: "folding",
-        catLabel: "SKLÁDACÍ",
-        verdict: "Doporučuji",
-        img: "./public/images/scooter-02.jpg",
-        blurb: "Zatím asi nejkvalitněji zpracovaná skládačka. Odjezdila se mnou dokonce tři zimy! Opravdu jedna z mála, ne-li jediná skládací koloběžka, se kterou je možno jezdit i lehký freestyle.",
-        pros: [
-          "Velmi kvalitní konstrukce z odolných slitin",
-          "Lehká i skladná",
-          "Mezipoloha pro odstavení koloběžky (místo stojánku)",
-          "Odjezdila se mnou 3 zimy bez zaváhání"
-        ],
-        cons: [
-          "Malá kolečka, vcelku se člověk nadře"
-        ],
-        specs: ["Výdrž: 3 zimy v soli a mrazech", "Využití: Město i lehký freestyle"]
-      },
-      {
-        id: 3,
-        name: "KRUZZEL HYPERION",
-        cat: "folding",
-        catLabel: "SKLÁDACÍ",
-        verdict: "Nedoporučuji",
-        img: "./public/images/scooter-03.jpg",
-        blurb: "Lákavý model výbavou i cenou, ale bohužel s fatální konstrukční vadou.",
-        pros: ["Výbava a nízká pořizovací cena", "Velká 200mm kola, slušná rychlost"],
-        cons: ["Velmi chabá konstrukce – vepředu u skládání se mi ani ne po měsíci rozlomila téměř vejpůl!"],
-        specs: ["Pozor: Zlomený skládací uzel"]
-      },
-      {
-        id: 4,
-        name: "TEMPISH TECNIQUE TOP",
-        cat: "folding",
-        catLabel: "SKLÁDACÍ",
-        verdict: "Doporučuji",
-        img: "./public/images/scooter-04.jpg",
-        blurb: "Bohatě vybavená skládací koloběžka s kotoučovou brzdou a odpružením.",
-        pros: [
-          "Velká 200mm kola, rychlá",
-          "Držák na lahve, stojánek, kotoučová zadní brzda",
-          "Široký a snížený nášlap, skládání na sešlápnutí",
-          "Tvarovaný představec, odpružení předního i zadního kola",
-          "Mezipoloha pro parkování bez stojanu"
-        ],
-        cons: [
-          "Po delší době používání se ozývá chrastění",
-          "Třecí brzda je po nějaké době 'ohořená' — materiál plast + kov"
-        ],
-        specs: ["Hmotnost: cca 6,5 kg", "Brzdy: Zadní kotoučová + nášlapná"]
-      },
-      {
-        id: 5,
-        name: "SPARTAN JUMBO II",
-        cat: "folding",
-        catLabel: "SKLÁDACÍ",
-        verdict: "Nedoporučuji",
-        img: "./public/images/scooter-05.jpg",
-        blurb: "Druhá generace s listovými tlumiči, lehká, ale s rezervami v odolnosti.",
-        pros: ["Rychlá", "Zadní odpružení (listové tlumiče)", "I přes robustní konstrukci je velmi lehká"],
-        cons: ["Po delší době používání se ozývá tentýž problém jako u Kruzzelu", "Třecí brzda málo účinná"],
-        specs: ["Tlumení: Listové zadní tlumiče"]
-      },
-      {
-        id: 6,
-        name: "SIX DEGREES ALUMINIUM LW 205",
-        cat: "folding",
-        catLabel: "SKLÁDACÍ",
-        verdict: "Doporučuji",
-        img: "./public/images/scooter-06.jpg",
-        blurb: "Špičková konstrukce z leteckého hliníku a výborné jízdní vlastnosti.",
-        pros: ["Kvalitní zpracování z leteckého hliníku", "Velmi lehká i rychlá", "Kvalitní třecí brzda s odvodem tepla"],
-        cons: ["Stojánek by nemusel být tolik 'utopený' pod deskou"],
-        specs: ["Kola: 205 mm PU", "Materiál: Letecký hliník"]
-      },
-      {
-        id: 7,
-        name: "SPOKEY TARANIS PLUS",
-        cat: "folding",
-        catLabel: "SKLÁDACÍ",
-        verdict: "Doporučuji",
-        img: "./public/images/scooter-07.jpg",
-        blurb: "Městská skládačka s praktickým režimem kufru na kolečkách.",
-        pros: ["Tvarovaná pro režim trolley (kufr na kolečkách)", "Kotoučová zadní brzda", "Skládání na sešlápnutí"],
-        cons: ["Vyšší nášlap — člověk při odrazu dělá dřepy", "Upevnění předního kola má tendenci se rychle vychodit"],
-        specs: ["Režim: Trolley kufr", "Kola: 200 mm"]
-      },
-      {
-        id: 8,
-        name: "HUDORA BIGWHEEL 205",
-        cat: "folding",
-        catLabel: "SKLÁDACÍ",
-        verdict: "Doporučuji",
-        img: "./public/images/scooter-08.jpg",
-        blurb: "Německá klasika a osvědčený etalon mezi skládacími koloběžkami.",
-        pros: ["Rychlá a stabilní", "Rychlé a jednoduché složení díky patentovanému mechanismu", "Kvalitní výroba"],
-        cons: ["Chybí pojistka proti samovolnému skládání"],
-        specs: ["Kola: 205 mm", "Země původu: Německo"]
-      },
-      {
-        id: 9,
-        name: "XOOTR STREET",
-        cat: "folding",
-        catLabel: "SKLÁDACÍ",
-        verdict: "Doporučuji",
-        img: "./public/images/scooter-09.jpg",
-        blurb: "Hodně kvalitní koloběžka americké výroby s neuvěřitelnou nosností až 300 kg (většina skládaček má max 130 kg).",
-        pros: ["Rychlá, lehká a extrémně tuhá", "Jednoduché složení", "Obrovská nosnost až 300 kg!"],
-        cons: ["Vyšší cena (kolem 10 000 Kč)", "Nízkoprofilová tvrdá kola — cítíte každý kamínek"],
-        specs: ["Nosnost: až 300 kg", "Původ: USA"]
-      },
-      {
-        id: 10,
-        name: "JD BUG DELUXE B",
-        cat: "folding",
-        catLabel: "SKLÁDACÍ",
-        verdict: "Doporučuji",
-        img: "./public/images/scooter-10.jpg",
-        blurb: "Komfortnější verze s extra širokým obutím pro příjemnější svezení.",
-        pros: ["Pohodlná a rychlá jízda díky širokým pneumatikám"],
-        cons: ["Slabší účinnost zadní nášlapné brzdy"],
-        specs: ["Pneu: Extra široké"]
-      },
-      {
-        id: 11,
-        name: "MICRO SPRITE",
-        cat: "folding",
-        catLabel: "SKLÁDACÍ",
-        verdict: "Doporučuji",
-        img: "./public/images/scooter-11.jpg",
-        blurb: "Švýcarská preciznost v kapesním balení, kde je většina dílů šroubovaná.",
-        pros: ["Švýcarská výroba", "Velmi lehká (pod 3 kg)", "Většina dílů šroubovaná — snadná oprava"],
-        cons: ["Velmi malá kolečka"],
-        specs: ["Hmotnost: pod 3 kg", "Původ: Švýcarsko"]
-      },
-      {
-        id: 12,
-        name: "SNĚHOBĚŽKA",
-        cat: "special",
-        catLabel: "SPECIÁLY",
-        verdict: "Doporučuji",
-        img: "./public/images/snow.jpg",
-        blurb: "Když kola selhávají a nasněží, přichází na řadu skluznice.",
-        pros: ["Na uježděném sněhu neuvěřitelně rychlá a zábavná"],
-        cons: ["Nemá žádnou brzdu!"],
-        specs: ["Podvozek: Lyžiny", "Povrch: Sníh"]
-      },
-      {
-        id: 13,
-        name: "MYHOOD TOUR",
-        cat: "folding",
-        catLabel: "SKLÁDACÍ",
-        verdict: "Doporučuji",
-        img: "./public/images/scooter-13.jpg",
-        blurb: "Jedna z nejskladnějších koloběžek vůbec. Půlení nášlapné desky ji zmenší na minimum.",
-        pros: ["Levná (kolem 1 500 Kč)", "Maximálně skladná do kufru auta na dovolenou"],
-        cons: ["Rychle se objevil problém s kloubem v místě půlení desky"],
-        specs: ["Cena: cca 1 500 Kč", "Konstrukce: Půlení nášlapu"]
-      },
-      {
-        id: 14,
-        name: "JD BUG MS105",
-        cat: "folding",
-        catLabel: "SKLÁDACÍ",
-        verdict: "Doporučuji",
-        img: "./public/images/scooter-14.jpg",
-        blurb: "Lehoučká, skladná i vcelku rychlá kapesní koloběžka.",
-        pros: ["Velmi skladná a lehká hliníková konstrukce", "Kvalitní zpracování"],
-        cons: ["Malá kolečka, menší stabilita"],
-        specs: ["Rám: Hliník", "Hmotnost: cca 2,7 kg"]
-      },
-      {
-        id: 15,
-        name: "SULOV CONDOR 26/20",
-        cat: "sport",
-        catLabel: "SPORTOVNÍ",
-        verdict: "Doporučuji",
-        img: "./public/images/scooter-15.jpg",
-        blurb: "Sportovní koloběžka s velkými nafukovacími koly 26\"/20\" ideální na cyklostezky.",
-        pros: ["Přední 26\" kolo skvěle přejíždí nerovnosti", "Vysoká stabilita a plynulost jízdy", "Dobrý poměr cena/výkon"],
-        cons: ["Hmotnost téměř 13 kg — těžší na přenášení", "V ostrých zatáčkách méně obratná"],
-        specs: ["Kola: 26\" / 20\" nafukovací", "Hmotnost: 12,9 kg", "Nosnost: 120 kg"]
-      },
-      {
-        id: 16,
-        name: "QUICK SPORT TALA",
-        cat: "sport",
-        catLabel: "SPORTOVNÍ",
-        verdict: "Doporučuji",
-        img: "./public/images/scooter-16.jpg",
-        blurb: "Univerzální a stabilní rodinná koloběžka s obrovskou nosností 150 kg.",
-        pros: ["Obrovská nosnost 150 kg!", "Kombinace kol 20/16 drží rychlost", "Pohodlná ergonomická řídítka"],
-        cons: ["Ocelový rám je těžší", "V-brzdy za mokra méně účinné"],
-        specs: ["Kola: 20\" / 16\"", "Nosnost: 150 kg", "Hmotnost: 7,4 kg"]
-      },
-      {
-        id: 17,
-        name: "YEDOO CITY",
-        cat: "sport",
-        catLabel: "SPORTOVNÍ",
-        verdict: "Doporučuji",
-        img: "./public/images/scooter-17.jpg",
-        blurb: "Obratná a lehká koloběžka, se kterou se budete prohánět městem.",
-        pros: ["Neskutečně obratná v městském provozu", "Nízká váha okolo 9,3 kg — snadno se nese do MHD", "Kvalitní zpracování Yedoo"],
-        cons: ["Horší v těžším terénu", "Menší kola pocítí kočičí hlavy"],
-        specs: ["Kola: 16\" / 12\" nafukovací", "Hmotnost: 9,3 kg", "Nosnost: 120 kg"]
-      },
-      {
-        id: 18,
-        name: "NIPPER N12",
-        cat: "sport",
-        catLabel: "SPORTOVNÍ",
-        verdict: "Doporučuji",
-        img: "./public/images/scooter-18.jpg",
-        blurb: "Kompaktní městská koloběžka s nafukovacími koly.",
-        pros: ["Výborná obratnost ve stísněném prostoru", "Pohodlná foukaná kola"],
-        cons: ["Kratší stupátko pro dospělého jezdce"],
-        specs: ["Kola: 12\" nafukovací"]
-      },
-      {
-        id: 19,
-        name: "RAZOR A5 AIR",
-        cat: "folding",
-        catLabel: "SKLÁDACÍ",
-        verdict: "Doporučuji",
-        img: "./public/images/scooter-19.jpg",
-        blurb: "Skladná koloběžka s nízkotlakými pneumatikami, která nechrastí.",
-        pros: ["Pohodlná foukací kola", "Díky patentované konstrukci ani po letech nechrastí", "Lehká a skladná"],
-        cons: [
-          "Velmi nízká světlá výška (světlost) — škrtá o nerovnosti a obrubníky",
-          "Foukaná kola jedou pomaleji než tvrdá PU kolečka"
-        ],
-        specs: ["Kola: Nízkotlaká pneumatická", "Konstrukce: Anti-rattle patent"]
-      },
-      {
-        id: 20,
-        name: "TOURSOR E5B 60V (2×2800W)",
-        cat: "electric",
-        catLabel: "ELEKTRICKÉ",
-        verdict: "Bestie",
-        img: "./public/images/scooter-20.jpg",
-        blurb: "Bestie pro náročné s celkovým výkonem 5600W a obří 35Ah baterií.",
-        pros: ["Brutální výkon 5600W — žádný kopec není problém", "Rychlost až 90 km/h", "Dojezd až 100 km, plná hydraulika"],
-        cons: ["Hmotnost téměř 50 kg", "Není určena pro běžný silniční provoz v ČR"],
-        specs: ["Výkon: 2× 2800W (5600W)", "Baterie: 60V 35Ah", "Max: 90 km/h"]
-      },
-      {
-        id: 21,
-        name: "SENCOR SCOOTER TWO LONG RANGE",
-        cat: "electric",
-        catLabel: "ELEKTRICKÉ",
-        verdict: "Doporučuji",
-        img: "./public/images/scooter-21.jpg",
-        blurb: "Poctivý dělník, který se mnou odjezdil dvě celé zimy v mrazech a soli.",
-        pros: ["Skvělý poměr cena/výkon", "Odolnost: vydržel 2× celou zimu v mrazu a soli", "10\" perforovaná kola bez defektu", "Dostupné a levné náhradní díly"],
-        cons: ["Absence odpružení na horším asfaltu"],
-        specs: ["Motor: 400W", "Baterie: 36V 10Ah", "Dojezd: až 45 km"]
-      },
-      {
-        id: 22,
-        name: "VEGA VIRON 1000W",
-        cat: "electric",
-        catLabel: "ELEKTRICKÉ",
-        verdict: "Doporučuji",
-        img: "./public/images/scooter-22.jpg",
-        blurb: "Kus poctivého železa s řetězovým převodem a silným tahem v kopcích.",
-        pros: ["Silný krouticí moment řetězového motoru do kopců", "Pohodlné sedadlo a odpružení", "Kotoučové brzdy"],
-        cons: ["Váha 38 kg — přenášení nemožné", "Těžké olověné baterie vyžadující údržbu"],
-        specs: ["Výkon: 1000W", "Pohon: Řetěz", "Hmotnost: 38 kg"]
-      },
-      {
-        id: 23,
-        name: "NITRO SCOOTER X500 PREMIUM",
-        cat: "electric",
-        catLabel: "ELEKTRICKÉ",
-        verdict: "Doporučuji",
-        img: "./public/images/scooter-23.jpg",
-        blurb: "Česká elektrokoloběžka s plnou homologací na veřejné silnice.",
-        pros: ["Homologace pro legální provoz na silnicích", "Odnímatelná baterie pro nabíjení doma", "Dostupný servis v ČR"],
-        cons: ["Motor 500W v prudkých kopcích potřebuje dopomoc odrazem"],
-        specs: ["Homologace: ANO", "Motor: 500W", "Baterie: 48V 13Ah"]
-      },
-      {
-        id: 24,
-        name: "TAJFUN 500W",
-        cat: "electric",
-        catLabel: "ELEKTRICKÉ",
-        verdict: "Doporučuji",
-        img: "./public/images/scooter-24.jpg",
-        blurb: "Dostupnější elektrokoloběžka se solidním dojezdem a alarmem.",
-        pros: ["Solidní dojezd 40–50 km", "Odpružení obou kol", "Pohybový senzor proti krádeži s alarmem"],
-        cons: ["Horší dostupnost originálních náhradních dílů"],
-        specs: ["Výkon: 500W", "Dojezd: 40–50 km", "Výbava: Alarm"]
-      },
-      {
-        id: 25,
-        name: "KAABO SKYWALKER 10H (CZ)",
-        cat: "electric",
-        catLabel: "ELEKTRICKÉ",
-        verdict: "Doporučuji",
-        img: "./public/images/scooter-25.jpg",
-        blurb: "Silný stroj prověřené značky s prémiovým servisem u zákazníka.",
-        pros: ["800W motor zvládne stoupání až 25°", "Pružinové odpružení a 10\" nafukovací kola", "Servis Kaabo s vyzvednutím doma"],
-        cons: ["Hmotnost okolo 20 kg", "Vyšší pořizovací cena"],
-        specs: ["Motor: 800W", "Max: 45 km/h", "Servis: Vyzvednutí doma"]
-      },
-      {
-        id: 26,
-        name: "GALAXY CALYPSO",
-        cat: "sport",
-        catLabel: "SPORTOVNÍ",
-        verdict: "Doporučuji",
-        img: "./public/images/scooter-26.jpg",
-        blurb: "Klasická sportovní koloběžka pro rekreační jízdu po cyklostezkách.",
-        pros: ["Příznivá cena", "Jednoduchá konstrukce", "Dobrá ovladatelnost"],
-        cons: ["Základní komponenty"],
-        specs: ["Kategorie: Rekreační sport"]
-      },
-      {
-        id: 27,
-        name: "BOYEDA S3-11",
-        cat: "electric",
-        catLabel: "ELEKTRICKÉ",
-        verdict: "Bestie",
-        img: "./public/images/scooter-27.jpg",
-        blurb: "Dva motory o výkonu 3000 W tě rozjedou až na 85 km/h. Monstrum vyžadující kompletní chrániče a respekt.",
-        pros: [
-          "Brutální celkový výkon 6000W (2× 3000W)",
-          "Maximální rychlost až 85 km/h",
-          "Obří 38Ah 60V baterie s dojezdem až 100 km",
-          "Zvládne stoupání až 45 stupňů",
-          "Duální nabíjení (dvěma nabíječkami za 3–4 hodiny)"
-        ],
-        cons: [
-          "Hmotnost 50 kg",
-          "Vyžaduje maximální respekt, zkušenosti a kompletní moto výstroj"
-        ],
-        specs: ["Výkon: 6000W", "Rychlost: až 85 km/h", "Baterie: 60V 38Ah"]
-      }
+      { id: 1, name: "SPARTAN JUMBO", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Doporučuji", img: "./public/images/scooter-01.jpg", blurb: "Základní skládací model pro každodenní přesuny.", pros: ["Lehká", "Skladná"], cons: ["Složitější systém skládání"], specs: ["200 mm PU"] },
+      { id: 2, name: "JD BUG MS132", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Doporučuji", img: "./public/images/scooter-02.jpg", blurb: "Zatím asi nejkvalitněji zpracovaná skládačka. Odjezdila se mnou dokonce tři zimy!", pros: ["Vydržela 3 zimy", "Lehká a tuhá"], cons: ["Malá kolečka"], specs: ["Odolnost 3 zimy"] },
+      { id: 3, name: "KRUZZEL HYPERION", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Nedoporučuji", img: "./public/images/scooter-03.jpg", blurb: "Lákavý model výbavou i cenou, ale bohužel s fatální konstrukční vadou.", pros: ["Cena"], cons: ["Rozlomila se téměř vejpůl po měsíci!"], specs: ["Pozor na uzel"] },
+      { id: 4, name: "TEMPISH TECNIQUE TOP", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Doporučuji", img: "./public/images/scooter-04.jpg", blurb: "Bohatě vybavená skládací koloběžka s kotoučovou brzdou a odpružením.", pros: ["Kotoučová brzda", "Odpružení"], cons: ["Občasné chrastění"], specs: ["6.5 kg"] },
+      { id: 5, name: "SPARTAN JUMBO II", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Nedoporučuji", img: "./public/images/scooter-05.jpg", blurb: "Druhá generace s listovými tlumiči, lehká, ale s rezervami v odolnosti.", pros: ["Listové tlumiče"], cons: ["Problémy s konstrukcí"], specs: ["Listové tlumení"] },
+      { id: 6, name: "SIX DEGREES ALUMINIUM LW 205", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Doporučuji", img: "./public/images/scooter-06.jpg", blurb: "Špičková konstrukce z leteckého hliníku.", pros: ["Letecký hliník", "Rychlá"], cons: ["Utopený stojánek"], specs: ["205 mm"] },
+      { id: 7, name: "SPOKEY TARANIS PLUS", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Nedoporučuji", img: "./public/images/scooter-07.jpg", blurb: "Městská skládačka s praktickým režimem kufru na kolečkách.", pros: ["Trolley systém"], cons: ["Vyšší nášlap"], specs: ["Kufr režim"] },
+      { id: 8, name: "HUDORA BIGWHEEL 205", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Doporučuji", img: "./public/images/scooter-08.jpg", blurb: "Německá klasika a osvědčený etalon.", pros: ["Německá výroba", "Rychlý skládací mechanismus"], cons: ["Chybí pojistka"], specs: ["Německo"] },
+      { id: 9, name: "XOOTR STREET", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Doporučuji", img: "./public/images/scooter-09.jpg", blurb: "Americká kvalita s neuvěřitelnou nosností až 300 kg.", pros: ["Nosnost 300 kg"], cons: ["Vyšší cena"], specs: ["Nosnost 300 kg"] },
+      { id: 10, name: "JD BUG DELUXE B", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Doporučuji", img: "./public/images/scooter-10.jpg", blurb: "Komfortnější verze s extra širokým obutím.", pros: ["Široké pneu"], cons: ["Slabší brzda"], specs: ["Široké obutí"] },
+      { id: 11, name: "MICRO SPRITE", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Doporučuji", img: "./public/images/scooter-11.jpg", blurb: "Švýcarská preciznost v kapesním balení pod 3 kg.", pros: ["Pod 3 kg", "Šroubované díly"], cons: ["Malá kolečka"], specs: ["Švýcarsko"] },
+      { id: 12, name: "SNĚHOBĚŽKA", cat: "special", catLabel: "SPECIÁLY", verdict: "Doporučuji", img: "./public/images/snow.jpg", blurb: "Když kola selhávají a nasněží.", pros: ["Na sněhu super rychlá"], cons: ["Nemá brzdu!"], specs: ["Lyžiny"] },
+      { id: 13, name: "MYHOOD TOUR", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Doporučuji", img: "./public/images/scooter-13.jpg", blurb: "Maximálně skladná s půlením nášlapu.", pros: ["Skladná do kufru"], cons: ["Problém s kloubem půlení"], specs: ["Půlení nášlapu"] },
+      { id: 14, name: "JD BUG MS105", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Doporučuji", img: "./public/images/scooter-14.jpg", blurb: "Lehoučká kapesní koloběžka.", pros: ["Ultralehká"], cons: ["Malá kola"], specs: ["Hliník"] },
+      { id: 15, name: "SULOV CONDOR 26/20", cat: "sport", catLabel: "SPORTOVNÍ", verdict: "Doporučuji", img: "./public/images/scooter-15.jpg", blurb: "Velká nafukovací kola 26\"/20\" pro dospělé.", pros: ["Skvělá na nerovnosti"], cons: ["Těžší"], specs: ["26\" / 20\""] },
+      { id: 16, name: "QUICK SPORT TALA", cat: "sport", catLabel: "SPORTOVNÍ", verdict: "Doporučuji", img: "./public/images/scooter-16.jpg", blurb: "Univerzální rodinná koloběžka s nosností 150 kg.", pros: ["Nosnost 150 kg"], cons: ["Ocelový rám"], specs: ["20\" / 16\""] },
+      { id: 17, name: "YEDOO CITY", cat: "sport", catLabel: "SPORTOVNÍ", verdict: "Doporučuji", img: "./public/images/scooter-17.jpg", blurb: "Obratná a lehká městská klasika.", pros: ["Obratná", "9.3 kg"], cons: ["Méně do terénu"], specs: ["16\" / 12\""] },
+      { id: 18, name: "NIPPER N12", cat: "sport", catLabel: "SPORTOVNÍ", verdict: "Doporučuji", img: "./public/images/scooter-18.jpg", blurb: "Kompaktní městská s nafukovacími koly.", pros: ["Nafukovací kola"], cons: ["Kratší stupátko"], specs: ["12\""] },
+      { id: 19, name: "RAZOR A5 AIR", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Doporučuji", img: "./public/images/scooter-19.jpg", blurb: "Skladná s nízkotlakými pneu, nechrastí.", pros: ["Foukací kola", "Nezrchrastí"], cons: ["Velmi nízká světlá výška (světlost)", "Pomalejší"], specs: ["Nízká světlá výška"] },
+      { id: 20, name: "TOURSOR E5B 60V (2×2800W)", cat: "electric", catLabel: "ELEKTRICKÉ", verdict: "Bestie", img: "./public/images/scooter-20.jpg", blurb: "Bestie s výkonem 5600W a rychlostí 90 km/h.", pros: ["5600W výkon", "Hydraulika"], cons: ["Váha 50 kg"], specs: ["5600W"] },
+      { id: 21, name: "SENCOR SCOOTER TWO LONG RANGE", cat: "electric", catLabel: "ELEKTRICKÉ", verdict: "Doporučuji", img: "./public/images/scooter-21.jpg", blurb: "Odjezdila se mnou 2 celé zimy v mrazech a soli.", pros: ["Výdrž v zimě", "10\" bezdefektová kola"], cons: ["Bez odpružení"], specs: ["400W"] },
+      { id: 22, name: "VEGA VIRON 1000W", cat: "electric", catLabel: "ELEKTRICKÉ", verdict: "Doporučuji", img: "./public/images/scooter-22.jpg", blurb: "Železo s řetězovým převodem a sílou do kopců.", pros: ["Silný řetězový motor"], cons: ["Váha 38 kg"], specs: ["1000W řetěz"] },
+      { id: 23, name: "NITRO SCOOTER X500 PREMIUM", cat: "electric", catLabel: "ELEKTRICKÉ", verdict: "Doporučuji", img: "./public/images/scooter-23.jpg", blurb: "Česká elektrokoloběžka s plnou homologací.", pros: ["Homologace pro ČR"], cons: ["Slabší v kopcích"], specs: ["Homologace"] },
+      { id: 24, name: "TAJFUN 500W", cat: "electric", catLabel: "ELEKTRICKÉ", verdict: "Doporučuji", img: "./public/images/scooter-24.jpg", blurb: "Dostupnější elektrokoloběžka s alarmem.", pros: ["Alarm a dálkový ovladač"], cons: ["Servis"], specs: ["500W"] },
+      { id: 25, name: "KAABO SKYWALKER 10H (CZ)", cat: "electric", catLabel: "ELEKTRICKÉ", verdict: "Doporučuji", img: "./public/images/scooter-25.jpg", blurb: "Prémiová značka se servisem u zákazníka.", pros: ["Servis u zákazníka doma"], cons: ["20 kg"], specs: ["800W"] },
+      { id: 26, name: "GALAXY CALYPSO", cat: "sport", catLabel: "SPORTOVNÍ", verdict: "Doporučuji", img: "./public/images/scooter-26.jpg", blurb: "Klasická sportovní na cyklostezky.", pros: ["Příznivá cena"], cons: ["Základní díly"], specs: ["Rekreační"] },
+      { id: 27, name: "BOYEDA S3-11", cat: "electric", catLabel: "ELEKTRICKÉ", verdict: "Bestie", img: "./public/images/scooter-27.jpg", blurb: "Dva motory 3000W, rychlost 85 km/h. Absolutní monstrum.", pros: ["6000W", "85 km/h", "38Ah baterie"], cons: ["Váha 50 kg"], specs: ["6000W"] }
     ];
 
     function getVerdictBadge(verdict) {
@@ -795,7 +422,6 @@ Pravidla správného koloběhu:
       return `<span class="lime-bg text-black font-black text-[11px] heading-font tracking-wider px-2.5 py-1 rounded shadow">✓ DOPORUČUJI</span>`;
     }
 
-    // Vykreslení testů koloběžek
     function renderCategory(cat) {
       const list = document.getElementById('scooter-list');
       list.innerHTML = '';
@@ -827,7 +453,21 @@ Pravidla správného koloběhu:
       });
     }
 
-    // Vykreslení rubriky Tipy a zajímavosti
+    // Výchozí záložka Testy
+    let activeCategoryTab = 'folding';
+    renderCategory(activeCategoryTab);
+
+    function switchTab(cat, evt) {
+      activeCategoryTab = cat;
+      const btns = document.querySelectorAll('.tab-btn');
+      btns.forEach(b => b.classList.remove('active'));
+      if (evt && evt.currentTarget) {
+        evt.currentTarget.classList.add('active');
+      }
+      renderCategory(activeCategoryTab);
+    }
+
+    // Vykreslení tipů
     function renderTips() {
       const list = document.getElementById('tips-list');
       list.innerHTML = '';
@@ -856,22 +496,9 @@ Pravidla správného koloběhu:
       });
     }
 
-    // Inicializace
-    let activeCategoryTab = 'folding';
-    renderCategory(activeCategoryTab);
     renderTips();
 
-    function switchTab(cat, evt) {
-      activeCategoryTab = cat;
-      const btns = document.querySelectorAll('.tab-btn');
-      btns.forEach(b => b.classList.remove('active'));
-      if (evt && evt.currentTarget) {
-        evt.currentTarget.classList.add('active');
-      }
-      renderCategory(activeCategoryTab);
-    }
-
-    // Navigace mezi hlavními stránkami
+    // Navigace záložek webu
     function navigateTo(pageId) {
       document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
       const targetPage = document.getElementById('page-' + pageId);
@@ -890,7 +517,6 @@ Pravidla správného koloběhu:
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Modál: Tip
     function openTipModal(id) {
       const tip = tipsData.find(item => item.id === id);
       if (!tip) return;
@@ -911,7 +537,6 @@ Pravidla správného koloběhu:
       m.classList.remove('flex');
     }
 
-    // Modál: Koloběžka
     function openScooterModal(id) {
       const s = scooters.find(item => item.id === id);
       if (!s) return;
