@@ -72,7 +72,7 @@
           <input type="text" id="s-cons" placeholder="Zápory oddělené čárkou" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
           
           <div class="bg-stone-950 p-3 rounded-xl border border-stone-800 space-y-2">
-            <label class="block font-bold text-stone-300">Fotka (soubor nebo cesta):</label>
+            <label class="block font-bold text-stone-300">Fotka koloběžky:</label>
             <input type="file" id="s-img-file" accept="image/*" class="w-full text-white file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#C6F135] file:text-black">
             <input type="text" id="s-img" value="./public/images/hero.jpg" class="w-full bg-stone-900 border border-stone-800 rounded-lg p-2 text-white font-mono text-[11px]">
           </div>
@@ -131,13 +131,21 @@
     <div id="section-categories" class="space-y-6 hidden">
       <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 shadow-xl space-y-4">
         <div class="flex justify-between items-center">
-          <h2 id="cat-form-title" class="heading-font text-lg text-white">Přidat novou rubriku</h2>
+          <h2 id="cat-form-title" class="heading-font text-lg text-white">Přidat / Upravit rubriku</h2>
           <button id="cat-cancel-btn" onclick="resetCatForm()" class="hidden text-xs bg-stone-800 text-stone-300 px-3 py-1 rounded">Zrušit</button>
         </div>
-        <input type="hidden" id="edit-cat-id" value="">
+        <input type="hidden" id="edit-cat-original-id" value="">
         <div class="space-y-3 text-xs">
-          <input type="text" id="c-id" placeholder="ID (např. city, terén)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white font-mono">
-          <input type="text" id="c-name" placeholder="Název rubriky (např. Městské speciály)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
+          <input type="text" id="c-id" placeholder="ID (např. mikromobilita, novinky)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white font-mono">
+          <input type="text" id="c-name" placeholder="Název rubriky (např. Mikromobilita)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
+          <textarea id="c-text" rows="3" placeholder="Text / úvod rubriky..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
+          
+          <div class="bg-stone-950 p-3 rounded-xl border border-stone-800 space-y-2">
+            <label class="block font-bold text-stone-300">Obrázek rubriky:</label>
+            <input type="file" id="c-img-file" accept="image/*" class="w-full text-white file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#C6F135] file:text-black">
+            <input type="text" id="c-img" value="" class="w-full bg-stone-900 border border-stone-800 rounded-lg p-2 text-white font-mono text-[11px]" placeholder="./public/images/...">
+          </div>
+
           <button onclick="saveCategory()" class="lime-btn w-full py-3 rounded-xl font-bold uppercase text-xs shadow">Uložit rubriku na GitHub</button>
         </div>
       </div>
@@ -183,6 +191,9 @@
     });
     document.getElementById('t-img-file').addEventListener('change', async (e) => {
       if (e.target.files.length > 0) uploadFile(e.target.files[0], 't-img');
+    });
+    document.getElementById('c-img-file').addEventListener('change', async (e) => {
+      if (e.target.files.length > 0) uploadFile(e.target.files[0], 'c-img');
     });
 
     async function uploadFile(file, targetInputId) {
@@ -245,7 +256,6 @@
       try {
         const { htmlContent } = await fetchIndex();
         
-        // Naplnění selectu rubrik v koloběžkách
         const categories = extractVariable(htmlContent, 'categoriesData');
         const catSelect = document.getElementById('s-cat');
         if (catSelect) {
@@ -456,10 +466,11 @@
       const c = categories.find(x => x.id === id);
       if (!c) return;
 
-      document.getElementById('edit-cat-id').value = c.id;
+      document.getElementById('edit-cat-original-id').value = c.id;
       document.getElementById('c-id').value = c.id;
-      document.getElementById('c-id').disabled = true;
       document.getElementById('c-name').value = c.name || '';
+      document.getElementById('c-text').value = c.text || '';
+      document.getElementById('c-img').value = c.img || '';
 
       document.getElementById('cat-form-title').innerText = `Úprava rubriky: ${c.name}`;
       document.getElementById('cat-cancel-btn').classList.remove('hidden');
@@ -467,10 +478,11 @@
     }
 
     function resetCatForm() {
-      document.getElementById('edit-cat-id').value = '';
+      document.getElementById('edit-cat-original-id').value = '';
       document.getElementById('c-id').value = '';
-      document.getElementById('c-id').disabled = false;
       document.getElementById('c-name').value = '';
+      document.getElementById('c-text').value = '';
+      document.getElementById('c-img').value = '';
       document.getElementById('cat-form-title').innerText = 'Přidat novou rubriku';
       document.getElementById('cat-cancel-btn').classList.add('hidden');
     }
@@ -488,19 +500,21 @@
       try {
         const { fileData, htmlContent } = await fetchIndex();
         let categories = extractVariable(htmlContent, 'categoriesData');
-        const editId = document.getElementById('edit-cat-id').value;
+        const origId = document.getElementById('edit-cat-original-id').value;
 
         if (isDel) {
           categories = categories.filter(x => x.id !== delId);
         } else {
           const idVal = document.getElementById('c-id').value.trim().toLowerCase().replace(/\s+/g, '-');
           const nameVal = document.getElementById('c-name').value.trim();
+          const textVal = document.getElementById('c-text').value.trim();
+          const imgVal = document.getElementById('c-img').value.trim();
           if (!idVal || !nameVal) { alert('Vyplň ID i název rubriky!'); return; }
 
-          const item = { id: idVal, name: nameVal };
+          const item = { id: idVal, name: nameVal, text: textVal, img: imgVal };
 
-          if (editId) {
-            const idx = categories.findIndex(x => x.id === editId);
+          if (origId) {
+            const idx = categories.findIndex(x => x.id === origId);
             if (idx !== -1) categories[idx] = item; else categories.push(item);
           } else {
             if (categories.some(x => x.id === idVal)) { alert('Rubrika s tímto ID již existuje!'); return; }
