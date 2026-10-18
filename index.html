@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="cs" class="scroll-smooth">
+<html lang="cs">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -42,312 +42,318 @@
       color: #000;
       border-color: #C6F135;
     }
+    .page-view {
+      display: none;
+    }
+    .page-view.active {
+      display: block;
+    }
   </style>
 </head>
-<body class="antialiased selection:bg-[#C6F135] selection:text-black">
+<body class="antialiased selection:bg-[#C6F135] selection:text-black min-h-screen flex flex-col justify-between">
 
-  <!-- Horní lišta s logem -->
-  <header class="sticky top-0 z-50 bg-[#1C1F1A] text-white px-4 py-3 flex items-center justify-between border-b border-stone-800">
-    <a href="#" class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-xl lime-bg flex items-center justify-center text-black font-black text-xl shadow-sm">
-        🛴
-      </div>
-      <span class="heading-font text-2xl tracking-wider text-white">KOLOBĚŽNÍK</span>
-    </a>
-    <button onclick="toggleMenu()" class="text-white p-1 focus:outline-none" aria-label="Menu">
-      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-      </svg>
-    </button>
-  </header>
-
-  <!-- Mobilní rozbalovací menu -->
-  <div id="mobile-menu" class="hidden bg-[#1C1F1A] text-white px-5 py-4 border-b border-stone-800 space-y-3 font-bold text-sm uppercase heading-font tracking-wider">
-    <a href="#testy" onclick="toggleMenu()" class="block py-1 hover:text-[#C6F135]">Moje testy</a>
-    <a href="#tipy" onclick="toggleMenu()" class="block py-1 hover:text-[#C6F135]">Zajímavosti a tipy</a>
-    <a href="#sluzby" onclick="toggleMenu()" class="block py-1 hover:text-[#C6F135]">Co umím</a>
-    <a href="#pribeh" onclick="toggleMenu()" class="block py-1 hover:text-[#C6F135]">O mně</a>
-    <a href="#kontakt" onclick="toggleMenu()" class="block py-1 hover:text-[#C6F135]">Kontakt</a>
-  </div>
-
-  <!-- Hero sekce -->
-  <section class="relative bg-stone-900 text-white overflow-hidden">
-    <div class="absolute inset-0 z-0 opacity-40">
-      <img src="./public/images/cyclers.jpg" alt="Koloběžka v přírodě" class="w-full h-full object-cover">
-    </div>
-    <div class="relative z-10 px-5 pt-12 pb-14 max-w-xl mx-auto">
-      <h1 class="heading-font text-4xl sm:text-5xl font-bold leading-[1.05] tracking-tight mb-5">
-        ZAČNĚTE JEZDIT NA KOLOBĚŽCE UŽ DNES
-      </h1>
-      <p class="text-sm sm:text-base text-stone-200 leading-relaxed font-normal mb-8">
-        Teprve na koloběžce je to ten pravý relax, zažijte radost z přirozeného pohybu. Odpočinete od ruchu, uděláte něco pro zdraví — a když to vezmete z kopce, je to adrenalin.
-      </p>
-      <div class="flex flex-col sm:flex-row gap-3">
-        <a href="#testy" class="lime-btn px-6 py-3.5 rounded-xl font-bold text-sm uppercase flex items-center justify-center gap-2 shadow-md">
-          MOJE TESTY &rarr;
-        </a>
-        <a href="#kontakt" class="bg-stone-950/80 hover:bg-stone-900 border border-stone-700 px-6 py-3.5 rounded-xl font-bold text-sm uppercase heading-font flex items-center justify-center tracking-wider transition">
-          OBJEDNAT TEST
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Limetkový pás statistik -->
-  <section class="lime-bg text-black py-10 px-5">
-    <div class="max-w-xl mx-auto grid grid-cols-2 gap-y-8 gap-x-6">
-      <div>
-        <div class="heading-font text-4xl sm:text-5xl font-bold leading-none">78 KM/H</div>
-        <p class="text-xs font-semibold text-stone-900 mt-2 leading-snug">osobní rekord na skládačce</p>
-      </div>
-      <div>
-        <div class="heading-font text-4xl sm:text-5xl font-bold leading-none">27</div>
-        <p class="text-xs font-semibold text-stone-900 mt-2 leading-snug">odjetých a popsaných modelů</p>
-      </div>
-      <div>
-        <div class="heading-font text-4xl sm:text-5xl font-bold leading-none">3 ZIMY</div>
-        <p class="text-xs font-semibold text-stone-900 mt-2 leading-snug">na jedné JD Bug MS132</p>
-      </div>
-      <div>
-        <div class="heading-font text-4xl sm:text-5xl font-bold leading-none">24/7</div>
-        <p class="text-xs font-semibold text-stone-900 mt-2 leading-snug">podmínky, které výrobce nezkouší</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Sekce: Recenze rozdělené do samostatných záložek -->
-  <section id="testy" class="py-12 px-5 max-w-xl mx-auto">
-    <div class="mb-4">
-      <span class="heading-font text-xs tracking-widest text-stone-500 font-bold block mb-1">KATALOG RECENZÍ</span>
-      <h2 class="heading-font text-3xl sm:text-4xl font-bold text-stone-950 leading-none">
-        ODJETÉ KILOMETRY
-      </h2>
-    </div>
-    
-    <p class="text-xs sm:text-sm text-stone-600 mb-6 leading-relaxed">
-      Vyberte si kategorii. Modely jsou označeny podle tvrdé praxe: <span class="bg-[#C6F135] text-black font-bold px-1.5 py-0.5 rounded text-[11px]">DOPORUČUJI</span>, <span class="bg-rose-600 text-white font-bold px-1.5 py-0.5 rounded text-[11px]">NEDOPORUČUJI</span> nebo <span class="bg-stone-950 text-[#C6F135] border border-stone-700 font-bold px-1.5 py-0.5 rounded text-[11px]">⚡ BESTIE</span>.
-    </p>
-
-    <!-- Záložky kategorií -->
-    <div class="flex flex-wrap gap-2 mb-6" id="category-tabs">
-      <button onclick="switchTab('folding', event)" class="tab-btn active px-3.5 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800 border border-stone-300 transition">
-        Skládací (12)
-      </button>
-      <button onclick="switchTab('sport', event)" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800 border border-stone-300 transition">
-        Sportovní (5)
-      </button>
-      <button onclick="switchTab('electric', event)" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800 border border-stone-300 transition">
-        Elektro (9)
-      </button>
-      <button onclick="switchTab('special', event)" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800 border border-stone-300 transition">
-        Speciály (1)
-      </button>
-    </div>
-
-    <!-- Výpis modelů vybrané záložky -->
-    <div class="space-y-6" id="scooter-list"></div>
-  </section>
-
-  <!-- RUBRIKA: ZAJÍMAVOSTI A TIPY — MIKROMOBILITA -->
-  <section id="tipy" class="py-14 px-5 bg-white border-y border-stone-300">
-    <div class="max-w-xl mx-auto">
-      <span class="heading-font text-xs tracking-widest text-lime-700 font-bold block mb-1">MIKROMOBILITA</span>
-      <h2 class="heading-font text-3xl sm:text-4xl font-bold text-stone-950 leading-tight mb-2">
-        ZAJÍMAVOSTI A TIPY
-      </h2>
-      <p class="text-xs sm:text-sm text-stone-600 mb-8 leading-relaxed">
-        Ověřené postřehy z každodenního ježdění, servisní triky, doplňky a výbava, která na koloběžce dává smysl.
-      </p>
-
-      <div class="space-y-5">
-        <div class="cream-card p-5 rounded-2xl border border-stone-300 flex flex-col sm:flex-row gap-4 items-start">
-          <img src="./public/images/tip-hovding.jpg" alt="Airbag Hövding" class="w-full sm:w-28 h-32 sm:h-28 rounded-xl object-cover bg-stone-100 shrink-0 border border-stone-200" onerror="this.style.display='none'">
-          <div>
-            <span class="text-[10px] font-black uppercase tracking-wider text-black lime-bg px-2 py-0.5 rounded">Bezpečnost</span>
-            <h3 class="heading-font text-lg font-bold text-stone-950 mt-1.5 mb-1">Airbag Hövding na koloběžce</h3>
-            <p class="text-xs text-stone-700 leading-relaxed">
-              Stylová nafukovací ochrana hlavy jako límec kolem krku. Jak funguje při pádu na koloběžce a proč je šetrnější k účesu než klasická přilba.
-            </p>
-          </div>
-        </div>
-
-        <div class="cream-card p-5 rounded-2xl border border-stone-300 flex flex-col sm:flex-row gap-4 items-start">
-          <img src="./public/images/tip-wildman.jpg" alt="Pouzdro Wildman" class="w-full sm:w-28 h-32 sm:h-28 rounded-xl object-cover bg-stone-100 shrink-0 border border-stone-200" onerror="this.style.display='none'">
-          <div>
-            <span class="text-[10px] font-black uppercase tracking-wider text-black lime-bg px-2 py-0.5 rounded">Doplňky</span>
-            <h3 class="heading-font text-lg font-bold text-stone-950 mt-1.5 mb-1">Pouzdra a brašny Wildman na řídítka</h3>
-            <p class="text-xs text-stone-700 leading-relaxed">
-              Voděodolná pouzdra z tvrzeného EVA materiálu. Telefon, nářadí, peněženka i klíče v bezpečí i při prudkém dešti nebo pádu.
-            </p>
-          </div>
-        </div>
-
-        <div class="cream-card p-5 rounded-2xl border border-stone-300 flex flex-col sm:flex-row gap-4 items-start">
-          <img src="./public/images/tip-dirtsuit.jpg" alt="Kombinéza Dirtlej" class="w-full sm:w-28 h-32 sm:h-28 rounded-xl object-cover bg-stone-100 shrink-0 border border-stone-200" onerror="this.style.display='none'">
-          <div>
-            <span class="text-[10px] font-black uppercase tracking-wider text-black lime-bg px-2 py-0.5 rounded">Výbava</span>
-            <h3 class="heading-font text-lg font-bold text-stone-950 mt-1.5 mb-1">Kombinéza Dirtlej: Sucho v dešti i blátě</h3>
-            <p class="text-xs text-stone-700 leading-relaxed">
-              Nejlepší ochrana pro celoroční ježdění. Žádná stříkající voda na záda a zadek, neprofoukne a udrží tělesné teplo i při vysokých rychlostech.
-            </p>
-          </div>
-        </div>
-
-        <div class="cream-card p-5 rounded-2xl border border-stone-300 flex flex-col sm:flex-row gap-4 items-start">
-          <img src="./public/images/tip-backpack.jpg" alt="Batoh na koloběžku" class="w-full sm:w-28 h-32 sm:h-28 rounded-xl object-cover bg-stone-100 shrink-0 border border-stone-200" onerror="this.style.display='none'">
-          <div>
-            <span class="text-[10px] font-black uppercase tracking-wider text-black lime-bg px-2 py-0.5 rounded">Ergonomie</span>
-            <h3 class="heading-font text-lg font-bold text-stone-950 mt-1.5 mb-1">Jaký batoh zvolit při jízdě na koloběžce</h3>
-            <p class="text-xs text-stone-700 leading-relaxed">
-              Při odrážení se trup neustále hýbe. Batoh musí mít pevný hrudní i bederní popruh, jinak na zádech nepříjemně plandá a vyvádí z rovnováhy.
-            </p>
-          </div>
-        </div>
-
-        <div class="cream-card p-5 rounded-2xl border border-stone-300 flex flex-col sm:flex-row gap-4 items-start">
-          <img src="./public/images/cyclers.jpg" alt="Aplikace Cyclers" class="w-full sm:w-28 h-32 sm:h-28 rounded-xl object-cover bg-stone-100 shrink-0 border border-stone-200" onerror="this.style.display='none'">
-          <div>
-            <span class="text-[10px] font-black text-black lime-bg px-2 py-0.5 rounded">Navigace</span>
-            <h3 class="heading-font text-lg font-bold text-stone-950 mt-1.5 mb-1">Aplikace Cyclers: Nejlepší trasy pro koloběh</h3>
-            <p class="text-xs text-stone-700 leading-relaxed">
-              Vyhnutí se dlažebním kostkám, minimalizace prudkých stoupání a výběr kvalitního asfaltu vhodného pro malá i velká kola.
-            </p>
-          </div>
-        </div>
-
-        <div class="cream-card p-5 rounded-2xl border border-stone-300 flex flex-col sm:flex-row gap-4 items-start">
-          <img src="./public/images/field.jpg" alt="Technika jízdy" class="w-full sm:w-28 h-32 sm:h-28 rounded-xl object-cover bg-stone-100 shrink-0 border border-stone-200" onerror="this.style.display='none'">
-          <div>
-            <span class="text-[10px] font-black uppercase tracking-wider text-black lime-bg px-2 py-0.5 rounded">Technika</span>
-            <h3 class="heading-font text-lg font-bold text-stone-950 mt-1.5 mb-1">Správná technika odrazu a střídání nohou</h3>
-            <p class="text-xs text-stone-700 leading-relaxed">
-              Pravidelná výměna nohy po 5 až 6 odrazech je klíčem ke zdravým zádům a rovnoměrnému zpevnění postavy bez jednostranného přetížení.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Co umím: Služby -->
-  <section id="sluzby" class="py-12 px-5 max-w-xl mx-auto">
-    <span class="heading-font text-xs tracking-widest text-stone-500 font-bold block mb-1">CO UMÍM</span>
-    <h2 class="heading-font text-3xl sm:text-4xl font-bold text-stone-900 leading-none mb-6">
-      TESTOVÁNÍ, SERVIS, ZAUČENÍ
-    </h2>
-
-    <div class="space-y-4">
-      <div class="cream-card p-6 rounded-2xl border border-stone-300/80 shadow-sm">
-        <div class="text-2xl text-emerald-900 mb-2">⏱</div>
-        <h3 class="heading-font text-xl font-bold text-stone-950 mb-2">TESTOVÁNÍ SKLÁDACÍCH KOLOBĚŽEK</h3>
-        <p class="text-xs sm:text-sm text-stone-700 leading-relaxed">
-          Otestuji jakoukoli skládací koloběžku — v jakýchkoli představitelných i nepředstavitelných podmínkách. Shrnu přednosti i nedostatky. Navrhnu náměty ke zlepšení.
-        </p>
-      </div>
-
-      <div class="cream-card p-6 rounded-2xl border border-stone-300/80 shadow-sm">
-        <div class="text-2xl text-emerald-900 mb-2">🔧</div>
-        <h3 class="heading-font text-xl font-bold text-stone-950 mb-2">ZÁTĚŽOVÉ TESTY</h3>
-        <p class="text-xs sm:text-sm text-stone-700 leading-relaxed">
-          Komplexní zátěžový test kvality zpracování. Silné a slabé stránky, kategorizace a vhodné využití konkrétního stroje.
-        </p>
-      </div>
-
-      <div class="cream-card p-6 rounded-2xl border border-stone-300/80 shadow-sm">
-        <div class="text-2xl text-emerald-900 mb-2">💬</div>
-        <h3 class="heading-font text-xl font-bold text-stone-950 mb-2">TECHNICKÉ PORADENSTVÍ</h3>
-        <p class="text-xs sm:text-sm text-stone-700 leading-relaxed">
-          Pomoc s výběrem správné koloběžky podle výšky, váhy i terénu. Zaučení správné techniky odrazu a střídání nohou.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Příběh: Začalo to zmeškaným spojem -->
-  <section id="pribeh" class="bg-[#141712] text-white py-14 px-5">
-    <div class="max-w-xl mx-auto">
-      <h2 class="heading-font text-3xl sm:text-4xl font-bold leading-tight mb-5">
-        ZAČALO TO ZMEŠKANÝM SPOJEM
-      </h2>
-      <p class="text-stone-300 text-sm sm:text-base leading-relaxed mb-6 font-normal">
-        To, co začalo jako otravná nezbytnost při komplikované dopravě, se záhy stalo oblíbeným koníčkem. Bydlím na kopci, skládačky nemají ideální brzdy — a přesto je základ HLAVNĚ NEBRZDIT. Když jsem překonal strach, začalo to bavit.
-      </p>
-      <p class="text-stone-300 text-sm sm:text-base leading-relaxed mb-8 font-normal">
-        Otestuji jakoukoli skládací koloběžku, v jakýchkoli představitelných i nepředstavitelných podmínkách. Shrnu přednosti i nedostatky. Navrhnu náměty ke zlepšení.
-      </p>
-      <button onclick="toggleStoryModal()" class="lime-btn px-6 py-3 rounded-xl font-bold text-xs uppercase inline-flex items-center gap-2">
-        CELÝ PŘÍBĚH &rarr;
-      </button>
-    </div>
-  </section>
-
-  <!-- Zelený lesní CTA blok -->
-  <section id="kontakt" class="forest-green text-white py-14 px-5">
-    <div class="max-w-xl mx-auto">
-      <h2 class="heading-font text-3xl sm:text-4xl font-bold mb-4 leading-tight">
-        CHCETE OTESTOVAT STROJ?
-      </h2>
-      <p class="text-stone-200 text-sm sm:text-base leading-relaxed mb-8">
-        Zátěžový test, servis nebo zaučení. Napište, zavolejte, nebo se stavte — při kraji lesa směrem na Brdo.
-      </p>
-      <a href="mailto:kolobeznik@email.cz" class="lime-btn px-6 py-3.5 rounded-xl font-bold text-xs uppercase inline-flex items-center gap-2">
-        NAPSAT KOLOBĚŽNÍKOVI &rarr;
-      </a>
-    </div>
-  </section>
-
-  <!-- Patička -->
-  <footer class="bg-[#11130F] text-stone-400 py-12 px-5">
-    <div class="max-w-xl mx-auto">
-      <div class="flex items-center gap-3 mb-4">
-        <div class="w-9 h-9 rounded-xl lime-bg flex items-center justify-center text-black font-black text-lg">
+  <!-- Horní lišta s navigací mezi záložkami -->
+  <header class="sticky top-0 z-50 bg-[#1C1F1A] text-white px-4 py-3 border-b border-stone-800 shadow-md">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      <a href="javascript:void(0)" onclick="navigateTo('home')" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl lime-bg flex items-center justify-center text-black font-black text-xl shadow-sm">
           🛴
         </div>
         <span class="heading-font text-2xl tracking-wider text-white">KOLOBĚŽNÍK</span>
+      </a>
+
+      <!-- Desktop záložky -->
+      <nav class="hidden md:flex items-center space-x-6 text-sm font-bold uppercase heading-font tracking-wider text-stone-300">
+        <button onclick="navigateTo('home')" class="nav-link hover:text-[#C6F135] transition" data-target="home">Úvod</button>
+        <button onclick="navigateTo('testy')" class="nav-link hover:text-[#C6F135] transition" data-target="testy">Testy</button>
+        <button onclick="navigateTo('tipy')" class="nav-link hover:text-[#C6F135] transition" data-target="tipy">Tipy & Výbava</button>
+        <button onclick="navigateTo('pribeh')" class="nav-link hover:text-[#C6F135] transition" data-target="pribeh">O mně</button>
+        <button onclick="navigateTo('kontakt')" class="nav-link hover:text-[#C6F135] transition" data-target="kontakt">Kontakt</button>
+      </nav>
+
+      <!-- Mobilní hamburger -->
+      <button onclick="toggleMenu()" class="md:hidden text-white p-1 focus:outline-none" aria-label="Menu">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobilní rozbalovací menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-[#1C1F1A] text-white pt-4 pb-2 border-t border-stone-800 mt-2 space-y-3 font-bold text-sm uppercase heading-font tracking-wider">
+      <button onclick="navigateTo('home'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">Úvod</button>
+      <button onclick="navigateTo('testy'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">Testy koloběžek (27)</button>
+      <button onclick="navigateTo('tipy'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">Zajímavosti a tipy</button>
+      <button onclick="navigateTo('pribeh'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">O mně</button>
+      <button onclick="navigateTo('kontakt'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">Kontakt</button>
+    </div>
+  </header>
+
+  <main class="flex-grow">
+    <!-- ==================== ZÁLOŽKA 1: ÚVOD ==================== -->
+    <div id="page-home" class="page-view active">
+      <!-- Hero sekce -->
+      <section class="relative bg-stone-900 text-white overflow-hidden">
+        <div class="absolute inset-0 z-0 opacity-40">
+          <img src="./public/images/cyclers.jpg" alt="Koloběžka v přírodě" class="w-full h-full object-cover">
+        </div>
+        <div class="relative z-10 px-5 pt-12 pb-14 max-w-xl mx-auto">
+          <h1 class="heading-font text-4xl sm:text-5xl font-bold leading-[1.05] tracking-tight mb-5">
+            ZAČNĚTE JEZDIT NA KOLOBĚŽCE UŽ DNES
+          </h1>
+          <p class="text-sm sm:text-base text-stone-200 leading-relaxed font-normal mb-8">
+            Teprve na koloběžce je to ten pravý relax, zažijte radost z přirozeného pohybu. Odpočinete od ruchu, uděláte něco pro zdraví — a když to vezmete z kopce, je to adrenalin.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <button onclick="navigateTo('testy')" class="lime-btn px-6 py-3.5 rounded-xl font-bold text-sm uppercase flex items-center justify-center gap-2 shadow-md">
+              MOJE TESTY &rarr;
+            </button>
+            <button onclick="navigateTo('kontakt')" class="bg-stone-950/80 hover:bg-stone-900 border border-stone-700 px-6 py-3.5 rounded-xl font-bold text-sm uppercase heading-font flex items-center justify-center tracking-wider transition">
+              OBJEDNAT TEST
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Limetkový pás statistik -->
+      <section class="lime-bg text-black py-10 px-5">
+        <div class="max-w-xl mx-auto grid grid-cols-2 gap-y-8 gap-x-6">
+          <div>
+            <div class="heading-font text-4xl sm:text-5xl font-bold leading-none">78 KM/H</div>
+            <p class="text-xs font-semibold text-stone-900 mt-2 leading-snug">osobní rekord na skládačce</p>
+          </div>
+          <div>
+            <div class="heading-font text-4xl sm:text-5xl font-bold leading-none">27</div>
+            <p class="text-xs font-semibold text-stone-900 mt-2 leading-snug">odjetých a popsaných modelů</p>
+          </div>
+          <div>
+            <div class="heading-font text-4xl sm:text-5xl font-bold leading-none">3 ZIMY</div>
+            <p class="text-xs font-semibold text-stone-900 mt-2 leading-snug">na jedné JD Bug MS132</p>
+          </div>
+          <div>
+            <div class="heading-font text-4xl sm:text-5xl font-bold leading-none">24/7</div>
+            <p class="text-xs font-semibold text-stone-900 mt-2 leading-snug">podmínky, které výrobce nezkouší</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Co umím: Služby -->
+      <section class="py-12 px-5 max-w-xl mx-auto">
+        <span class="heading-font text-xs tracking-widest text-stone-500 font-bold block mb-1">CO UMÍM</span>
+        <h2 class="heading-font text-3xl sm:text-4xl font-bold text-stone-900 leading-none mb-6">
+          TESTOVÁNÍ, SERVIS, ZAUČENÍ
+        </h2>
+
+        <div class="space-y-4">
+          <div class="cream-card p-6 rounded-2xl border border-stone-300/80 shadow-sm">
+            <div class="text-2xl text-emerald-900 mb-2">⏱</div>
+            <h3 class="heading-font text-xl font-bold text-stone-950 mb-2">TESTOVÁNÍ SKLÁDACÍCH KOLOBĚŽEK</h3>
+            <p class="text-xs sm:text-sm text-stone-700 leading-relaxed">
+              Otestuji jakoukoli skládací koloběžku — v jakýchkoli představitelných i nepředstavitelných podmínkách. Shrnu přednosti i nedostatky. Navrhnu náměty ke zlepšení.
+            </p>
+          </div>
+
+          <div class="cream-card p-6 rounded-2xl border border-stone-300/80 shadow-sm">
+            <div class="text-2xl text-emerald-900 mb-2">🔧</div>
+            <h3 class="heading-font text-xl font-bold text-stone-950 mb-2">ZÁTĚŽOVÉ TESTY</h3>
+            <p class="text-xs sm:text-sm text-stone-700 leading-relaxed">
+              Komplexní zátěžový test kvality zpracování. Silné a slabé stránky, kategorizace a vhodné využití konkrétního stroje.
+            </p>
+          </div>
+
+          <div class="cream-card p-6 rounded-2xl border border-stone-300/80 shadow-sm">
+            <div class="text-2xl text-emerald-900 mb-2">💬</div>
+            <h3 class="heading-font text-xl font-bold text-stone-950 mb-2">TECHNICKÉ PORADENSTVÍ</h3>
+            <p class="text-xs sm:text-sm text-stone-700 leading-relaxed">
+              Pomoc s výběrem správné koloběžky podle výšky, váhy i terénu. Zaučení správné techniky odrazu a střídání nohou.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ==================== ZÁLOŽKA 2: TESTY ==================== -->
+    <div id="page-testy" class="page-view">
+      <section class="py-10 px-5 max-w-xl mx-auto">
+        <div class="mb-4">
+          <span class="heading-font text-xs tracking-widest text-stone-500 font-bold block mb-1">KATALOG RECENZÍ</span>
+          <h2 class="heading-font text-3xl sm:text-4xl font-bold text-stone-950 leading-none">
+            ODJETÉ KILOMETRY
+          </h2>
+        </div>
+        
+        <p class="text-xs sm:text-sm text-stone-600 mb-6 leading-relaxed">
+          Modely jsou rozděleny do záložek a označeny podle tvrdé praxe: <span class="bg-[#C6F135] text-black font-bold px-1.5 py-0.5 rounded text-[11px]">DOPORUČUJI</span>, <span class="bg-rose-600 text-white font-bold px-1.5 py-0.5 rounded text-[11px]">NEDOPORUČUJI</span> nebo <span class="bg-stone-950 text-[#C6F135] border border-stone-700 font-bold px-1.5 py-0.5 rounded text-[11px]">⚡ BESTIE</span>.
+        </p>
+
+        <!-- Vnořené podzáložky kategorií -->
+        <div class="flex flex-wrap gap-2 mb-6" id="category-tabs">
+          <button onclick="switchTab('folding', event)" class="tab-btn active px-3.5 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800 border border-stone-300 transition">
+            Skládací (12)
+          </button>
+          <button onclick="switchTab('sport', event)" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800 border border-stone-300 transition">
+            Sportovní (5)
+          </button>
+          <button onclick="switchTab('electric', event)" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800 border border-stone-300 transition">
+            Elektro (9)
+          </button>
+          <button onclick="switchTab('special', event)" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800 border border-stone-300 transition">
+            Speciály (1)
+          </button>
+        </div>
+
+        <!-- Seznam karet -->
+        <div class="space-y-6" id="scooter-list"></div>
+      </section>
+    </div>
+
+    <!-- ==================== ZÁLOŽKA 3: TIPY & VÝBAVA ==================== -->
+    <div id="page-tipy" class="page-view bg-white py-12 px-5 min-h-[70vh]">
+      <div class="max-w-xl mx-auto">
+        <span class="heading-font text-xs tracking-widest text-lime-700 font-bold block mb-1">MIKROMOBILITA</span>
+        <h2 class="heading-font text-3xl sm:text-4xl font-bold text-stone-950 leading-tight mb-2">
+          ZAJÍMAVOSTI A TIPY
+        </h2>
+        <p class="text-xs sm:text-sm text-stone-600 mb-8 leading-relaxed">
+          Ověřené postřehy z každodenního ježdění, servisní triky, doplňky a výbava, která na koloběžce dává smysl.
+        </p>
+
+        <div class="space-y-5">
+          <div class="cream-card p-5 rounded-2xl border border-stone-300 flex flex-col sm:flex-row gap-4 items-start">
+            <img src="./public/images/tip-hovding.jpg" alt="Airbag Hövding" class="w-full sm:w-28 h-32 sm:h-28 rounded-xl object-cover bg-stone-100 shrink-0 border border-stone-200" onerror="this.style.display='none'">
+            <div>
+              <span class="text-[10px] font-black uppercase tracking-wider text-black lime-bg px-2 py-0.5 rounded">Bezpečnost</span>
+              <h3 class="heading-font text-lg font-bold text-stone-950 mt-1.5 mb-1">Airbag Hövding na koloběžce</h3>
+              <p class="text-xs text-stone-700 leading-relaxed">
+                Stylová nafukovací ochrana hlavy jako límec kolem krku. Jak funguje při pádu na koloběžce a proč je šetrnější k účesu než klasická přilba.
+              </p>
+            </div>
+          </div>
+
+          <div class="cream-card p-5 rounded-2xl border border-stone-300 flex flex-col sm:flex-row gap-4 items-start">
+            <img src="./public/images/tip-wildman.jpg" alt="Pouzdro Wildman" class="w-full sm:w-28 h-32 sm:h-28 rounded-xl object-cover bg-stone-100 shrink-0 border border-stone-200" onerror="this.style.display='none'">
+            <div>
+              <span class="text-[10px] font-black uppercase tracking-wider text-black lime-bg px-2 py-0.5 rounded">Doplňky</span>
+              <h3 class="heading-font text-lg font-bold text-stone-950 mt-1.5 mb-1">Pouzdra a brašny Wildman na řídítka</h3>
+              <p class="text-xs text-stone-700 leading-relaxed">
+                Voděodolná pouzdra z tvrzeného EVA materiálu. Telefon, nářadí, peněženka i klíče v bezpečí i při prudkém dešti nebo pádu.
+              </p>
+            </div>
+          </div>
+
+          <div class="cream-card p-5 rounded-2xl border border-stone-300 flex flex-col sm:flex-row gap-4 items-start">
+            <img src="./public/images/tip-dirtsuit.jpg" alt="Kombinéza Dirtlej" class="w-full sm:w-28 h-32 sm:h-28 rounded-xl object-cover bg-stone-100 shrink-0 border border-stone-200" onerror="this.style.display='none'">
+            <div>
+              <span class="text-[10px] font-black uppercase tracking-wider text-black lime-bg px-2 py-0.5 rounded">Výbava</span>
+              <h3 class="heading-font text-lg font-bold text-stone-950 mt-1.5 mb-1">Kombinéza Dirtlej: Sucho v dešti i blátě</h3>
+              <p class="text-xs text-stone-700 leading-relaxed">
+                Nejlepší ochrana pro celoroční ježdění. Žádná stříkající voda na záda a zadek, neprofoukne a udrží tělesné teplo i při vysokých rychlostech.
+              </p>
+            </div>
+          </div>
+
+          <div class="cream-card p-5 rounded-2xl border border-stone-300 flex flex-col sm:flex-row gap-4 items-start">
+            <img src="./public/images/tip-backpack.jpg" alt="Batoh na koloběžku" class="w-full sm:w-28 h-32 sm:h-28 rounded-xl object-cover bg-stone-100 shrink-0 border border-stone-200" onerror="this.style.display='none'">
+            <div>
+              <span class="text-[10px] font-black uppercase tracking-wider text-black lime-bg px-2 py-0.5 rounded">Ergonomie</span>
+              <h3 class="heading-font text-lg font-bold text-stone-950 mt-1.5 mb-1">Jaký batoh zvolit při jízdě na koloběžce</h3>
+              <p class="text-xs text-stone-700 leading-relaxed">
+                Při odrážení se trup neustále hýbe. Batoh musí mít pevný hrudní i bederní popruh, jinak na zádech nepříjemně plandá a vyvádí z rovnováhy.
+              </p>
+            </div>
+          </div>
+
+          <div class="cream-card p-5 rounded-2xl border border-stone-300 flex flex-col sm:flex-row gap-4 items-start">
+            <img src="./public/images/cyclers.jpg" alt="Aplikace Cyclers" class="w-full sm:w-28 h-32 sm:h-28 rounded-xl object-cover bg-stone-100 shrink-0 border border-stone-200" onerror="this.style.display='none'">
+            <div>
+              <span class="text-[10px] font-black text-black lime-bg px-2 py-0.5 rounded">Navigace</span>
+              <h3 class="heading-font text-lg font-bold text-stone-950 mt-1.5 mb-1">Aplikace Cyclers: Nejlepší trasy pro koloběh</h3>
+              <p class="text-xs text-stone-700 leading-relaxed">
+                Vyhnutí se dlažebním kostkám, minimalizace prudkých stoupání a výběr kvalitního asfaltu vhodného pro malá i velká kola.
+              </p>
+            </div>
+          </div>
+
+          <div class="cream-card p-5 rounded-2xl border border-stone-300 flex flex-col sm:flex-row gap-4 items-start">
+            <img src="./public/images/field.jpg" alt="Technika jízdy" class="w-full sm:w-28 h-32 sm:h-28 rounded-xl object-cover bg-stone-100 shrink-0 border border-stone-200" onerror="this.style.display='none'">
+            <div>
+              <span class="text-[10px] font-black uppercase tracking-wider text-black lime-bg px-2 py-0.5 rounded">Technika</span>
+              <h3 class="heading-font text-lg font-bold text-stone-950 mt-1.5 mb-1">Správná technika odrazu a střídání nohou</h3>
+              <p class="text-xs text-stone-700 leading-relaxed">
+                Pravidelná výměna nohy po 5 až 6 odrazech je klíčem ke zdravým zádům a rovnoměrnému zpevnění postavy bez jednostranného přetížení.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
-      <p class="text-xs leading-relaxed text-stone-300 mb-6">
+    </div>
+
+    <!-- ==================== ZÁLOŽKA 4: O MNĚ ==================== -->
+    <div id="page-pribeh" class="page-view py-14 px-5">
+      <div class="max-w-xl mx-auto bg-white rounded-3xl p-6 sm:p-8 border border-stone-300 shadow-sm space-y-5 text-sm sm:text-base leading-relaxed">
+        <span class="heading-font text-xs tracking-widest text-lime-700 font-bold block">PŘÍBĚH KOLOBĚŽNÍKA</span>
+        <h2 class="heading-font text-3xl sm:text-4xl font-bold text-stone-950 leading-tight">
+          KOLOBĚŽKA JAKO VÝCHODISKO, PAK JAKO POSEDLOST
+        </h2>
+        <p class="text-stone-700">
+          Začínal jsem tak, že mi byl takřka ze dne na den posunut spoj, kterým jsem několik let běžně jezdil do práce. Na výběr jsem měl několik variant: koupit auto (leasing, nebo starší jezdící pokladničku) — do čehož se mi moc nechtělo. Nebo být na místě o dvě hodiny dříve a vstávat o tři a půl hodiny dřív. Tak to už vůbec.
+        </p>
+        <p class="text-stone-700">
+          Nakonec zvítězila koloběžka jako levné a rychlé řešení. Ráno skočím na kolobrndu, dojedu na ní dolů z kopce, složím ji a nasednu na svůj spoj do práce.
+        </p>
+        <p class="text-stone-700">
+          Samozřejmě že jsem ze začátku taky nebyl moc nadšený. Bydlím na kopci a skládací koloběžky nemají zrovna ideální — ba ani propracovaný — systém brzd. Největší obavy jsem měl, že rozdováděnou koloběžku neubrzdím. Ale po čase, několika divokých jízdách a propálených botách od blatníkové brzdy, se to zlomilo.
+        </p>
+        <div class="heading-font text-3xl font-bold text-emerald-950 my-2">
+          ZÁKLAD JE HLAVNĚ NEBRZDIT.
+        </div>
+        <p class="text-stone-700">
+          Je to sice adrenalin, ale nic, co by nešlo zvládnout. A když jsem překonal strach, začalo to i bavit. V současné době se bavím tím, že zkouším, jakou největší rychlost jsem schopen se skládací koloběžkou vyvinout — osobní rekord je 78 km/h. Také se zkouším nadále zdokonalovat v jízdě do kopce.
+        </p>
+        <div class="p-4 rounded-xl lime-bg/30 border border-lime-400 font-bold text-stone-900 text-xs sm:text-sm">
+          Mimochodem: VŽDY NOSTE HELMU. A neuškodí mít i další chrániče.
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== ZÁLOŽKA 5: KONTAKT ==================== -->
+    <div id="page-kontakt" class="page-view forest-green text-white py-16 px-5 min-h-[60vh] flex items-center">
+      <div class="max-w-xl mx-auto w-full">
+        <span class="heading-font text-xs tracking-widest text-[#C6F135] font-bold block mb-1">PŘI KRAJI LESA SMĚREM NA BRDO</span>
+        <h2 class="heading-font text-4xl sm:text-5xl font-bold mb-4 leading-tight">
+          CHCETE OTESTOVAT STROJ?
+        </h2>
+        <p class="text-stone-200 text-sm sm:text-base leading-relaxed mb-8 font-normal">
+          Zátěžový test, servis nebo zaučení. Napište, zavolejte, nebo se stavte — při kraji lesa směrem na Brdo nad Růžďkou.
+        </p>
+        <a href="mailto:kolobeznik@email.cz" class="lime-btn px-8 py-4 rounded-xl font-bold text-sm uppercase inline-flex items-center gap-2 shadow-lg">
+          NAPSAT KOLOBĚŽNÍKOVI &rarr;
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Autentická černá patička -->
+  <footer class="bg-[#11130F] text-stone-400 py-10 px-5">
+    <div class="max-w-xl mx-auto">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-8 h-8 rounded-lg lime-bg flex items-center justify-center text-black font-black text-sm">
+          🛴
+        </div>
+        <span class="heading-font text-xl tracking-wider text-white">KOLOBĚŽNÍK</span>
+      </div>
+      <p class="text-xs leading-relaxed text-stone-400 mb-4">
         Nezávislé testy skládacích a elektrických koloběžek. Servis, zaučení a zátěžovky z kraje lesa nad Růžďkou.
       </p>
-      <div class="heading-font text-xl sm:text-2xl font-bold text-[#C6F135] tracking-wider mb-8">
+      <div class="heading-font text-lg font-bold text-[#C6F135] tracking-wider mb-6">
         VŠEM KOLOBĚŽNÍKŮM R.E.S.P.E.C.T.
       </div>
-      <div class="border-t border-stone-800 pt-5 text-xs text-stone-400 flex justify-between items-center">
+      <div class="border-t border-stone-800 pt-4 text-[11px] text-stone-500 flex justify-between items-center">
         <span>&copy; 2026 Koloběžník.cz</span>
         <span>Všechna práva vyhrazena</span>
       </div>
     </div>
   </footer>
-
-  <!-- Modal: Celý příběh -->
-  <div id="story-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
-    <div class="bg-[#F0ECE1] text-stone-900 max-w-xl w-full rounded-2xl overflow-hidden shadow-2xl max-h-[90vh] flex flex-col">
-      <div class="bg-[#1C1F1A] text-white p-4 px-6 flex items-center justify-between">
-        <span class="heading-font text-lg font-bold text-[#C6F135]">O MNĚ</span>
-        <button onclick="toggleStoryModal()" class="text-white text-2xl leading-none">&times;</button>
-      </div>
-      <div class="p-6 overflow-y-auto space-y-4 text-sm leading-relaxed">
-        <h3 class="heading-font text-2xl font-bold text-stone-950">KOLOBĚŽKA JAKO VÝCHODISKO, PAK JAKO POSEDLOST</h3>
-        <p>
-          Začínal jsem tak, že mi byl takřka ze dne na den posunut spoj, kterým jsem několik let běžně jezdil do práce. Na výběr jsem měl několik variant: koupit auto (leasing, nebo starší jezdící pokladničku) — do čehož se mi moc nechtělo. Nebo být na místě o dvě hodiny dříve a vstávat o tři a půl hodiny dřív. Tak to už vůbec.
-        </p>
-        <p>
-          Nakonec zvítězila koloběžka jako levné a rychlé řešení. Ráno skočím na kolobrndu, dojedu na ní dolů z kopce, složím ji a nasednu na svůj spoj do práce.
-        </p>
-        <p>
-          Samozřejmě že jsem ze začátku taky nebyl moc nadšený. Bydlím na kopci a skládací koloběžky nemají zrovna ideální — ba ani propracovaný — systém brzd. Největší obavy jsem měl, že rozdováděnou koloběžku neubrzdím. Ale po čase, několika divokých jízdách a propálených botách od blatníkové brzdy, se to zlomilo.
-        </p>
-        <div class="heading-font text-2xl font-bold text-emerald-900 my-2">
-          ZÁKLAD JE HLAVNĚ NEBRZDIT.
-        </div>
-        <p>
-          Je to sice adrenalin, ale nic, co by nešlo zvládnout. A když jsem překonal strach, začalo to i bavit. V současné době se bavím tím, že zkouším, jakou největší rychlost jsem schopen se skládací koloběžkou vyvinout — osobní rekord je 78 km/h. Také se zkouším nadále zdokonalovat v jízdě do kopce.
-        </p>
-        <p class="font-bold">
-          Mimochodem: VŽDY NOSTE HELMU. A neuškodí mít i další chrániče.
-        </p>
-      </div>
-    </div>
-  </div>
 
   <!-- Modal: Detail recenze koloběžky -->
   <div id="scooter-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
@@ -387,7 +393,7 @@
     </div>
   </div>
 
-  <!-- Data a obsluha záložek -->
+  <!-- Data a skripty -->
   <script>
     const scooters = [
       {
@@ -781,20 +787,37 @@
       });
     }
 
-    // Výchozí záložka: Skládací
-    let activeTab = 'folding';
-    renderCategory(activeTab);
+    // Výchozí podkategorie
+    let activeCategoryTab = 'folding';
+    renderCategory(activeCategoryTab);
 
     function switchTab(cat, evt) {
-      activeTab = cat;
+      activeCategoryTab = cat;
       const btns = document.querySelectorAll('.tab-btn');
-      btns.forEach(b => {
-        b.classList.remove('active');
-      });
+      btns.forEach(b => b.classList.remove('active'));
       if (evt && evt.currentTarget) {
         evt.currentTarget.classList.add('active');
       }
-      renderCategory(activeTab);
+      renderCategory(activeCategoryTab);
+    }
+
+    // PŘEPÍNÁNÍ HLAVNÍCH ZÁLOŽEK WEBU
+    function navigateTo(pageId) {
+      document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+      const targetPage = document.getElementById('page-' + pageId);
+      if (targetPage) {
+        targetPage.classList.add('active');
+      }
+
+      document.querySelectorAll('.nav-link').forEach(link => {
+        if (link.getAttribute('data-target') === pageId) {
+          link.classList.add('text-[#C6F135]');
+        } else {
+          link.classList.remove('text-[#C6F135]');
+        }
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function openScooterModal(id) {
@@ -830,20 +853,12 @@
       m.classList.remove('flex');
     }
 
-    function toggleStoryModal() {
-      const m = document.getElementById('story-modal');
-      m.classList.toggle('hidden');
-      m.classList.toggle('flex');
-    }
-
     function toggleMenu() {
       document.getElementById('mobile-menu').classList.toggle('hidden');
     }
 
     window.onclick = function(e) {
-      const sModal = document.getElementById('story-modal');
       const scModal = document.getElementById('scooter-modal');
-      if (e.target === sModal) toggleStoryModal();
       if (e.target === scModal) closeScooterModal();
     };
   </script>
