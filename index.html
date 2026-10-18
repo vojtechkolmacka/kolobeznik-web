@@ -11,119 +11,118 @@
   <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
     
-    /* Animované gradientní pozadí */
-    @keyframes pulse-slow {
-      0%, 100% { transform: scale(1) translate(0px, 0px); opacity: 0.25; }
-      50% { transform: scale(1.15) translate(20px, -20px); opacity: 0.45; }
+    /* Dynamická energetická záře */
+    @keyframes pulse-sun {
+      0%, 100% { transform: scale(1) translate(0px, 0px); opacity: 0.35; }
+      50% { transform: scale(1.2) translate(30px, -20px); opacity: 0.6; }
     }
-    .ambient-glow-1 { animation: pulse-slow 8s ease-in-out infinite; }
-    .ambient-glow-2 { animation: pulse-slow 10s ease-in-out infinite 3s; }
+    .sun-glow { animation: pulse-sun 9s ease-in-out infinite; }
     
-    /* Karta se skleněným leskem */
-    .glass-card {
-      background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.85) 100%);
+    /* Živá skleněná karta s barevným odrazem */
+    .action-card {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .glass-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(163, 230, 53, 0.4);
-      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 30px -5px rgba(163, 230, 53, 0.25);
+    .action-card:hover {
+      transform: translateY(-8px) scale(1.015);
+      border-color: rgba(251, 146, 60, 0.6);
+      box-shadow: 0 25px 45px -15px rgba(249, 115, 22, 0.3), 0 0 35px -5px rgba(163, 230, 53, 0.25);
     }
 
     .custom-scroll::-webkit-scrollbar { width: 6px; }
-    .custom-scroll::-webkit-scrollbar-track { background: #020617; }
-    .custom-scroll::-webkit-scrollbar-thumb { background: #475569; border-radius: 9999px; }
+    .custom-scroll::-webkit-scrollbar-track { background: #030712; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #ea580c; border-radius: 9999px; }
   </style>
 </head>
-<body class="bg-[#030712] text-slate-100 antialiased selection:bg-lime-400 selection:text-slate-950 pb-24 md:pb-0">
+<body class="bg-[#050814] text-slate-100 antialiased selection:bg-orange-500 selection:text-white pb-24 md:pb-0">
 
-  <!-- Ambientní dynamické neonové světla v pozadí -->
+  <!-- Šťavnaté světelné pozadí plné slunce a energie -->
   <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
-    <div class="ambient-glow-1 absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[550px] bg-gradient-to-tr from-lime-500/25 via-emerald-500/20 to-cyan-500/25 blur-[130px] rounded-full"></div>
-    <div class="ambient-glow-2 absolute top-[900px] -left-48 w-[650px] h-[650px] bg-cyan-500/20 blur-[150px] rounded-full"></div>
-    <div class="ambient-glow-1 absolute top-[1800px] -right-48 w-[700px] h-[700px] bg-lime-500/20 blur-[160px] rounded-full"></div>
+    <div class="sun-glow absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[550px] bg-gradient-to-tr from-amber-500/35 via-orange-500/30 to-lime-400/25 blur-[130px] rounded-full"></div>
+    <div class="sun-glow absolute top-[850px] -left-48 w-[650px] h-[650px] bg-cyan-500/20 blur-[150px] rounded-full"></div>
+    <div class="sun-glow absolute top-[1700px] -right-48 w-[700px] h-[700px] bg-orange-500/25 blur-[160px] rounded-full"></div>
   </div>
 
   <!-- Plovoucí navigační pilulka -->
   <header class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[94%] max-w-5xl">
-    <div class="backdrop-blur-2xl bg-slate-900/80 border border-slate-700/60 rounded-2xl px-5 h-14 flex items-center justify-between shadow-2xl shadow-black/80">
+    <div class="backdrop-blur-2xl bg-slate-900/90 border border-slate-700/80 rounded-2xl px-5 h-15 flex items-center justify-between shadow-2xl shadow-black/80">
       <a href="#" class="flex items-center gap-2.5 group">
-        <span class="w-8 h-8 rounded-xl bg-gradient-to-tr from-lime-400 via-emerald-400 to-cyan-400 flex items-center justify-center text-slate-950 font-black text-sm shadow-md shadow-lime-400/40 group-hover:scale-105 transition">K</span>
-        <span class="text-lg font-black tracking-tight text-white">Koloběžník<span class="text-lime-400">.cz</span></span>
+        <span class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-400 via-orange-500 to-rose-500 flex items-center justify-center text-white font-black text-base shadow-lg shadow-orange-500/40 group-hover:rotate-6 transition">K</span>
+        <span class="text-xl font-black tracking-tight text-white">Koloběžník<span class="text-amber-400">.cz</span></span>
       </a>
-      <nav class="hidden md:flex items-center space-x-6 text-xs font-bold uppercase tracking-wider text-slate-300">
-        <a href="#testy" class="hover:text-lime-400 transition">Katalog (27)</a>
-        <a href="#tipy" class="hover:text-lime-400 transition">Tipy & Výbava</a>
-        <a href="#sluzby" class="hover:text-lime-400 transition">Služby</a>
-        <a href="#kontakt" class="hover:text-lime-400 transition">Kontakt</a>
+      <nav class="hidden md:flex items-center space-x-7 text-xs font-extrabold uppercase tracking-wider text-slate-200">
+        <a href="#testy" class="hover:text-amber-400 transition">Katalog (27)</a>
+        <a href="#tipy" class="hover:text-amber-400 transition">Tipy & Zkušenosti</a>
+        <a href="#sluzby" class="hover:text-amber-400 transition">Služby</a>
+        <a href="#kontakt" class="hover:text-amber-400 transition">Kontakt</a>
       </nav>
-      <a href="#testy" class="text-xs font-black px-4 py-1.5 rounded-xl bg-gradient-to-r from-lime-400 to-emerald-400 text-slate-950 hover:brightness-110 transition shadow-md shadow-lime-400/25">
-        Testy strojů
+      <a href="#testy" class="text-xs font-black px-4 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 hover:brightness-110 transition shadow-md shadow-orange-500/30">
+        Vyběhni na trať 🛴
       </a>
     </div>
   </header>
 
-  <!-- Hero sekce -->
+  <!-- Hero sekce plná energie -->
   <section class="relative z-10 pt-28 pb-14 md:pt-36 md:pb-20 overflow-hidden">
     <div class="max-w-6xl mx-auto px-4 text-center">
       
       <!-- Živý badge -->
-      <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-900/90 border border-slate-700/80 shadow-inner mb-6">
+      <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-orange-950/60 border border-orange-500/40 shadow-inner mb-6">
         <span class="relative flex h-2.5 w-2.5">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-lime-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-lime-400"></span>
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-400"></span>
         </span>
-        <span class="text-xs font-black uppercase tracking-wider text-slate-200">Autentické recenze • 100% vlastní praxe</span>
+        <span class="text-xs font-black uppercase tracking-wider text-amber-300">Svoboda • Pohyb • Adrenalin</span>
       </div>
 
       <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white mb-6 leading-[1.1]">
         Začněte jezdit na koloběžce <br class="hidden sm:inline">
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-lime-400 via-emerald-300 to-cyan-400">už dnes!</span>
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-400 to-rose-400">už dnes!</span>
       </h1>
       
-      <p class="max-w-2xl mx-auto text-base sm:text-lg text-slate-300 mb-10 font-normal leading-relaxed">
+      <p class="max-w-2xl mx-auto text-base sm:text-lg text-slate-200 mb-10 font-medium leading-relaxed">
         Představuji vám modely koloběžek, které jsem si osobně vyzkoušel a porovnal jejich vlastnosti, výhody a nevýhody. Žádné vymyšlené parametry – jen čistá praxe.
       </p>
 
       <!-- Interaktivní Hero Showcase -->
       <div class="relative max-w-4xl mx-auto mb-12 group">
-        <div class="absolute -inset-2 bg-gradient-to-r from-lime-400 via-cyan-400 to-emerald-400 rounded-3xl blur-2xl opacity-40 group-hover:opacity-75 transition duration-700"></div>
-        <div class="relative rounded-3xl overflow-hidden border border-slate-700/90 bg-slate-900/90 shadow-2xl p-2 sm:p-3">
+        <div class="absolute -inset-2 bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 rounded-3xl blur-2xl opacity-50 group-hover:opacity-85 transition duration-700"></div>
+        <div class="relative rounded-3xl overflow-hidden border border-orange-500/40 bg-slate-900/90 shadow-2xl p-2.5 sm:p-3">
           <img src="./public/images/hero.jpg" alt="Koloběžník v akci" class="w-full h-auto object-contain rounded-2xl max-h-[500px]">
           
-          <!-- Překryvný spodní pruh na obrázku -->
-          <div class="absolute bottom-5 left-5 right-5 sm:bottom-7 sm:left-7 sm:right-7 backdrop-blur-xl bg-slate-950/80 border border-slate-700/70 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-left">
+          <!-- Překryvný moderní štítek -->
+          <div class="absolute bottom-5 left-5 right-5 sm:bottom-7 sm:left-7 sm:right-7 backdrop-blur-xl bg-slate-950/85 border border-orange-500/30 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-left">
             <div>
-              <span class="text-[10px] font-black uppercase tracking-widest text-lime-400">Showroom</span>
+              <span class="text-[10px] font-black uppercase tracking-widest text-amber-400">Můj showroom</span>
               <div class="text-sm sm:text-base font-extrabold text-white">27 otestovaných koloběžek – Skládací, Sportovní i Elektro</div>
             </div>
-            <a href="#testy" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-lime-400 to-emerald-400 text-slate-950 font-black text-xs uppercase tracking-wider hover:brightness-110 transition whitespace-nowrap shadow-md shadow-lime-400/20">
-              Přejít na modely &darr;
+            <a href="#testy" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 font-black text-xs uppercase tracking-wider hover:brightness-110 transition whitespace-nowrap shadow-lg shadow-orange-500/30">
+              Chci vidět testy &darr;
             </a>
           </div>
         </div>
       </div>
 
-      <!-- Statistiky / Metriky (HUD Bar) -->
+      <!-- Statistiky / Metriky (HUD Bar s barvami) -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 max-w-4xl mx-auto">
-        <div class="glass-card rounded-2xl p-4 text-center">
-          <div class="text-3xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-lime-400 to-emerald-300">27</div>
-          <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mt-1">Otestovaných modelů</div>
+        <div class="action-card rounded-2xl p-4 text-center border-l-4 border-l-amber-400">
+          <div class="text-3xl sm:text-4xl font-black text-amber-400">27</div>
+          <div class="text-[11px] font-bold uppercase tracking-wider text-slate-300 mt-1">Otestovaných strojů</div>
         </div>
-        <div class="glass-card rounded-2xl p-4 text-center">
+        <div class="action-card rounded-2xl p-4 text-center border-l-4 border-l-cyan-400">
           <div class="text-3xl sm:text-4xl font-black text-cyan-400">4</div>
-          <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mt-1">Kategorie strojů</div>
+          <div class="text-[11px] font-bold uppercase tracking-wider text-slate-300 mt-1">Různé kategorie</div>
         </div>
-        <div class="glass-card rounded-2xl p-4 text-center">
-          <div class="text-3xl sm:text-4xl font-black text-amber-400">10 000+</div>
-          <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mt-1">Ujetých kilometrů</div>
+        <div class="action-card rounded-2xl p-4 text-center border-l-4 border-l-orange-500">
+          <div class="text-3xl sm:text-4xl font-black text-orange-400">10 000+</div>
+          <div class="text-[11px] font-bold uppercase tracking-wider text-slate-300 mt-1">Ujetých kilometrů</div>
         </div>
-        <div class="glass-card rounded-2xl p-4 text-center">
-          <div class="text-3xl sm:text-4xl font-black text-purple-400">3 zimy</div>
-          <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mt-1">V drsném mrazu</div>
+        <div class="action-card rounded-2xl p-4 text-center border-l-4 border-l-lime-400">
+          <div class="text-3xl sm:text-4xl font-black text-lime-400">3 zimy</div>
+          <div class="text-[11px] font-bold uppercase tracking-wider text-slate-300 mt-1">V mrazu a soli</div>
         </div>
       </div>
 
@@ -131,9 +130,9 @@
   </section>
 
   <!-- Motto banner -->
-  <section class="relative z-10 py-5 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-y border-slate-800">
-    <div class="max-w-4xl mx-auto px-4 text-center text-sm sm:text-base font-bold tracking-wide text-slate-300">
-      „Všem koloběžníkům <span class="text-transparent bg-clip-text bg-gradient-to-r from-lime-400 to-cyan-400 font-black tracking-widest text-lg">R.E.S.P.E.C.T.</span>“
+  <section class="relative z-10 py-5 bg-gradient-to-r from-orange-950/80 via-slate-900 to-orange-950/80 border-y border-orange-500/30">
+    <div class="max-w-4xl mx-auto px-4 text-center text-sm sm:text-base font-bold tracking-wide text-slate-200">
+      „Všem koloběžníkům <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 font-black tracking-widest text-lg">R.E.S.P.E.C.T.</span>“
     </div>
   </section>
 
@@ -143,25 +142,25 @@
       
       <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
         <div>
-          <span class="text-xs font-black uppercase tracking-wider text-lime-400">Osobní testy</span>
+          <span class="text-xs font-black uppercase tracking-wider text-orange-400">Upřímné hodnocení</span>
           <h2 class="text-3xl sm:text-4xl font-black tracking-tight text-white mt-1">Moje recenze koloběžek</h2>
-          <p class="text-slate-400 text-sm mt-1">Kliknutím na kartu zobrazíš detailní parametry, klady a zápory.</p>
+          <p class="text-slate-300 text-sm mt-1">Kliknutím na kartu otevřeš podrobné hodnocení a parametry.</p>
         </div>
         
         <!-- Searchbox -->
         <div class="relative w-full md:w-72">
-          <input type="text" id="search-input" oninput="filterSearch()" placeholder="Hledat model nebo parametr..." class="w-full bg-slate-900/90 border border-slate-700 rounded-2xl px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition shadow-inner">
-          <span class="absolute right-3.5 top-2.5 text-slate-500 text-sm">🔍</span>
+          <input type="text" id="search-input" oninput="filterSearch()" placeholder="Hledat model nebo vlastnost..." class="w-full bg-slate-900/90 border border-slate-700/90 rounded-2xl px-4 py-2.5 text-sm text-slate-100 placeholder-slate-400 focus:outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20 transition shadow-inner">
+          <span class="absolute right-3.5 top-2.5 text-orange-400 text-sm">🔍</span>
         </div>
       </div>
 
       <!-- Filtry kategorií -->
       <div class="flex flex-wrap gap-2.5 mb-10" id="filter-buttons">
-        <button onclick="filterCategory('all', event)" class="filter-btn active px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider bg-lime-400 text-slate-950 shadow-md shadow-lime-400/25 transition">Všechny (27)</button>
-        <button onclick="filterCategory('folding', event)" class="filter-btn px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider bg-slate-900/80 text-slate-300 border border-slate-800 hover:border-slate-700 transition">Skládací</button>
-        <button onclick="filterCategory('sport', event)" class="filter-btn px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider bg-slate-900/80 text-slate-300 border border-slate-800 hover:border-slate-700 transition">Sportovní</button>
-        <button onclick="filterCategory('electric', event)" class="filter-btn px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider bg-slate-900/80 text-slate-300 border border-slate-800 hover:border-slate-700 transition">Elektrické</button>
-        <button onclick="filterCategory('special', event)" class="filter-btn px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider bg-slate-900/80 text-slate-300 border border-slate-800 hover:border-slate-700 transition">Speciály</button>
+        <button onclick="filterCategory('all', event)" class="filter-btn active px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 shadow-lg shadow-orange-500/25 transition">Všechny (27)</button>
+        <button onclick="filterCategory('folding', event)" class="filter-btn px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider bg-slate-900/80 text-slate-300 border border-slate-700 hover:border-amber-400 transition">Skládací</button>
+        <button onclick="filterCategory('sport', event)" class="filter-btn px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider bg-slate-900/80 text-slate-300 border border-slate-700 hover:border-cyan-400 transition">Sportovní</button>
+        <button onclick="filterCategory('electric', event)" class="filter-btn px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider bg-slate-900/80 text-slate-300 border border-slate-700 hover:border-lime-400 transition">Elektrické</button>
+        <button onclick="filterCategory('special', event)" class="filter-btn px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider bg-slate-900/80 text-slate-300 border border-slate-700 hover:border-purple-400 transition">Speciály</button>
       </div>
 
       <!-- Grid karet -->
@@ -171,7 +170,7 @@
 
   <!-- Moderní detailní okno (Modal) -->
   <div id="detail-modal" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-xl hidden items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-700 max-w-2xl w-full rounded-3xl overflow-hidden shadow-2xl max-h-[92vh] flex flex-col custom-scroll">
+    <div class="bg-slate-900 border border-orange-500/40 max-w-2xl w-full rounded-3xl overflow-hidden shadow-2xl max-h-[92vh] flex flex-col custom-scroll">
       <div class="p-4 px-6 border-b border-slate-800 flex items-center justify-between bg-slate-950/80">
         <div id="modal-category"></div>
         <button onclick="closeModal()" class="text-slate-400 hover:text-white text-2xl font-bold w-9 h-9 rounded-full flex items-center justify-center hover:bg-slate-800 transition">&times;</button>
@@ -193,13 +192,13 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-          <div class="bg-emerald-950/30 p-4 rounded-2xl border border-emerald-500/30">
+          <div class="bg-emerald-950/30 p-4 rounded-2xl border border-emerald-500/40">
             <h4 class="text-emerald-400 font-extrabold uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
               <span>✓</span> Výhody (+)
             </h4>
             <ul id="modal-pros" class="space-y-1.5 text-slate-300"></ul>
           </div>
-          <div class="bg-rose-950/30 p-4 rounded-2xl border border-rose-500/30">
+          <div class="bg-rose-950/30 p-4 rounded-2xl border border-rose-500/40">
             <h4 class="text-rose-400 font-extrabold uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
               <span>✕</span> Nevýhody (-)
             </h4>
@@ -208,24 +207,24 @@
         </div>
 
         <div class="pt-2 flex justify-end">
-          <button onclick="closeModal()" class="px-6 py-2.5 rounded-xl bg-lime-400 hover:bg-lime-300 text-slate-950 font-black transition text-xs shadow-lg shadow-lime-400/25">Zavřít recenzi</button>
+          <button onclick="closeModal()" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 hover:brightness-110 text-slate-950 font-black transition text-xs shadow-lg shadow-orange-500/30">Zavřít recenzi</button>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Tipy a články -->
-  <section id="tipy" class="relative z-10 py-16 md:py-24 border-t border-slate-800/80 bg-slate-900/30">
+  <section id="tipy" class="relative z-10 py-16 md:py-24 border-t border-slate-800/80 bg-slate-900/40">
     <div class="max-w-6xl mx-auto px-4">
       <span class="text-xs font-black uppercase tracking-wider text-cyan-400">Magazín & Know-how</span>
       <h2 class="text-3xl sm:text-4xl font-black tracking-tight text-white mt-1 mb-2">Tipy, výbava & Zkušenosti</h2>
       <p class="text-slate-400 text-sm mb-12">Ověřené postřehy a výstroj z každodenního ježdění.</p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="glass-card p-6 rounded-3xl flex flex-col sm:flex-row gap-5 items-start group">
+        <div class="action-card p-6 rounded-3xl flex flex-col sm:flex-row gap-5 items-start group">
           <img src="./public/images/cyclers.jpg" alt="Aplikace Cyclers" class="w-24 h-24 rounded-2xl object-contain bg-slate-950 border border-slate-800 shrink-0 p-1 group-hover:scale-105 transition" onerror="this.style.display='none'">
           <div>
-            <span class="text-[10px] font-black text-cyan-400 uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-cyan-950/60 border border-cyan-500/30">Aplikace</span>
+            <span class="text-[10px] font-black text-cyan-400 uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-cyan-950/60 border border-cyan-500/40">Aplikace</span>
             <h3 class="text-lg font-bold text-white mt-2 mb-2 group-hover:text-cyan-300 transition">Aplikace Cyclers: Navigace pro koloběžky</h3>
             <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
               Plánování tras s minimem stoupání, vynechání nebezpečných úseků a výběr povrchu vhodného pro koloběžky.
@@ -233,10 +232,10 @@
           </div>
         </div>
 
-        <div class="glass-card p-6 rounded-3xl flex flex-col sm:flex-row gap-5 items-start group">
+        <div class="action-card p-6 rounded-3xl flex flex-col sm:flex-row gap-5 items-start group">
           <img src="./public/images/tip-hovding.jpg" alt="Airbag Hövding" class="w-24 h-24 rounded-2xl object-contain bg-slate-950 border border-slate-800 shrink-0 p-1 group-hover:scale-105 transition" onerror="this.style.display='none'">
           <div>
-            <span class="text-[10px] font-black text-amber-400 uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-amber-950/60 border border-amber-500/30">Bezpečnost</span>
+            <span class="text-[10px] font-black text-amber-400 uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-amber-950/60 border border-amber-500/40">Bezpečnost</span>
             <h3 class="text-lg font-bold text-white mt-2 mb-2 group-hover:text-amber-300 transition">Airbag Hövding na koloběžce</h3>
             <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
               Test a reálné postřehy s airbagovým límcem jako stylovou a bezpečnou alternativou ke klasické přilbě.
@@ -244,10 +243,10 @@
           </div>
         </div>
 
-        <div class="glass-card p-6 rounded-3xl flex flex-col sm:flex-row gap-5 items-start group">
+        <div class="action-card p-6 rounded-3xl flex flex-col sm:flex-row gap-5 items-start group">
           <img src="./public/images/tip-dirtsuit.jpg" alt="Kombinéza Dirtlej" class="w-24 h-24 rounded-2xl object-contain bg-slate-950 border border-slate-800 shrink-0 p-1 group-hover:scale-105 transition" onerror="this.style.display='none'">
           <div>
-            <span class="text-[10px] font-black text-lime-400 uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-lime-950/60 border border-lime-500/30">Výbava</span>
+            <span class="text-[10px] font-black text-lime-400 uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-lime-950/60 border border-lime-500/40">Výbava</span>
             <h3 class="text-lg font-bold text-white mt-2 mb-2 group-hover:text-lime-300 transition">Kombinéza Dirtlej do každého počasí</h3>
             <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
               Jak zůstat v suchu a teple i při jízdě v dešti, blátě nebo v mrazu na výkonných strojích.
@@ -255,11 +254,11 @@
           </div>
         </div>
 
-        <div class="glass-card p-6 rounded-3xl flex flex-col sm:flex-row gap-5 items-start group">
+        <div class="action-card p-6 rounded-3xl flex flex-col sm:flex-row gap-5 items-start group">
           <img src="./public/images/field.jpg" alt="Technika jízdy" class="w-24 h-24 rounded-2xl object-contain bg-slate-950 border border-slate-800 shrink-0 p-1 group-hover:scale-105 transition" onerror="this.style.display='none'">
           <div>
-            <span class="text-[10px] font-black text-emerald-400 uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-emerald-950/60 border border-emerald-500/30">Technika</span>
-            <h3 class="text-lg font-bold text-white mt-2 mb-2 group-hover:text-emerald-300 transition">Správná technika odrazu a střídání nohou</h3>
+            <span class="text-[10px] font-black text-orange-400 uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-orange-950/60 border border-orange-500/40">Technika</span>
+            <h3 class="text-lg font-bold text-white mt-2 mb-2 group-hover:text-orange-300 transition">Správná technika odrazu a střídání nohou</h3>
             <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
               Pravidelné střídání stojné nohy je základ. Jak jezdit bez přetížení jedné strany těla a bolesti zad.
             </p>
@@ -272,19 +271,19 @@
   <!-- Služby & Poradenství -->
   <section id="sluzby" class="relative z-10 py-16 md:py-24 border-t border-slate-800/80">
     <div class="max-w-4xl mx-auto px-4 text-center">
-      <span class="text-xs font-black uppercase tracking-wider text-lime-400">Pomoc s výběrem</span>
+      <span class="text-xs font-black uppercase tracking-wider text-amber-400">Pomoc s výběrem</span>
       <h2 class="text-3xl sm:text-4xl font-black tracking-tight text-white mt-1 mb-3">Služby & Poradenství</h2>
       <p class="text-slate-400 text-sm mb-12">Osobní konzultace výběru stroje i zaučení správné techniky odrazu.</p>
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
-        <div class="glass-card p-8 rounded-3xl">
-          <div class="text-lime-400 font-black text-2xl mb-2">Individuálně</div>
+        <div class="action-card p-8 rounded-3xl border-l-4 border-l-amber-400">
+          <div class="text-amber-400 font-black text-2xl mb-2">Individuálně</div>
           <h3 class="text-xl font-bold text-white mb-2">Poradenství s výběrem</h3>
           <p class="text-slate-400 text-sm leading-relaxed">
             Pomoc s výběrem správné koloběžky přesně podle tvé výšky, váhy a terénu, kde chceš jezdit.
           </p>
         </div>
-        <div class="glass-card p-8 rounded-3xl">
+        <div class="action-card p-8 rounded-3xl border-l-4 border-l-cyan-400">
           <div class="text-cyan-400 font-black text-2xl mb-2">Dle domluvy</div>
           <h3 class="text-xl font-bold text-white mb-2">Technika jízdy a odrazu</h3>
           <p class="text-slate-400 text-sm leading-relaxed">
@@ -295,9 +294,9 @@
     </div>
   </section>
 
-  <!-- Mobilní spodní dock (rychlá navigace pro palec na telefonu) -->
+  <!-- Mobilní spodní dock -->
   <div class="md:hidden fixed bottom-3 left-1/2 -translate-x-1/2 z-50 w-[92%] backdrop-blur-2xl bg-slate-900/90 border border-slate-700/80 rounded-2xl px-6 py-2.5 flex items-center justify-between shadow-2xl shadow-black">
-    <a href="#testy" class="flex flex-col items-center text-[10px] font-bold text-lime-400">
+    <a href="#testy" class="flex flex-col items-center text-[10px] font-bold text-amber-400">
       <span class="text-base">🛴</span>
       <span>Testy</span>
     </a>
@@ -319,7 +318,7 @@
   <footer id="kontakt" class="relative z-10 py-12 bg-slate-950 border-t border-slate-900 text-slate-500 text-sm text-center">
     <div class="max-w-6xl mx-auto px-4">
       <div class="flex items-center justify-center gap-2 mb-3">
-        <span class="w-6 h-6 rounded-lg bg-lime-400 text-slate-950 font-black text-xs flex items-center justify-center">K</span>
+        <span class="w-6 h-6 rounded-lg bg-gradient-to-tr from-amber-400 to-orange-500 text-slate-950 font-black text-xs flex items-center justify-center">K</span>
         <span class="text-slate-200 font-black text-base">Koloběžník.cz</span>
       </div>
       <p class="text-xs text-slate-500 mb-6">Autentický svět koloběhu a recenzí bez kompromisů.</p>
@@ -658,16 +657,16 @@
       }
     ];
 
-    // Štítky kategorií s neonovými barvami
+    // Štítky kategorií s živými barvami
     function getCategoryBadge(cat, label) {
       if (cat === 'sport') {
-        return `<span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm">${label}</span>`;
+        return `<span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-cyan-500/25 text-cyan-300 border border-cyan-400/50 shadow-sm">${label}</span>`;
       } else if (cat === 'electric') {
-        return `<span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-lime-400/20 text-lime-300 border border-lime-400/40 shadow-sm">${label}</span>`;
+        return `<span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-lime-400/25 text-lime-300 border border-lime-400/50 shadow-sm">${label}</span>`;
       } else if (cat === 'special') {
-        return `<span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/40 shadow-sm">${label}</span>`;
+        return `<span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-purple-500/25 text-purple-300 border border-purple-400/50 shadow-sm">${label}</span>`;
       }
-      return `<span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-400/20 text-amber-300 border border-amber-400/40 shadow-sm">${label}</span>`;
+      return `<span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-400/25 text-amber-300 border border-amber-400/50 shadow-sm">${label}</span>`;
     }
 
     // Vykreslení karet
@@ -678,7 +677,7 @@
       items.forEach(s => {
         const badge = getCategoryBadge(s.cat, s.catLabel);
         const card = document.createElement('div');
-        card.className = "scooter-card group glass-card rounded-3xl flex flex-col cursor-pointer overflow-hidden";
+        card.className = "scooter-card group action-card rounded-3xl flex flex-col cursor-pointer overflow-hidden";
         card.setAttribute('data-category', s.cat);
         card.onclick = () => openModal(s.id);
 
@@ -686,16 +685,16 @@
           <div class="h-60 bg-gradient-to-b from-slate-950 to-slate-900/90 p-4 flex items-center justify-center relative border-b border-slate-800/80">
             <img src="${s.img}" alt="${s.name}" class="w-full h-full object-contain group-hover:scale-110 transition duration-500" onerror="this.src='./public/images/hero.jpg'">
             <div class="absolute top-3.5 left-3.5">${badge}</div>
-            ${s.badgeText ? `<div class="absolute bottom-3 right-3 text-[10px] font-extrabold px-2.5 py-1 rounded-lg bg-slate-950/80 text-slate-300 border border-slate-800 backdrop-blur-sm shadow-sm">${s.badgeText}</div>` : ''}
+            ${s.badgeText ? `<div class="absolute bottom-3 right-3 text-[10px] font-extrabold px-3 py-1 rounded-xl bg-orange-950/80 text-amber-300 border border-orange-500/40 backdrop-blur-md shadow-sm">${s.badgeText}</div>` : ''}
           </div>
           <div class="p-6 flex-1 flex flex-col justify-between">
             <div>
-              <h3 class="text-xl font-black text-white mb-2 leading-snug group-hover:text-lime-300 transition">${s.name}</h3>
-              <p class="text-slate-400 text-xs mb-4 leading-relaxed line-clamp-3">${s.blurb}</p>
+              <h3 class="text-xl font-black text-white mb-2 leading-snug group-hover:text-amber-400 transition">${s.name}</h3>
+              <p class="text-slate-300 text-xs mb-4 leading-relaxed line-clamp-3">${s.blurb}</p>
             </div>
             <div class="flex items-center justify-between pt-4 border-t border-slate-800/80 text-xs">
-              <span class="text-slate-400 font-semibold">Výhody: <strong class="text-emerald-400 font-bold">${s.pros.length}</strong> | Zápory: <strong class="text-rose-400 font-bold">${s.cons.length}</strong></span>
-              <span class="text-lime-400 font-extrabold group-hover:translate-x-1.5 transition flex items-center gap-1">Detail testu &rarr;</span>
+              <span class="text-slate-300 font-semibold">Výhody: <strong class="text-emerald-400 font-bold">${s.pros.length}</strong> | Zápory: <strong class="text-rose-400 font-bold">${s.cons.length}</strong></span>
+              <span class="text-amber-400 font-extrabold group-hover:translate-x-1.5 transition flex items-center gap-1">Detail testu &rarr;</span>
             </div>
           </div>
         `;
@@ -712,13 +711,13 @@
       currentCategory = category;
       const buttons = document.querySelectorAll('.filter-btn');
       buttons.forEach(btn => {
-        btn.classList.remove('bg-lime-400', 'text-slate-950', 'shadow-md', 'shadow-lime-400/25');
-        btn.classList.add('bg-slate-900/80', 'text-slate-300', 'border', 'border-slate-800');
+        btn.classList.remove('bg-gradient-to-r', 'from-amber-400', 'to-orange-500', 'text-slate-950', 'shadow-lg', 'shadow-orange-500/25');
+        btn.classList.add('bg-slate-900/80', 'text-slate-300', 'border', 'border-slate-700');
       });
 
       if (evt && evt.currentTarget) {
-        evt.currentTarget.classList.remove('bg-slate-900/80', 'text-slate-300', 'border', 'border-slate-800');
-        evt.currentTarget.classList.add('bg-lime-400', 'text-slate-950', 'shadow-md', 'shadow-lime-400/25');
+        evt.currentTarget.classList.remove('bg-slate-900/80', 'text-slate-300', 'border', 'border-slate-700');
+        evt.currentTarget.classList.add('bg-gradient-to-r', 'from-amber-400', 'to-orange-500', 'text-slate-950', 'shadow-lg', 'shadow-orange-500/25');
       }
 
       applyFilters();
