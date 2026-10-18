@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Koloběžník — Diagnostika Admin</title>
+  <title>Koloběžník — Administrace</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,7 +14,6 @@
     .lime-bg { background-color: #C6F135; }
     .lime-btn { background-color: #C6F135; color: #111827; font-family: 'Oswald', sans-serif; letter-spacing: 0.05em; }
     .lime-btn:hover { background-color: #b3df22; }
-    .admin-tab.active { background-color: #C6F135; color: #000; }
   </style>
 </head>
 <body class="p-4 sm:p-8 max-w-xl mx-auto min-h-screen flex flex-col justify-between">
@@ -23,8 +22,8 @@
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl lime-bg flex items-center justify-center text-black font-black text-xl">🛠️</div>
         <div>
-          <span class="text-[10px] uppercase font-bold text-lime-400 tracking-widest block">DIAGNOSTIKA</span>
-          <h1 class="heading-font text-2xl text-white">SPRÁVA WEBU</h1>
+          <span class="text-[10px] uppercase font-bold text-lime-400 tracking-widest block">ADMIN</span>
+          <h1 class="heading-font text-2xl text-white">SPRÁVA KOLOBĚŽEK</h1>
         </div>
       </div>
       <a href="./index.html" class="text-xs text-stone-400 hover:text-white underline">Zpět na web &rarr;</a>
@@ -40,14 +39,14 @@
       </div>
     </div>
 
-    <!-- SEKCE 1: KOLOBĚŽKY -->
-    <div id="sec-scooters" class="space-y-6">
-      <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 shadow-xl space-y-4">
-        <div class="flex justify-between items-center">
-          <h2 class="heading-font text-lg text-white">Seznam koloběžek</h2>
-          <button onclick="loadScooters()" class="bg-stone-800 text-stone-200 text-xs px-3 py-1.5 rounded-xl">Načíst</button>
-        </div>
-        <div id="list-scooters" class="space-y-2 max-h-80 overflow-y-auto text-xs"><p class="text-stone-500 italic">Klikni na načíst...</p></div>
+    <!-- Seznam koloběžek -->
+    <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 shadow-xl space-y-4">
+      <div class="flex justify-between items-center">
+        <h2 class="heading-font text-lg text-white">Seznam koloběžek</h2>
+        <button onclick="loadScooters()" class="bg-stone-800 text-stone-200 text-xs px-3 py-1.5 rounded-xl">Načíst</button>
+      </div>
+      <div id="list-scooters" class="space-y-2 max-h-96 overflow-y-auto text-xs">
+        <p class="text-stone-500 italic">Klikni na „Načíst“...</p>
       </div>
     </div>
   </div>
@@ -62,25 +61,22 @@
       alert('Uloženo!');
     }
 
-    async function fetchIndex() {
-      const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo');
-      const res = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, { headers: { 'Authorization': `token ${token}` } });
-      if (!res.ok) throw new Error('Chyba načítání index.html z GitHubu');
-      const fileData = await res.json();
-      return { fileData, htmlContent: new TextDecoder().decode(Uint8Array.from(atob(fileData.content), c => c.codePointAt(0))) };
-    }
-
     async function loadScooters() {
       const box = document.getElementById('list-scooters');
-      box.innerHTML = 'Načítám a parsuji...';
+      box.innerHTML = 'Načítám...';
       try {
-        const { htmlContent } = await fetchIndex();
+        const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo');
+        const res = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, { headers: { 'Authorization': `token ${token}` } });
+        if (!res.ok) throw new Error('Chyba při stahování index.html');
         
-        // Pokusíme se najít pozici const scooters = [
-        const marker = "const scooters = [";
+        const fileData = await res.json();
+        const htmlContent = new TextDecoder().decode(Uint8Array.from(atob(fileData.content), c => c.codePointAt(0)));
+
+        // Hledání klíčového slova scooters = [ kdekoliv v textu
+        const marker = "scooters = [";
         const startIdx = htmlContent.indexOf(marker);
         if (startIdx === -1) {
-          box.innerHTML = '<p class="text-rose-400">Chyba: V index.html nebyl nalezen text "const scooters = ["</p>';
+          box.innerHTML = '<p class="text-rose-400">Chyba: V index.html se nenašlo "scooters = ["</p>';
           return;
         }
 
@@ -93,30 +89,19 @@
           }
         }
 
-        if (endIdx === -1) {
-          box.innerHTML = '<p class="text-rose-400">Chyba: Nepodařilo se najít konec pole koloběžek.</p>';
-          return;
-        }
-
         const arrayCode = htmlContent.substring(startIdx + marker.length - 1, endIdx);
-        let scooters = [];
-        try {
-          scooters = eval(arrayCode);
-        } catch (e) {
-          box.innerHTML = `<p class="text-rose-400">Chyba JavaScript eval: ${e.message}</p>`;
-          return;
-        }
+        const scooters = eval(arrayCode);
 
         if (!scooters || scooters.length === 0) {
-          box.innerHTML = '<p class="text-stone-400">Pole je prázdné nebo se nenačetlo.</p>';
+          box.innerHTML = '<p class="text-stone-400">Žádné položky.</p>';
           return;
         }
 
-        box.innerHTML = `<p class="text-lime-400 font-bold mb-2">Nalezeno koloběžek: ${scooters.length}</p>`;
+        box.innerHTML = `<p class="text-lime-400 font-bold mb-2">Načteno položek: ${scooters.length}</p>`;
         scooters.forEach(s => {
           const row = document.createElement('div');
           row.className = "bg-stone-950 p-2.5 rounded-xl flex items-center justify-between border border-stone-800 mb-1";
-          row.innerHTML = `<span class="text-white">${s.name}</span> <span class="text-[10px] text-stone-400">${s.verdict}</span>`;
+          row.innerHTML = `<span class="text-white font-bold">${s.name}</span> <span class="text-[10px] text-stone-400">${s.verdict || ''}</span>`;
           box.appendChild(row);
         });
 
