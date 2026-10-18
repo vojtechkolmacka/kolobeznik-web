@@ -1,0 +1,26 @@
+name: Kontrola projektu
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Nacist repozitar
+        uses: actions/checkout@v6
+
+      - name: Nastavit Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22.18.0"
+          cache: npm
+
+      - name: Nainstalovat zavislosti
+        run: npm ci
+
+      - name: TypeScript kontrola
+        run: npm run typecheck
