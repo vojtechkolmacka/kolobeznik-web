@@ -30,7 +30,7 @@
   </header>
 
   <!-- Hero sekce -->
-  <section class="relative py-20 md:py-28 border-b border-neutral-900 bg-gradient-to-b from-neutral-900/50 via-neutral-950 to-neutral-950">
+  <section class="relative py-16 md:py-24 border-b border-neutral-900 bg-gradient-to-b from-neutral-900/50 via-neutral-950 to-neutral-950">
     <div class="max-w-6xl mx-auto px-4 text-center">
       <span class="inline-block px-3 py-1 text-xs font-semibold tracking-wider text-amber-400 bg-amber-400/10 border border-amber-400/20 rounded-full uppercase mb-6">
         Oficiální web nadšence do koloběhu
@@ -41,6 +41,12 @@
       <p class="max-w-2xl mx-auto text-lg md:text-xl text-neutral-400 mb-8 font-light leading-relaxed">
         Reálné testy, autentické zkušenosti z tisíců kilometrů a poctivé rady bez katalogových výmyslů.
       </p>
+
+      <!-- Hero fotka v plné kráse bez ořezu -->
+      <div class="max-w-3xl mx-auto mb-10 rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-900 shadow-2xl">
+        <img src="./public/images/hero.jpg" alt="Koloběžník v akci" class="w-full h-auto object-contain">
+      </div>
+
       <div class="flex flex-wrap justify-center gap-4">
         <a href="#testy" class="px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold transition shadow-lg shadow-amber-500/20">
           Prohlédnout testy
@@ -69,27 +75,29 @@
 
       <!-- Filtry kategorií -->
       <div class="flex flex-wrap gap-2 mb-10" id="filter-buttons">
-        <button onclick="filterCategory('all')" class="filter-btn active px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider bg-amber-500 text-neutral-950 transition">Všechny</button>
-        <button onclick="filterCategory('folding')" class="filter-btn px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider bg-neutral-900 text-neutral-300 border border-neutral-800 hover:border-neutral-700 transition">Skládací</button>
-        <button onclick="filterCategory('sport')" class="filter-btn px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider bg-neutral-900 text-neutral-300 border border-neutral-800 hover:border-neutral-700 transition">Sportovní</button>
-        <button onclick="filterCategory('electric')" class="filter-btn px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider bg-neutral-900 text-neutral-300 border border-neutral-800 hover:border-neutral-700 transition">Elektrické</button>
-        <button onclick="filterCategory('special')" class="filter-btn px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider bg-neutral-900 text-neutral-300 border border-neutral-800 hover:border-neutral-700 transition">Speciály</button>
+        <button onclick="filterCategory('all', event)" class="filter-btn active px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider bg-amber-500 text-neutral-950 transition">Všechny</button>
+        <button onclick="filterCategory('folding', event)" class="filter-btn px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider bg-neutral-900 text-neutral-300 border border-neutral-800 hover:border-neutral-700 transition">Skládací</button>
+        <button onclick="filterCategory('sport', event)" class="filter-btn px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider bg-neutral-900 text-neutral-300 border border-neutral-800 hover:border-neutral-700 transition">Sportovní</button>
+        <button onclick="filterCategory('electric', event)" class="filter-btn px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider bg-neutral-900 text-neutral-300 border border-neutral-800 hover:border-neutral-700 transition">Elektrické</button>
+        <button onclick="filterCategory('special', event)" class="filter-btn px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider bg-neutral-900 text-neutral-300 border border-neutral-800 hover:border-neutral-700 transition">Speciály</button>
       </div>
 
-      <!-- Karty modelů -->
+      <!-- Karty modelů (fotky se zobrazují celé bez ořezu) -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="scooter-grid">
         
         <!-- Sulov Condor -->
-        <div class="scooter-card group bg-neutral-900/60 rounded-2xl border border-neutral-800 overflow-hidden hover:border-amber-500/40 transition" data-category="sport">
-          <div class="h-52 bg-neutral-800 overflow-hidden relative">
-            <img src="./public/images/scooter-15.jpg" alt="Sulov Condor 26/20" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='./public/images/hero.jpg'">
+        <div class="scooter-card group bg-neutral-900/60 rounded-2xl border border-neutral-800 overflow-hidden hover:border-amber-500/40 transition flex flex-col" data-category="sport">
+          <div class="h-60 bg-neutral-950 p-2 flex items-center justify-center relative border-b border-neutral-800/60">
+            <img src="./public/images/scooter-15.jpg" alt="Sulov Condor 26/20" class="w-full h-full object-contain group-hover:scale-105 transition duration-500" onerror="this.src='./public/images/hero.jpg'">
             <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-neutral-950/80 text-amber-400 border border-neutral-800">Sportovní</span>
           </div>
-          <div class="p-6">
-            <h3 class="text-xl font-bold text-white mb-2">Sulov Condor 26/20</h3>
-            <p class="text-neutral-400 text-sm mb-4 leading-relaxed">
-              Velká nafukovací kola, pevný rám a skvělá stabilita na delší výlety i polní cesty.
-            </p>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-xl font-bold text-white mb-2">Sulov Condor 26/20</h3>
+              <p class="text-neutral-400 text-sm mb-4 leading-relaxed">
+                Velká nafukovací kola, pevný ocelový rám a skvělá stabilita na delší výlety i polní cesty.
+              </p>
+            </div>
             <div class="flex items-center justify-between pt-4 border-t border-neutral-800/80 text-xs">
               <span class="text-neutral-400">Verdikt: <strong class="text-emerald-400">Doporučuji</strong></span>
               <span class="text-amber-400 font-semibold">26" / 20"</span>
@@ -98,16 +106,18 @@
         </div>
 
         <!-- Hudora BigWheel 205 -->
-        <div class="scooter-card group bg-neutral-900/60 rounded-2xl border border-neutral-800 overflow-hidden hover:border-amber-500/40 transition" data-category="folding">
-          <div class="h-52 bg-neutral-800 overflow-hidden relative">
-            <img src="./public/images/scooter-08.jpg" alt="Hudora BigWheel 205" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='./public/images/hero.jpg'">
+        <div class="scooter-card group bg-neutral-900/60 rounded-2xl border border-neutral-800 overflow-hidden hover:border-amber-500/40 transition flex flex-col" data-category="folding">
+          <div class="h-60 bg-neutral-950 p-2 flex items-center justify-center relative border-b border-neutral-800/60">
+            <img src="./public/images/scooter-08.jpg" alt="Hudora BigWheel 205" class="w-full h-full object-contain group-hover:scale-105 transition duration-500" onerror="this.src='./public/images/hero.jpg'">
             <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-neutral-950/80 text-amber-400 border border-neutral-800">Skládací</span>
           </div>
-          <div class="p-6">
-            <h3 class="text-xl font-bold text-white mb-2">Hudora BigWheel 205</h3>
-            <p class="text-neutral-400 text-sm mb-4 leading-relaxed">
-              Lehká hliníková skládačka s 205mm polyuretanovými koly pro rychlé přesuny po městě.
-            </p>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-xl font-bold text-white mb-2">Hudora BigWheel 205</h3>
+              <p class="text-neutral-400 text-sm mb-4 leading-relaxed">
+                Lehká hliníková skládačka s 205mm polyuretanovými koly pro svižné a skladné městské přesuny.
+              </p>
+            </div>
             <div class="flex items-center justify-between pt-4 border-t border-neutral-800/80 text-xs">
               <span class="text-neutral-400">Verdikt: <strong class="text-emerald-400">Doporučuji</strong></span>
               <span class="text-amber-400 font-semibold">205 mm</span>
@@ -116,16 +126,18 @@
         </div>
 
         <!-- Sencor Scooter Two Long Range -->
-        <div class="scooter-card group bg-neutral-900/60 rounded-2xl border border-neutral-800 overflow-hidden hover:border-amber-500/40 transition" data-category="electric">
-          <div class="h-52 bg-neutral-800 overflow-hidden relative">
-            <img src="./public/images/scooter-21.jpg" alt="Sencor Scooter Two Long Range" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='./public/images/e-kick.jpg'">
+        <div class="scooter-card group bg-neutral-900/60 rounded-2xl border border-neutral-800 overflow-hidden hover:border-amber-500/40 transition flex flex-col" data-category="electric">
+          <div class="h-60 bg-neutral-950 p-2 flex items-center justify-center relative border-b border-neutral-800/60">
+            <img src="./public/images/scooter-21.jpg" alt="Sencor Scooter Two Long Range" class="w-full h-full object-contain group-hover:scale-105 transition duration-500" onerror="this.src='./public/images/e-kick.jpg'">
             <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-neutral-950/80 text-amber-400 border border-neutral-800">Elektrická</span>
           </div>
-          <div class="p-6">
-            <h3 class="text-xl font-bold text-white mb-2">Sencor Two Long Range</h3>
-            <p class="text-neutral-400 text-sm mb-4 leading-relaxed">
-              Městský dojížděcí stroj se solidním dojezdem na jedno nabití, testovaný v reálném provozu.
-            </p>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-xl font-bold text-white mb-2">Sencor Two Long Range</h3>
+              <p class="text-neutral-400 text-sm mb-4 leading-relaxed">
+                Městský dojížděcí stroj se slušným dojezdem na jedno nabití, testovaný v každodenním provozu.
+              </p>
+            </div>
             <div class="flex items-center justify-between pt-4 border-t border-neutral-800/80 text-xs">
               <span class="text-neutral-400">Verdikt: <strong class="text-amber-400">Rozporuplné</strong></span>
               <span class="text-amber-400 font-semibold">45 km dojezd</span>
@@ -134,16 +146,18 @@
         </div>
 
         <!-- MyHood Tour -->
-        <div class="scooter-card group bg-neutral-900/60 rounded-2xl border border-neutral-800 overflow-hidden hover:border-amber-500/40 transition" data-category="folding">
-          <div class="h-52 bg-neutral-800 overflow-hidden relative">
-            <img src="./public/images/scooter-13.jpg" alt="MyHood Tour" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='./public/images/hero.jpg'">
+        <div class="scooter-card group bg-neutral-900/60 rounded-2xl border border-neutral-800 overflow-hidden hover:border-amber-500/40 transition flex flex-col" data-category="folding">
+          <div class="h-60 bg-neutral-950 p-2 flex items-center justify-center relative border-b border-neutral-800/60">
+            <img src="./public/images/scooter-13.jpg" alt="MyHood Tour" class="w-full h-full object-contain group-hover:scale-105 transition duration-500" onerror="this.src='./public/images/hero.jpg'">
             <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-neutral-950/80 text-amber-400 border border-neutral-800">Skládací</span>
           </div>
-          <div class="p-6">
-            <h3 class="text-xl font-bold text-white mb-2">MyHood Tour</h3>
-            <p class="text-neutral-400 text-sm mb-4 leading-relaxed">
-              Skládací koloběžka s nafukovacími koly pro pohodlnější přejezdy nerovností a dlažby.
-            </p>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-xl font-bold text-white mb-2">MyHood Tour</h3>
+              <p class="text-neutral-400 text-sm mb-4 leading-relaxed">
+                Kompaktní skládací koloběžka s nafukovacími koly pro pohodlnější přejezdy dlažby a nerovností.
+              </p>
+            </div>
             <div class="flex items-center justify-between pt-4 border-t border-neutral-800/80 text-xs">
               <span class="text-neutral-400">Verdikt: <strong class="text-emerald-400">Doporučuji</strong></span>
               <span class="text-amber-400 font-semibold">Nafukovací</span>
@@ -152,16 +166,18 @@
         </div>
 
         <!-- Sněhoběžka -->
-        <div class="scooter-card group bg-neutral-900/60 rounded-2xl border border-neutral-800 overflow-hidden hover:border-amber-500/40 transition" data-category="special">
-          <div class="h-52 bg-neutral-800 overflow-hidden relative">
-            <img src="./public/images/snow.jpg" alt="Sněhoběžka" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='./public/images/hero.jpg'">
+        <div class="scooter-card group bg-neutral-900/60 rounded-2xl border border-neutral-800 overflow-hidden hover:border-amber-500/40 transition flex flex-col" data-category="special">
+          <div class="h-60 bg-neutral-950 p-2 flex items-center justify-center relative border-b border-neutral-800/60">
+            <img src="./public/images/snow.jpg" alt="Sněhoběžka" class="w-full h-full object-contain group-hover:scale-105 transition duration-500" onerror="this.src='./public/images/hero.jpg'">
             <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-neutral-950/80 text-amber-400 border border-neutral-800">Speciály</span>
           </div>
-          <div class="p-6">
-            <h3 class="text-xl font-bold text-white mb-2">Sněhoběžka (Snow kick)</h3>
-            <p class="text-neutral-400 text-sm mb-4 leading-relaxed">
-              Zimní alternativa s lyžinami místo kol pro zábavu a pohyb na zasněžených svazích.
-            </p>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-xl font-bold text-white mb-2">Sněhoběžka (Snow kick)</h3>
+              <p class="text-neutral-400 text-sm mb-4 leading-relaxed">
+                Zimní alternativa s lyžinami místo kol pro zábavu a pohyb na zasněžených svazích a kopcích.
+              </p>
+            </div>
             <div class="flex items-center justify-between pt-4 border-t border-neutral-800/80 text-xs">
               <span class="text-neutral-400">Verdikt: <strong class="text-emerald-400">Zábava na sníh</strong></span>
               <span class="text-amber-400 font-semibold">Lyžiny</span>
@@ -170,16 +186,18 @@
         </div>
 
         <!-- Boyueda S3-11 -->
-        <div class="scooter-card group bg-neutral-900/60 rounded-2xl border border-neutral-800 overflow-hidden hover:border-amber-500/40 transition" data-category="electric">
-          <div class="h-52 bg-neutral-800 overflow-hidden relative">
-            <img src="./public/images/scooter-27.jpg" alt="Boyueda S3-11" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='./public/images/e-kick.jpg'">
+        <div class="scooter-card group bg-neutral-900/60 rounded-2xl border border-neutral-800 overflow-hidden hover:border-amber-500/40 transition flex flex-col" data-category="electric">
+          <div class="h-60 bg-neutral-950 p-2 flex items-center justify-center relative border-b border-neutral-800/60">
+            <img src="./public/images/scooter-27.jpg" alt="Boyueda S3-11" class="w-full h-full object-contain group-hover:scale-105 transition duration-500" onerror="this.src='./public/images/e-kick.jpg'">
             <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-neutral-950/80 text-amber-400 border border-neutral-800">Elektrická</span>
           </div>
-          <div class="p-6">
-            <h3 class="text-xl font-bold text-white mb-2">Boyueda S3-11</h3>
-            <p class="text-neutral-400 text-sm mb-4 leading-relaxed">
-              Brutální dvoumotorový výkon, masivní odpružení a stroj vyžadující maximální respekt a výstroj.
-            </p>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-xl font-bold text-white mb-2">Boyueda S3-11</h3>
+              <p class="text-neutral-400 text-sm mb-4 leading-relaxed">
+                Brutální dvoumotorový výkon, masivní odpružení a stroj vyžadující maximální respekt a výstroj.
+              </p>
+            </div>
             <div class="flex items-center justify-between pt-4 border-t border-neutral-800/80 text-xs">
               <span class="text-neutral-400">Verdikt: <strong class="text-rose-400">Bestie</strong></span>
               <span class="text-amber-400 font-semibold">2× motor</span>
@@ -198,33 +216,45 @@
       <p class="text-neutral-400 text-sm mb-12">Ověřené postřehy z tisíců ujetých kilometrů.</p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="p-6 rounded-2xl bg-neutral-900/50 border border-neutral-800 hover:border-neutral-700 transition">
-          <span class="text-xs font-semibold text-amber-400 uppercase tracking-wider">Aplikace</span>
-          <h3 class="text-lg font-bold text-white mt-1 mb-2">Aplikace Cyclers: Navigace pro koloběžky</h3>
-          <p class="text-neutral-400 text-sm leading-relaxed">
-            Plánování tras s minimem stoupání, vynechání nebezpečných úseků a výběr povrchu vhodného pro koloběžky.
-          </p>
+        <div class="p-6 rounded-2xl bg-neutral-900/50 border border-neutral-800 hover:border-neutral-700 transition flex flex-col sm:flex-row gap-4 items-start">
+          <img src="./public/images/cyclers.jpg" alt="Aplikace Cyclers" class="w-24 h-24 rounded-xl object-contain bg-neutral-950 border border-neutral-800 shrink-0" onerror="this.style.display='none'">
+          <div>
+            <span class="text-xs font-semibold text-amber-400 uppercase tracking-wider">Aplikace</span>
+            <h3 class="text-lg font-bold text-white mt-1 mb-2">Aplikace Cyclers: Navigace pro koloběžky</h3>
+            <p class="text-neutral-400 text-sm leading-relaxed">
+              Plánování tras s minimem stoupání, vynechání nebezpečných úseků a výběr povrchu vhodného pro koloběžky.
+            </p>
+          </div>
         </div>
-        <div class="p-6 rounded-2xl bg-neutral-900/50 border border-neutral-800 hover:border-neutral-700 transition">
-          <span class="text-xs font-semibold text-amber-400 uppercase tracking-wider">Bezpečnost</span>
-          <h3 class="text-lg font-bold text-white mt-1 mb-2">Airbag Hövding na koloběžce</h3>
-          <p class="text-neutral-400 text-sm leading-relaxed">
-            Test a reálné postřehy s airbagovým límcem jako stylovou a bezpečnou alternativou ke klasické přilbě.
-          </p>
+        <div class="p-6 rounded-2xl bg-neutral-900/50 border border-neutral-800 hover:border-neutral-700 transition flex flex-col sm:flex-row gap-4 items-start">
+          <img src="./public/images/tip-hovding.jpg" alt="Airbag Hövding" class="w-24 h-24 rounded-xl object-contain bg-neutral-950 border border-neutral-800 shrink-0" onerror="this.style.display='none'">
+          <div>
+            <span class="text-xs font-semibold text-amber-400 uppercase tracking-wider">Bezpečnost</span>
+            <h3 class="text-lg font-bold text-white mt-1 mb-2">Airbag Hövding na koloběžce</h3>
+            <p class="text-neutral-400 text-sm leading-relaxed">
+              Test a reálné postřehy s airbagovým límcem jako stylovou a bezpečnou alternativou ke klasické přilbě.
+            </p>
+          </div>
         </div>
-        <div class="p-6 rounded-2xl bg-neutral-900/50 border border-neutral-800 hover:border-neutral-700 transition">
-          <span class="text-xs font-semibold text-amber-400 uppercase tracking-wider">Výbava</span>
-          <h3 class="text-lg font-bold text-white mt-1 mb-2">Kombinéza Dirtlej do každého počasí</h3>
-          <p class="text-neutral-400 text-sm leading-relaxed">
-            Jak zůstat v suchu a teple i při jízdě v dešti, blátě nebo v mrazu na výkonných strojích.
-          </p>
+        <div class="p-6 rounded-2xl bg-neutral-900/50 border border-neutral-800 hover:border-neutral-700 transition flex flex-col sm:flex-row gap-4 items-start">
+          <img src="./public/images/tip-dirtsuit.jpg" alt="Kombinéza Dirtlej" class="w-24 h-24 rounded-xl object-contain bg-neutral-950 border border-neutral-800 shrink-0" onerror="this.style.display='none'">
+          <div>
+            <span class="text-xs font-semibold text-amber-400 uppercase tracking-wider">Výbava</span>
+            <h3 class="text-lg font-bold text-white mt-1 mb-2">Kombinéza Dirtlej do každého počasí</h3>
+            <p class="text-neutral-400 text-sm leading-relaxed">
+              Jak zůstat v suchu a teple i při jízdě v dešti, blátě nebo v mrazu na výkonných strojích.
+            </p>
+          </div>
         </div>
-        <div class="p-6 rounded-2xl bg-neutral-900/50 border border-neutral-800 hover:border-neutral-700 transition">
-          <span class="text-xs font-semibold text-amber-400 uppercase tracking-wider">Technika</span>
-          <h3 class="text-lg font-bold text-white mt-1 mb-2">Správná technika odrazu a střídání nohou</h3>
-          <p class="text-neutral-400 text-sm leading-relaxed">
-            Pravidelné střídání stojné nohy je základ. Jak jezdit bez přetížení jedné strany těla a bolesti zad.
-          </p>
+        <div class="p-6 rounded-2xl bg-neutral-900/50 border border-neutral-800 hover:border-neutral-700 transition flex flex-col sm:flex-row gap-4 items-start">
+          <img src="./public/images/field.jpg" alt="Technika jízdy" class="w-24 h-24 rounded-xl object-contain bg-neutral-950 border border-neutral-800 shrink-0" onerror="this.style.display='none'">
+          <div>
+            <span class="text-xs font-semibold text-amber-400 uppercase tracking-wider">Technika</span>
+            <h3 class="text-lg font-bold text-white mt-1 mb-2">Správná technika odrazu a střídání nohou</h3>
+            <p class="text-neutral-400 text-sm leading-relaxed">
+              Pravidelné střídání stojné nohy je základ. Jak jezdit bez přetížení jedné strany těla a bolesti zad.
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -266,9 +296,9 @@
     </div>
   </footer>
 
-  <!-- Jednoduchý JS pro filtrování kategorií -->
+  <!-- JS pro filtrování kategorií -->
   <script>
-    function filterCategory(category) {
+    function filterCategory(category, evt) {
       const cards = document.querySelectorAll('.scooter-card');
       const buttons = document.querySelectorAll('.filter-btn');
 
@@ -277,12 +307,14 @@
         btn.classList.add('bg-neutral-900', 'text-neutral-300');
       });
 
-      event.target.classList.remove('bg-neutral-900', 'text-neutral-300');
-      event.target.classList.add('bg-amber-500', 'text-neutral-950');
+      if (evt && evt.currentTarget) {
+        evt.currentTarget.classList.remove('bg-neutral-900', 'text-neutral-300');
+        evt.currentTarget.classList.add('bg-amber-500', 'text-neutral-950');
+      }
 
       cards.forEach(card => {
         if (category === 'all' || card.getAttribute('data-category') === category) {
-          card.style.display = 'block';
+          card.style.display = 'flex';
         } else {
           card.style.display = 'none';
         }
@@ -291,5 +323,4 @@
   </script>
 
 </body>
-  </html>
-  
+</html>
