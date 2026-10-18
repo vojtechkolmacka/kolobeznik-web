@@ -1,0 +1,15 @@
+{
+  "name": "Koloběžník Admin",
+  "short_name": "Admin",
+  "start_url": "./admin.html",
+  "display": "standalone",
+  "background_color": "#1C1F1A",
+  "theme_color": "#C6F135",
+  "icons": [
+    {
+      "src": "./public/images/hero.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    }
+  ]
+}
