@@ -169,20 +169,15 @@
       return { fileData, htmlContent: new TextDecoder().decode(Uint8Array.from(atob(fileData.content), c => c.codePointAt(0))) };
     }
 
-    function extractArray(html, marker) {
-      const startIdx = html.indexOf(marker);
-      if (startIdx === -1) return [];
-      let bracketCount = 0, endIdx = -1;
-      for (let i = startIdx; i < html.length; i++) {
-        if (html[i] === '[') bracketCount++;
-        if (html[i] === ']') {
-          bracketCount--;
-          if (bracketCount === 0) { endIdx = i + 1; break; }
-        }
-      }
-      if (endIdx === -1) return [];
+    function extractArray(html, variableName) {
+      const regex = new RegExp(`(?:const|let|var)\\s+${variableName}\\s*=\\s*\\(?[\\s\\S]*?\\];?`, 'm');
+      const match = html.match(regex);
+      if (!match) return [];
+      
+      const arrayStart = match[0].indexOf('[');
+      const arrayCode = match[0].substring(arrayStart);
       try {
-        return eval(html.substring(startIdx + marker.length - 1, endIdx));
+        return eval(arrayCode);
       } catch (e) {
         console.error("Eval error:", e);
         return [];
@@ -195,7 +190,7 @@
       box.innerHTML = 'Načítám...';
       try {
         const { htmlContent } = await fetchIndex();
-        const scooters = extractArray(htmlContent, "scooters = [");
+        const scooters = extractArray(htmlContent, "scooters");
         if (scooters.length === 0) {
           box.innerHTML = '<p class="text-stone-400">Žádné položky nenalezeny.</p>';
           return;
@@ -212,7 +207,7 @@
 
     async function editScooter(id) {
       const { htmlContent } = await fetchIndex();
-      const s = extractArray(htmlContent, "scooters = [").find(x => x.id === id);
+      const s = extractArray(htmlContent, "scooters").find(x => x.id === id);
       if (!s) return;
       document.getElementById('s-edit-id').value = s.id;
       document.getElementById('s-name').value = s.name || '';
@@ -245,7 +240,7 @@
       status.innerText = 'Ukládám...';
       try {
         const { fileData, htmlContent } = await fetchIndex();
-        let scooters = extractArray(htmlContent, "scooters = [");
+        let scooters = extractArray(htmlContent, "scooters");
         const editId = document.getElementById('s-edit-id').value;
 
         if (isDel) scooters = scooters.filter(x => x.id !== delId);
@@ -263,15 +258,9 @@
           else scooters.push(item);
         }
 
-        const newCode = "scooters = " + JSON.stringify(scooters, null, 2) + ";";
-        const startMarker = "scooters = [";
-        const startIdx = htmlContent.indexOf(startMarker);
-        let bracketCount = 0, endIdx = -1;
-        for (let i = startIdx; i < htmlContent.length; i++) {
-          if (htmlContent[i] === '[') bracketCount++;
-          if (htmlContent[i] === ']') { bracketCount--; if (bracketCount === 0) { endIdx = i + 1; break; } }
-        }
-        const updatedHtml = htmlContent.substring(0, startIdx) + newCode + htmlContent.substring(endIdx);
+        const newCode = "const scooters = " + JSON.stringify(scooters, null, 2) + ";";
+        const regex = /(?:const|let|var)\s+scooters\s*=\s*\[[\s\S]*?\];?/;
+        const updatedHtml = htmlContent.replace(regex, newCode);
 
         const put = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, {
           method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
@@ -287,7 +276,7 @@
       box.innerHTML = 'Načítám...';
       try {
         const { htmlContent } = await fetchIndex();
-        const tips = extractArray(htmlContent, "tipsData = [");
+        const tips = extractArray(htmlContent, "tipsData");
         if (tips.length === 0) {
           box.innerHTML = '<p class="text-stone-400">Žádné tipy nenalezeny.</p>';
           return;
@@ -304,7 +293,7 @@
 
     async function editTip(id) {
       const { htmlContent } = await fetchIndex();
-      const t = extractArray(htmlContent, "tipsData = [").find(x => x.id === id);
+      const t = extractArray(htmlContent, "tipsData").find(x => x.id === id);
       if (!t) return;
       document.getElementById('t-edit-id').value = t.id;
       document.getElementById('t-title').value = t.title || '';
@@ -334,7 +323,7 @@
       status.innerText = 'Ukládám článek...';
       try {
         const { fileData, htmlContent } = await fetchIndex();
-        let tips = extractArray(htmlContent, "tipsData = [");
+        let tips = extractArray(htmlContent, "tipsData");
         const editId = document.getElementById('t-edit-id').value;
 
         if (isDel) tips = tips.filter(x => x.id !== delId);
@@ -349,15 +338,9 @@
           else tips.push(item);
         }
 
-        const newCode = "tipsData = " + JSON.stringify(tips, null, 2) + ";";
-        const startMarker = "tipsData = [";
-        const startIdx = htmlContent.indexOf(startMarker);
-        let bracketCount = 0, endIdx = -1;
-        for (let i = startIdx; i < htmlContent.length; i++) {
-          if (htmlContent[i] === '[') bracketCount++;
-          if (htmlContent[i] === ']') { bracketCount--; if (bracketCount === 0) { endIdx = i + 1; break; } }
-        }
-        const updatedHtml = htmlContent.substring(0, startIdx) + newCode + htmlContent.substring(endIdx);
+        const newCode = "const tipsData = " + JSON.stringify(tips, null, 2) + ";";
+        const regex = /(?:const|let|var)\s+tipsData\s*=\s*\[[\s\S]*?\];?/;
+        const updatedHtml = htmlContent.replace(regex, newCode);
 
         const put = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, {
           method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
