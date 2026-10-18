@@ -59,10 +59,7 @@
           <input type="text" id="s-name" placeholder="Název stroje" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
           <div class="grid grid-cols-2 gap-2">
             <select id="s-cat" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
-              <option value="folding">Skládací</option>
-              <option value="sport">Sportovní</option>
-              <option value="electric">Elektro</option>
-              <option value="special">Speciály</option>
+              <!-- Dynamicky se naplní podle rubrik -->
             </select>
             <select id="s-verdict" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
               <option value="Doporučuji">Doporučuji</option>
@@ -139,7 +136,7 @@
         </div>
         <input type="hidden" id="edit-cat-id" value="">
         <div class="space-y-3 text-xs">
-          <input type="text" id="c-id" placeholder="ID (např. city, cargo, custom)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white font-mono">
+          <input type="text" id="c-id" placeholder="ID (např. city, terén)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white font-mono">
           <input type="text" id="c-name" placeholder="Název rubriky (např. Městské speciály)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
           <button onclick="saveCategory()" class="lime-btn w-full py-3 rounded-xl font-bold uppercase text-xs shadow">Uložit rubriku na GitHub</button>
         </div>
@@ -248,6 +245,19 @@
       try {
         const { htmlContent } = await fetchIndex();
         
+        // Naplnění selectu rubrik v koloběžkách
+        const categories = extractVariable(htmlContent, 'categoriesData');
+        const catSelect = document.getElementById('s-cat');
+        if (catSelect) {
+          catSelect.innerHTML = '';
+          categories.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c.id;
+            opt.innerText = c.name;
+            catSelect.appendChild(opt);
+          });
+        }
+        
         // Koloběžky
         const scooters = extractVariable(htmlContent, 'scooters');
         const sBox = document.getElementById('list-scooters');
@@ -270,8 +280,7 @@
           tBox.appendChild(row);
         });
 
-        // Rubriky (Kategorie)
-        const categories = extractVariable(htmlContent, 'categoriesData');
+        // Rubriky
         const cBox = document.getElementById('list-categories');
         cBox.innerHTML = categories.length ? '' : '<p class="text-stone-400">Žádné rubriky.</p>';
         categories.forEach(c => {
@@ -331,6 +340,7 @@
       try {
         const { fileData, htmlContent } = await fetchIndex();
         let scooters = extractVariable(htmlContent, 'scooters');
+        let categories = extractVariable(htmlContent, 'categoriesData');
         const editId = document.getElementById('edit-scooter-id').value;
 
         if (isDel) {
@@ -343,7 +353,9 @@
           const pros = document.getElementById('s-pros').value.split(',').map(x => x.trim()).filter(Boolean);
           const cons = document.getElementById('s-cons').value.split(',').map(x => x.trim()).filter(Boolean);
           const img = document.getElementById('s-img').value.trim();
-          let catLabel = cat === 'sport' ? 'SPORTOVNÍ' : cat === 'electric' ? 'ELEKTRICKÉ' : cat === 'special' ? 'SPECIÁLY' : 'SKLÁDACÍ';
+          
+          const foundCat = categories.find(c => c.id === cat);
+          let catLabel = foundCat ? foundCat.name.toUpperCase() : 'RUBRIKA';
 
           const item = { id: editId ? Number(editId) : Date.now(), name, cat, catLabel, verdict, img, blurb, pros, cons, specs: ["Zátěžový test"] };
 
@@ -441,14 +453,6 @@
     async function editCategory(id) {
       const { htmlContent } = await fetchIndex();
       let categories = extractVariable(htmlContent, 'categoriesData');
-      if (!categories.length) {
-        categories = [
-          { id: 'folding', name: 'Skládací' },
-          { id: 'sport', name: 'Sportovní' },
-          { id: 'electric', name: 'Elektro' },
-          { id: 'special', name: 'Speciály' }
-        ];
-      }
       const c = categories.find(x => x.id === id);
       if (!c) return;
 
@@ -484,14 +488,6 @@
       try {
         const { fileData, htmlContent } = await fetchIndex();
         let categories = extractVariable(htmlContent, 'categoriesData');
-        if (!categories.length) {
-          categories = [
-            { id: 'folding', name: 'Skládací' },
-            { id: 'sport', name: 'Sportovní' },
-            { id: 'electric', name: 'Elektro' },
-            { id: 'special', name: 'Speciály' }
-          ];
-        }
         const editId = document.getElementById('edit-cat-id').value;
 
         if (isDel) {
@@ -517,7 +513,6 @@
         if (htmlContent.includes('const categoriesData =')) {
           updatedHtml = replaceVariableInHtml(htmlContent, 'categoriesData', newCode);
         } else {
-          // Pokud v index.html proměnná nebyla, přidáme ji pod scooters
           updatedHtml = htmlContent.replace('const scooters =', newCode + '\n    const scooters =');
         }
 
