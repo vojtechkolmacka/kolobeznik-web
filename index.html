@@ -138,7 +138,7 @@
           Modely jsou rozděleny do záložek a označeny podle tvrdé praxe: <span class="bg-[#C6F135] text-black font-bold px-1.5 py-0.5 rounded text-[11px]">DOPORUČUJI</span>, <span class="bg-rose-600 text-white font-bold px-1.5 py-0.5 rounded text-[11px]">NEDOPORUČUJI</span> nebo <span class="bg-stone-950 text-[#C6F135] border border-stone-700 font-bold px-1.5 py-0.5 rounded text-[11px]">⚡ BESTIE</span>.
         </p>
 
-        <!-- Dynamické záložky rubrik -->
+        <!-- Záložky rubrik včetně Mikromobility -->
         <div class="flex flex-wrap gap-2 mb-6" id="category-tabs"></div>
 
         <!-- Místo pro text a obrázek aktuální rubriky -->
@@ -169,30 +169,99 @@
 
     <!-- ==================== ODKAZY ==================== -->
     <div id="page-odkazy" class="page-view py-14 px-5">
-      <div class="max-w-xl mx-auto bg-white rounded-3xl p-6 sm:p-8 border border-stone-300 shadow-sm space-y-6 text-sm sm:text-base leading-relaxed">
+      <div class="max-w-xl mx-auto space-y-6">
         <div>
           <span class="heading-font text-xs tracking-widest text-lime-700 font-bold block mb-1">UŽITEČNÉ WEBY</span>
           <h2 class="heading-font text-3xl sm:text-4xl font-bold text-stone-950 leading-tight">
-            ZAJÍMAVÉ ODKAZY
+            ZAJÍMAVÉ ODKAZY A BANNERY
           </h2>
         </div>
-        <p class="text-stone-700 text-xs sm:text-sm">
-          Ověřené stránky, zajímavé projekty a partnerské weby, které stojí za návštěvu.
-        </p>
-        <ul class="space-y-3 font-medium">
-          <li>
-            <a href="https://vydelkypresklikacky.webnode.cz/" target="_blank" class="flex items-center justify-between p-4 bg-[#F0ECE1] rounded-2xl border border-stone-300 hover:border-black transition">
-              <span class="heading-font tracking-wide text-stone-950">Výdělky přes klikačky</span>
-              <span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span>
-            </a>
-          </li>
-          <li>
-            <a href="https://github.com/vojtechkolmacka" target="_blank" class="flex items-center justify-between p-4 bg-[#F0ECE1] rounded-2xl border border-stone-300 hover:border-black transition">
-              <span class="heading-font tracking-wide text-stone-950">Můj GitHub Profil</span>
-              <span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span>
-            </a>
-          </li>
-        </ul>
+        
+        <div class="space-y-4">
+          <!-- 1 -->
+          <a href="http://vydelkypresinternet.webnode.cz/" target="_blank" class="block bg-white rounded-2xl overflow-hidden border border-stone-300 shadow-sm hover:border-black transition">
+            <div class="p-2 bg-stone-100 border-b border-stone-200"><img src="./public/images/banner-10.jpg" alt="Výdělky přes internet" class="w-full h-auto object-cover rounded-lg" onerror="this.style.display='none'"></div>
+            <div class="p-4 flex justify-between items-center"><span class="heading-font text-lg text-stone-950">Výdělky přes internet</span><span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span></div>
+          </a>
+          <!-- 2 -->
+          <a href="http://nicebabes.webnode.cz/" target="_blank" class="block bg-white rounded-2xl overflow-hidden border border-stone-300 shadow-sm hover:border-black transition">
+            <div class="p-2 bg-stone-100 border-b border-stone-200"><img src="./public/images/banner-11.jpg" alt="Nice Babes" class="w-full h-auto object-cover rounded-lg" onerror="this.style.display='none'"></div>
+            <div class="p-4 flex justify-between items-center"><span class="heading-font text-lg text-stone-950">Nice Babes</span><span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span></div>
+          </a>
+          <!-- 3 -->
+          <a href="http://cervenytrpaslik.webnode.cz/" target="_blank" class="block bg-white rounded-2xl overflow-hidden border border-stone-300 shadow-sm hover:border-black transition">
+            <div class="p-2 bg-stone-100 border-b border-stone-200"><img src="./public/images/banner-12.jpg" alt="Červený trpaslík" class="w-full h-auto object-cover rounded-lg" onerror="this.style.display='none'"></div>
+            <div class="p-4 flex justify-between items-center"><span class="heading-font text-lg text-stone-950">Červený trpaslík</span><span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span></div>
+          </a>
+          <!-- 4 -->
+          <a href="http://nicebabes2.webnode.cz/" target="_blank" class="block bg-white rounded-2xl overflow-hidden border border-stone-300 shadow-sm hover:border-black transition">
+            <div class="p-2 bg-stone-100 border-b border-stone-200"><img src="./public/images/banner-13.jpg" alt="Nice Babes 2" class="w-full h-auto object-cover rounded-lg" onerror="this.style.display='none'"></div>
+            <div class="p-4 flex justify-between items-center"><span class="heading-font text-lg text-stone-950">Nice Babes 2</span><span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span></div>
+          </a>
+          <!-- 5 -->
+          <a href="http://smsfreee.webnode.cz/" target="_blank" class="block bg-white rounded-2xl overflow-hidden border border-stone-300 shadow-sm hover:border-black transition">
+            <div class="p-2 bg-stone-100 border-b border-stone-200"><img src="./public/images/banner-14.jpg" alt="SMS Freee" class="w-full h-auto object-cover rounded-lg" onerror="this.style.display='none'"></div>
+            <div class="p-4 flex justify-between items-center"><span class="heading-font text-lg text-stone-950">SMS Freee</span><span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span></div>
+          </a>
+          <!-- 6 -->
+          <a href="http://slevoveportaly.webnode.cz/" target="_blank" class="block bg-white rounded-2xl overflow-hidden border border-stone-300 shadow-sm hover:border-black transition">
+            <div class="p-2 bg-stone-100 border-b border-stone-200"><img src="./public/images/banner-15.jpg" alt="Slevové portály" class="w-full h-auto object-cover rounded-lg" onerror="this.style.display='none'"></div>
+            <div class="p-4 flex justify-between items-center"><span class="heading-font text-lg text-stone-950">Slevové portály</span><span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span></div>
+          </a>
+          <!-- 7 -->
+          <a href="http://loljokes3.webnode.cz/" target="_blank" class="block bg-white rounded-2xl overflow-hidden border border-stone-300 shadow-sm hover:border-black transition">
+            <div class="p-2 bg-stone-100 border-b border-stone-200"><img src="./public/images/banner-16.jpg" alt="LOL Jokes 3" class="w-full h-auto object-cover rounded-lg" onerror="this.style.display='none'"></div>
+            <div class="p-4 flex justify-between items-center"><span class="heading-font text-lg text-stone-950">LOL Jokes 3</span><span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span></div>
+          </a>
+          <!-- 8 -->
+          <a href="http://netcash.forumczech.com/forum" target="_blank" class="block bg-white rounded-2xl overflow-hidden border border-stone-300 shadow-sm hover:border-black transition">
+            <div class="p-2 bg-stone-100 border-b border-stone-200"><img src="./public/images/banner-17.jpg" alt="NetCash Forum" class="w-full h-auto object-cover rounded-lg" onerror="this.style.display='none'"></div>
+            <div class="p-4 flex justify-between items-center"><span class="heading-font text-lg text-stone-950">NetCash Forum</span><span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span></div>
+          </a>
+          <!-- 9 -->
+          <a href="http://southpark.webnode.cz/" target="_blank" class="block bg-white rounded-2xl overflow-hidden border border-stone-300 shadow-sm hover:border-black transition">
+            <div class="p-2 bg-stone-100 border-b border-stone-200"><img src="./public/images/banner-18.jpg" alt="South Park" class="w-full h-auto object-cover rounded-lg" onerror="this.style.display='none'"></div>
+            <div class="p-4 flex justify-between items-center"><span class="heading-font text-lg text-stone-950">South Park</span><span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span></div>
+          </a>
+          <!-- 10 -->
+          <a href="http://bigbangtheoryserial.webnode.cz/" target="_blank" class="block bg-white rounded-2xl overflow-hidden border border-stone-300 shadow-sm hover:border-black transition">
+            <div class="p-2 bg-stone-100 border-b border-stone-200"><img src="./public/images/banner-19.jpg" alt="The Big Bang Theory" class="w-full h-auto object-cover rounded-lg" onerror="this.style.display='none'"></div>
+            <div class="p-4 flex justify-between items-center"><span class="heading-font text-lg text-stone-950">The Big Bang Theory</span><span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span></div>
+          </a>
+          <!-- 11 -->
+          <a href="http://smsfree2u.webnode.cz/" target="_blank" class="block bg-white rounded-2xl overflow-hidden border border-stone-300 shadow-sm hover:border-black transition">
+            <div class="p-2 bg-stone-100 border-b border-stone-200"><img src="./public/images/banner-20.jpg" alt="Placené ankety" class="w-full h-auto object-cover rounded-lg" onerror="this.style.display='none'"></div>
+            <div class="p-4 flex justify-between items-center"><span class="heading-font text-lg text-stone-950">Placené ankety</span><span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span></div>
+          </a>
+          <!-- Další bez banneru -->
+          <a href="http://smsfree2u.webnode.cz/" target="_blank" class="block bg-white rounded-2xl overflow-hidden border border-stone-300 shadow-sm hover:border-black transition">
+            <div class="p-4 flex justify-between items-center"><span class="heading-font text-lg text-stone-950">SMS Free 2U</span><span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span></div>
+          </a>
+          <a href="http://czechgeocache.webnode.cz/" target="_blank" class="block bg-white rounded-2xl overflow-hidden border border-stone-300 shadow-sm hover:border-black transition">
+            <div class="p-4 flex justify-between items-center"><span class="heading-font text-lg text-stone-950">Czech Geocache</span><span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span></div>
+          </a>
+          <a href="http://lol-jokes-2u.webnode.cz/" target="_blank" class="block bg-white rounded-2xl overflow-hidden border border-stone-300 shadow-sm hover:border-black transition">
+            <div class="p-4 flex justify-between items-center"><span class="heading-font text-lg text-stone-950">LOL Jokes 2U</span><span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span></div>
+          </a>
+          <a href="http://hubnuti-a-dieta.webnode.cz/" target="_blank" class="block bg-white rounded-2xl overflow-hidden border border-stone-300 shadow-sm hover:border-black transition">
+            <div class="p-4 flex justify-between items-center"><span class="heading-font text-lg text-stone-950">Hubnutí a dieta</span><span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span></div>
+          </a>
+          <a href="http://topcelebrity.webnode.cz/" target="_blank" class="block bg-white rounded-2xl overflow-hidden border border-stone-300 shadow-sm hover:border-black transition">
+            <div class="p-4 flex justify-between items-center"><span class="heading-font text-lg text-stone-950">Top Celebrity</span><span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span></div>
+          </a>
+          <a href="http://ceskeholky.webnode.cz/" target="_blank" class="block bg-white rounded-2xl overflow-hidden border border-stone-300 shadow-sm hover:border-black transition">
+            <div class="p-4 flex justify-between items-center"><span class="heading-font text-lg text-stone-950">České holky</span><span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span></div>
+          </a>
+          <a href="http://pocitacovykursproseniory.webnode.cz/" target="_blank" class="block bg-white rounded-2xl overflow-hidden border border-stone-300 shadow-sm hover:border-black transition">
+            <div class="p-4 flex justify-between items-center"><span class="heading-font text-lg text-stone-950">Počítačový kurz pro seniory</span><span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span></div>
+          </a>
+          <a href="http://zpetneodkazyzdarma.webnode.cz/" target="_blank" class="block bg-white rounded-2xl overflow-hidden border border-stone-300 shadow-sm hover:border-black transition">
+            <div class="p-4 flex justify-between items-center"><span class="heading-font text-lg text-stone-950">Zpětné odkazy zdarma</span><span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span></div>
+          </a>
+          <a href="http://simpsonovy.webnode.cz/" target="_blank" class="block bg-white rounded-2xl overflow-hidden border border-stone-300 shadow-sm hover:border-black transition">
+            <div class="p-4 flex justify-between items-center"><span class="heading-font text-lg text-stone-950">Simpsonovy</span><span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span></div>
+          </a>
+        </div>
       </div>
     </div>
 
@@ -319,10 +388,9 @@
   </div>
 
   <script>
-    // Počítadlo návštěv (ukládá se do paměti prohlížeče /LocalStorage/)
     let visits = localStorage.getItem('kolobeznik_visits');
     if (!visits) {
-      visits = 1250; // Základní počáteční číslo
+      visits = 1250;
     } else {
       visits = parseInt(visits) + 1;
     }
@@ -330,66 +398,21 @@
     document.getElementById('visitor-count').innerText = visits;
 
     const categoriesData = [
-  {
-    "id": "folding",
-    "name": "Skládací",
-    "text": "Skládací modely pro každodenní rychlé přesuny po městě i dopravu.",
-    "img": ""
-  },
-  {
-    "id": "sport",
-    "name": "Sportovní",
-    "text": "Sportovní koloběžky s velkými koly pro delší trasy a cyklostezky.",
-    "img": ""
-  },
-  {
-    "id": "electric",
-    "name": "Elektro",
-    "text": "Elektrické stroje a monstrózní bestie s obrovským výkonem.",
-    "img": ""
-  },
-  {
-    "id": "novinky",
-    "name": "Novinky",
-    "text": "Nejnovější testy, přírůstky a zprávy z testovacího provozu.",
-    "img": ""
-  }
-];;;
+      { id: 'folding', name: 'Skládací', text: 'Skládací modely pro každodenní rychlé přesuny po městě i dopravu.', img: '' },
+      { id: 'sport', name: 'Sportovní', text: 'Sportovní koloběžky s velkými koly pro delší trasy a cyklostezky.', img: '' },
+      { id: 'electric', name: 'Elektro', text: 'Elektrické stroje a monstrózní bestie s obrovským výkonem.', img: '' },
+      { id: 'special', name: 'Speciály', text: 'Netradiční sněžné koloběžky a speciální konstrukce.', img: '' },
+      { id: 'mikromobilita', name: 'Mikromobilita', text: 'Aktuality a pohledy do světa moderní mikromobility.', img: '' }
+    ];
 
     const tipsData = [
-  {
-    "id": 2,
-    "title": "Pouzdro a brašna na řídítka Wildman",
-    "category": "DOPLŇKY",
-    "img": "./public/images/tip-wildman.jpg",
-    "perex": "Kam s telefonem, klíči a nářadím na skládací koloběžce? Test pevných skořepinových brašen Wildman.",
-    "text": "Skořepinová pouzdra Wildman z lisovaného tvrzeného EVA materiálu jsou osvědčeným řešením pro uchycení telefonu a nářadí na řídítka."
-  },
-  {
-    "id": 3,
-    "title": "Chytrá přilba Livall a bezpečnost",
-    "category": "BEZPEČNOST",
-    "img": "./public/images/tip-helmet.jpg",
-    "perex": "Při rychlostech nad 30 km/h nebo nočních přejezdech je přilba absolutní nutností.",
-    "text": "Chytré přilby s integrovaným osvětlením, blinkry a senzorem pádu pro maximální bezpečí."
-  },
-  {
-    "id": 4,
-    "title": "Airbagový límec Hövding 3 na koloběžce",
-    "category": "TECHNOLOGIE",
-    "img": "./public/images/tip-hovding.jpg",
-    "perex": "Nafukovací airbag kolem krku místo klasické skořepiny.",
-    "text": "Revoluční ochrana hlavy kolem krku. V létě se v něm nepotí hlava."
-  },
-  {
-    "id": 5,
-    "title": "Kombinéza Dirtlej do každého počasí",
-    "category": "VÝBAVA",
-    "img": "./public/images/tip-dirtsuit.jpg",
-    "perex": "Celoroční ježdění v dešti, blátě a mrazu bez promočených zad.",
-    "text": "Jednodílný nepromokavý oblek, který vás ochrání před bahnem a stříkající vodou."
-  }
-];;;
+      { id: 1, title: "Batoh na koloběžku", category: "VÝBAVA", img: "./public/images/tip-backpack.jpg", perex: "Při jízdě na koloběžce jste v neustálém pohybu. Základem je batoh, který pevně sedí a nerozhodí vás.", text: `Při jízdě na koloběžce jste v neustálém pohybu — neustále se střídají nohy, trup jde dopředu a dozadu a pracují i ramena. Obyčejný školní nebo městský batoh se okamžitě začne přesouvat ze strany na stranu, bouchá do zad a vyvádí z rovnováhy.\n\nIdeální batoh na koloběžku musí mít:\n1. Pevný hrudní popruh\n2. Bederní pás\n3. Odvětrávaná záda` },
+      { id: 2, title: "Pouzdro a brašna na řídítka Wildman", category: "DOPLŇKY", img: "./public/images/tip-wildman.jpg", perex: "Kam s telefonem, klíči a nářadím na skládací koloběžce? Test pevných skořepinových brašen Wildman.", text: `Skořepinová pouzdra Wildman z lisovaného tvrzeného EVA materiálu jsou osvědčeným řešením pro uchycení telefonu a nářadí na řídítka.` },
+      { id: 3, title: "Chytrá přilba Livall a bezpečnost", category: "BEZPEČNOST", img: "./public/images/tip-helmet.jpg", perex: "Při rychlostech nad 30 km/h nebo nočních přejezdech je přilba absolutní nutností.", text: `Chytré přilby s integrovaným osvětlením, blinkry a senzorem pádu pro maximální bezpečí.` },
+      { id: 4, title: "Airbagový límec Hövding 3 na koloběžce", category: "TECHNOLOGIE", img: "./public/images/tip-hovding.jpg", perex: "Nafukovací airbag kolem krku místo klasické skořepiny.", text: `Revoluční ochrana hlavy kolem krku. V létě se v něm nepotí hlava.` },
+      { id: 5, title: "Kombinéza Dirtlej do každého počasí", category: "VÝBAVA", img: "./public/images/tip-dirtsuit.jpg", perex: "Celoroční ježdění v dešti, blátě a mrazu bez promočených zad.", text: `Jednodílný nepromokavý oblek, který vás ochrání před bahnem a stříkající vodou.` },
+      { id: 6, title: "Správná technika odrazu a střídání nohou", category: "TECHNIKA", img: "./public/images/field.jpg", perex: "Pravidelná výměna stojné nohy po 5 až 6 odrazech je základ bezbolestné jízdy.", text: `Střídejte nohy pravidelně po 5–6 odrazech, ať předejdete přetížení jedné strany těla.` }
+    ];
 
     const scooters = [
       { id: 1, name: "SPARTAN JUMBO", cat: "folding", catLabel: "SKLÁDACÍ", verdict: "Doporučuji", img: "./public/images/scooter-01.jpg", blurb: "Základní skládací model pro každodenní přesuny.", pros: ["Lehká", "Skladná"], cons: ["Složitější systém skládání"], specs: ["200 mm PU"] },
@@ -439,185 +462,4 @@
 
       categoriesData.forEach((cat) => {
         const btn = document.createElement('button');
-        btn.className = `tab-btn px-3.5 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800 border border-stone-300 transition ${cat.id === activeCategoryTab ? 'active' : ''}`;
-        btn.innerText = cat.name;
-        btn.onclick = (e) => switchTab(cat.id, e);
-        tabsWrap.appendChild(btn);
-      });
-    }
-
-    function renderCategory(catId) {
-      const list = document.getElementById('scooter-list');
-      const contentBox = document.getElementById('category-content-box');
-      const catText = document.getElementById('cat-text');
-      const catImgWrap = document.getElementById('cat-img-wrap');
-      const catImage = document.getElementById('cat-image');
-
-      const currentCat = categoriesData.find(c => c.id === catId);
-      if (currentCat && (currentCat.text || currentCat.img)) {
-        contentBox.classList.remove('hidden');
-        catText.innerText = currentCat.text || '';
-        if (currentCat.img) {
-          catImage.src = currentCat.img;
-          catImgWrap.classList.remove('hidden');
-        } else {
-          catImgWrap.classList.add('hidden');
-        }
-      } else {
-        contentBox.classList.add('hidden');
-      }
-
-      if (!list) return;
-      list.innerHTML = '';
-      const items = scooters.filter(s => s.cat === catId);
-
-      if (items.length === 0) {
-        list.innerHTML = '<p class="text-stone-500 italic py-4">V této rubrice zatím nejsou žádné stroje.</p>';
-        return;
-      }
-
-      items.forEach(s => {
-        const card = document.createElement('div');
-        card.className = "bg-white rounded-3xl overflow-hidden border border-stone-300 shadow-sm cursor-pointer hover:border-black transition";
-        card.onclick = () => openScooterModal(s.id);
-
-        card.innerHTML = `
-          <div class="relative bg-white p-3 flex items-center justify-center border-b border-stone-200">
-            <img src="${s.img}" alt="${s.name}" class="w-full h-auto object-contain rounded-xl">
-            <div class="absolute top-4 left-4 z-10">
-              ${getVerdictBadge(s.verdict)}
-            </div>
-          </div>
-          <div class="p-6 bg-[#EFECE4]">
-            <span class="text-[11px] font-bold text-stone-500 uppercase tracking-widest block mb-1">${s.catLabel || ''}</span>
-            <h3 class="heading-font text-2xl font-bold text-stone-950 mb-2 leading-tight">${s.name}</h3>
-            <p class="text-xs sm:text-sm text-stone-700 leading-relaxed font-normal">${s.blurb}</p>
-            <div class="mt-4 pt-3 border-t border-stone-300 flex items-center justify-between text-xs font-bold">
-              <span class="text-stone-500">Klady: <strong class="text-emerald-800">${s.pros ? s.pros.length : 0}</strong> | Zápory: <strong class="text-rose-800">${s.cons ? s.cons.length : 0}</strong></span>
-              <span class="heading-font text-stone-900 tracking-wider">ZOBRAZIT RECENZI &rarr;</span>
-            </div>
-          </div>
-        `;
-        list.appendChild(card);
-      });
-    }
-
-    renderCategoryTabs();
-    if (activeCategoryTab) renderCategory(activeCategoryTab);
-
-    function switchTab(cat, evt) {
-      activeCategoryTab = cat;
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      if (evt && evt.currentTarget) {
-        evt.currentTarget.classList.add('active');
-      } else {
-        renderCategoryTabs();
-      }
-      renderCategory(activeCategoryTab);
-    }
-
-    function renderTips() {
-      const list = document.getElementById('tips-list');
-      if (!list) return;
-      list.innerHTML = '';
-
-      tipsData.forEach(t => {
-        const item = document.createElement('div');
-        item.className = "bg-white rounded-3xl overflow-hidden border border-stone-300 shadow-sm hover:border-black transition flex flex-col sm:flex-row cursor-pointer";
-        item.onclick = () => openTipModal(t.id);
-
-        item.innerHTML = `
-          <div class="sm:w-48 bg-white p-3 shrink-0 flex items-center justify-center border-b sm:border-b-0 sm:border-r border-stone-200">
-            <img src="${t.img}" alt="${t.title}" class="w-full h-auto object-contain rounded-xl">
-          </div>
-          <div class="p-5 sm:p-6 bg-[#EFECE4] flex-1 flex flex-col justify-between">
-            <div>
-              <span class="text-[10px] font-black uppercase tracking-wider text-black lime-bg px-2.5 py-0.5 rounded inline-block mb-2">${t.category}</span>
-              <h3 class="heading-font text-xl sm:text-2xl font-bold text-stone-950 mb-2 leading-tight">${t.title}</h3>
-              <p class="text-xs sm:text-sm text-stone-700 leading-relaxed font-normal">${t.perex}</p>
-            </div>
-            <div class="mt-4 pt-3 border-t border-stone-300 text-xs font-bold flex justify-end">
-              <span class="heading-font text-stone-900 tracking-wider">ČÍST ČLÁNEK &rarr;</span>
-            </div>
-          </div>
-        `;
-        list.appendChild(item);
-      });
-    }
-
-    renderTips();
-
-    function navigateTo(pageId) {
-      document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
-      const targetPage = document.getElementById('page-' + pageId);
-      if (targetPage) targetPage.classList.add('active');
-
-      document.querySelectorAll('.nav-link').forEach(link => {
-        if (link.getAttribute('data-target') === pageId) {
-          link.classList.add('text-[#C6F135]');
-        } else {
-          link.classList.remove('text-[#C6F135]');
-        }
-      });
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function openTipModal(id) {
-      const tip = tipsData.find(item => item.id === id);
-      if (!tip) return;
-      document.getElementById('tip-modal-badge').innerText = tip.category;
-      document.getElementById('tip-modal-image').src = tip.img;
-      document.getElementById('tip-modal-title').innerText = tip.title;
-      document.getElementById('tip-modal-content').innerText = tip.text;
-      const m = document.getElementById('tip-modal');
-      m.classList.remove('hidden');
-      m.classList.add('flex');
-    }
-
-    function closeTipModal() {
-      document.getElementById('tip-modal').classList.add('hidden');
-      document.getElementById('tip-modal').classList.remove('flex');
-    }
-
-    function openScooterModal(id) {
-      const s = scooters.find(item => item.id === id);
-      if (!s) return;
-      document.getElementById('modal-category-badge').innerText = s.catLabel || '';
-      document.getElementById('modal-verdict-badge').innerHTML = getVerdictBadge(s.verdict);
-      document.getElementById('modal-image').src = s.img;
-      document.getElementById('modal-title').innerText = s.name;
-      document.getElementById('modal-blurb').innerText = s.blurb;
-
-      const specsWrap = document.getElementById('modal-specs-wrap');
-      const specsList = document.getElementById('modal-specs-list');
-      if (s.specs && s.specs.length > 0) {
-        specsList.innerHTML = s.specs.map(item => `<li>• ${item}</li>`).join('');
-        specsWrap.classList.remove('hidden');
-      } else {
-        specsWrap.classList.add('hidden');
-      }
-
-      document.getElementById('modal-pros-list').innerHTML = s.pros ? s.pros.map(p => `<li>✓ ${p}</li>`).join('') : '';
-      document.getElementById('modal-cons-list').innerHTML = s.cons ? s.cons.map(c => `<li>— ${c}</li>`).join('') : '';
-
-      const m = document.getElementById('scooter-modal');
-      m.classList.remove('hidden');
-      m.classList.add('flex');
-    }
-
-    function closeScooterModal() {
-      document.getElementById('scooter-modal').classList.add('hidden');
-      document.getElementById('scooter-modal').classList.remove('flex');
-    }
-
-    function toggleMenu() {
-      document.getElementById('mobile-menu').classList.toggle('hidden');
-    }
-
-    window.onclick = function(e) {
-      if (e.target === document.getElementById('scooter-modal')) closeScooterModal();
-      if (e.target === document.getElementById('tip-modal')) closeTipModal();
-    };
-  </script>
-</body>
-</html>
+        btn.className = `tab-btn px
