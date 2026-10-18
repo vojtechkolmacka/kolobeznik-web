@@ -37,6 +37,11 @@
     .cream-card {
       background-color: #E8E3D7;
     }
+    .tab-btn.active {
+      background-color: #C6F135;
+      color: #000;
+      border-color: #C6F135;
+    }
   </style>
 </head>
 <body class="antialiased selection:bg-[#C6F135] selection:text-black">
@@ -110,36 +115,40 @@
     </div>
   </section>
 
-  <!-- Sekce: Recenze / Odjeté kilometry se štítky -->
+  <!-- Sekce: Recenze rozdělené do samostatných záložek -->
   <section id="testy" class="py-12 px-5 max-w-xl mx-auto">
-    <div class="flex items-end justify-between mb-4">
-      <div>
-        <span class="heading-font text-xs tracking-widest text-stone-500 font-bold block mb-1">RECENZE</span>
-        <h2 class="heading-font text-3xl sm:text-4xl font-bold text-stone-950 leading-none">
-          ODJETÉ KILOMETRY
-        </h2>
-      </div>
-      <span class="text-xs font-bold uppercase tracking-wider text-stone-500 bg-stone-200/80 px-2.5 py-1 rounded-md">27 strojů</span>
+    <div class="mb-4">
+      <span class="heading-font text-xs tracking-widest text-stone-500 font-bold block mb-1">KATALOG RECENZÍ</span>
+      <h2 class="heading-font text-3xl sm:text-4xl font-bold text-stone-950 leading-none">
+        ODJETÉ KILOMETRY
+      </h2>
     </div>
     
     <p class="text-xs sm:text-sm text-stone-600 mb-6 leading-relaxed">
-      Modely jsem označil podle tvrdé praxe: <span class="bg-[#C6F135] text-black font-bold px-1.5 py-0.5 rounded text-[11px]">DOPORUČUJI</span>, <span class="bg-rose-600 text-white font-bold px-1.5 py-0.5 rounded text-[11px]">NEDOPORUČUJI</span> nebo <span class="bg-stone-950 text-[#C6F135] border border-stone-700 font-bold px-1.5 py-0.5 rounded text-[11px]">⚡ BESTIE</span>.
+      Vyberte si kategorii. Modely jsou označeny podle tvrdé praxe: <span class="bg-[#C6F135] text-black font-bold px-1.5 py-0.5 rounded text-[11px]">DOPORUČUJI</span>, <span class="bg-rose-600 text-white font-bold px-1.5 py-0.5 rounded text-[11px]">NEDOPORUČUJI</span> nebo <span class="bg-stone-950 text-[#C6F135] border border-stone-700 font-bold px-1.5 py-0.5 rounded text-[11px]">⚡ BESTIE</span>.
     </p>
 
-    <!-- Filtry kategorií -->
-    <div class="flex flex-wrap gap-2 mb-6" id="filter-tabs">
-      <button onclick="setFilter('all', event)" class="active px-3 py-1.5 rounded-lg text-xs font-bold uppercase heading-font lime-bg text-black">Vše</button>
-      <button onclick="setFilter('folding', event)" class="px-3 py-1.5 rounded-lg text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800">Skládací</button>
-      <button onclick="setFilter('sport', event)" class="px-3 py-1.5 rounded-lg text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800">Sportovní</button>
-      <button onclick="setFilter('electric', event)" class="px-3 py-1.5 rounded-lg text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800">Elektro</button>
-      <button onclick="setFilter('special', event)" class="px-3 py-1.5 rounded-lg text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800">Speciály</button>
+    <!-- Záložky kategorií -->
+    <div class="flex flex-wrap gap-2 mb-6" id="category-tabs">
+      <button onclick="switchTab('folding', event)" class="tab-btn active px-3.5 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800 border border-stone-300 transition">
+        Skládací (12)
+      </button>
+      <button onclick="switchTab('sport', event)" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800 border border-stone-300 transition">
+        Sportovní (5)
+      </button>
+      <button onclick="switchTab('electric', event)" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800 border border-stone-300 transition">
+        Elektro (9)
+      </button>
+      <button onclick="switchTab('special', event)" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-200 text-stone-800 border border-stone-300 transition">
+        Speciály (1)
+      </button>
     </div>
 
-    <!-- Seznam karet -->
+    <!-- Výpis modelů vybrané záložky -->
     <div class="space-y-6" id="scooter-list"></div>
   </section>
 
-  <!-- NOVÁ RUBRIKA: ZAJÍMAVOSTI A TIPY — MIKROMOBILITA -->
+  <!-- RUBRIKA: ZAJÍMAVOSTI A TIPY — MIKROMOBILITA -->
   <section id="tipy" class="py-14 px-5 bg-white border-y border-stone-300">
     <div class="max-w-xl mx-auto">
       <span class="heading-font text-xs tracking-widest text-lime-700 font-bold block mb-1">MIKROMOBILITA</span>
@@ -151,7 +160,6 @@
       </p>
 
       <div class="space-y-5">
-        <!-- Článek: Airbag Hövding -->
         <div class="cream-card p-5 rounded-2xl border border-stone-300 flex flex-col sm:flex-row gap-4 items-start">
           <img src="./public/images/tip-hovding.jpg" alt="Airbag Hövding" class="w-full sm:w-28 h-32 sm:h-28 rounded-xl object-cover bg-stone-100 shrink-0 border border-stone-200" onerror="this.style.display='none'">
           <div>
@@ -163,7 +171,6 @@
           </div>
         </div>
 
-        <!-- Článek: Brašny Wildman -->
         <div class="cream-card p-5 rounded-2xl border border-stone-300 flex flex-col sm:flex-row gap-4 items-start">
           <img src="./public/images/tip-wildman.jpg" alt="Pouzdro Wildman" class="w-full sm:w-28 h-32 sm:h-28 rounded-xl object-cover bg-stone-100 shrink-0 border border-stone-200" onerror="this.style.display='none'">
           <div>
@@ -175,7 +182,6 @@
           </div>
         </div>
 
-        <!-- Článek: Kombinéza Dirtlej -->
         <div class="cream-card p-5 rounded-2xl border border-stone-300 flex flex-col sm:flex-row gap-4 items-start">
           <img src="./public/images/tip-dirtsuit.jpg" alt="Kombinéza Dirtlej" class="w-full sm:w-28 h-32 sm:h-28 rounded-xl object-cover bg-stone-100 shrink-0 border border-stone-200" onerror="this.style.display='none'">
           <div>
@@ -187,7 +193,6 @@
           </div>
         </div>
 
-        <!-- Článek: Batohy na koloběžku -->
         <div class="cream-card p-5 rounded-2xl border border-stone-300 flex flex-col sm:flex-row gap-4 items-start">
           <img src="./public/images/tip-backpack.jpg" alt="Batoh na koloběžku" class="w-full sm:w-28 h-32 sm:h-28 rounded-xl object-cover bg-stone-100 shrink-0 border border-stone-200" onerror="this.style.display='none'">
           <div>
@@ -199,11 +204,10 @@
           </div>
         </div>
 
-        <!-- Článek: Aplikace Cyclers -->
         <div class="cream-card p-5 rounded-2xl border border-stone-300 flex flex-col sm:flex-row gap-4 items-start">
           <img src="./public/images/cyclers.jpg" alt="Aplikace Cyclers" class="w-full sm:w-28 h-32 sm:h-28 rounded-xl object-cover bg-stone-100 shrink-0 border border-stone-200" onerror="this.style.display='none'">
           <div>
-            <span class="text-[10px] font-black uppercase tracking-wider text-black lime-bg px-2 py-0.5 rounded">Navigace</span>
+            <span class="text-[10px] font-black text-black lime-bg px-2 py-0.5 rounded">Navigace</span>
             <h3 class="heading-font text-lg font-bold text-stone-950 mt-1.5 mb-1">Aplikace Cyclers: Nejlepší trasy pro koloběh</h3>
             <p class="text-xs text-stone-700 leading-relaxed">
               Vyhnutí se dlažebním kostkám, minimalizace prudkých stoupání a výběr kvalitního asfaltu vhodného pro malá i velká kola.
@@ -211,7 +215,6 @@
           </div>
         </div>
 
-        <!-- Článek: Technika střídání nohou -->
         <div class="cream-card p-5 rounded-2xl border border-stone-300 flex flex-col sm:flex-row gap-4 items-start">
           <img src="./public/images/field.jpg" alt="Technika jízdy" class="w-full sm:w-28 h-32 sm:h-28 rounded-xl object-cover bg-stone-100 shrink-0 border border-stone-200" onerror="this.style.display='none'">
           <div>
@@ -384,7 +387,7 @@
     </div>
   </div>
 
-  <!-- Data a obsluha -->
+  <!-- Data a obsluha záložek -->
   <script>
     const scooters = [
       {
@@ -747,9 +750,10 @@
       return `<span class="lime-bg text-black font-black text-[11px] heading-font tracking-wider px-2.5 py-1 rounded shadow">✓ DOPORUČUJI</span>`;
     }
 
-    function renderList(items) {
+    function renderCategory(cat) {
       const list = document.getElementById('scooter-list');
       list.innerHTML = '';
+      const items = scooters.filter(s => s.cat === cat);
 
       items.forEach(s => {
         const card = document.createElement('div');
@@ -777,26 +781,20 @@
       });
     }
 
-    renderList(scooters);
+    // Výchozí záložka: Skládací
+    let activeTab = 'folding';
+    renderCategory(activeTab);
 
-    let currentCat = 'all';
-    function setFilter(cat, evt) {
-      currentCat = cat;
-      const btns = document.querySelectorAll('#filter-tabs button');
+    function switchTab(cat, evt) {
+      activeTab = cat;
+      const btns = document.querySelectorAll('.tab-btn');
       btns.forEach(b => {
-        b.classList.remove('lime-bg', 'text-black');
-        b.classList.add('bg-stone-200', 'text-stone-800');
+        b.classList.remove('active');
       });
       if (evt && evt.currentTarget) {
-        evt.currentTarget.classList.remove('bg-stone-200', 'text-stone-800');
-        evt.currentTarget.classList.add('lime-bg', 'text-black');
+        evt.currentTarget.classList.add('active');
       }
-      filterData();
-    }
-
-    function filterData() {
-      const filtered = scooters.filter(s => currentCat === 'all' || s.cat === currentCat);
-      renderList(filtered);
+      renderCategory(activeTab);
     }
 
     function openScooterModal(id) {
