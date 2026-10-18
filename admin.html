@@ -42,8 +42,9 @@
 
     <!-- Přepínání -->
     <div class="flex gap-2 mb-6">
-      <button onclick="switchTab('scooters')" id="tab-scooters" class="admin-tab active flex-1 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-800 text-stone-300">Nová koloběžka</button>
-      <button onclick="switchTab('photos')" id="tab-photos" class="admin-tab flex-1 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-800 text-stone-300">Nahrát fotku</button>
+      <button onclick="switchTab('scooters')" id="tab-scooters" class="admin-tab active flex-1 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-800 text-stone-300">Koloběžka</button>
+      <button onclick="switchTab('tips')" id="tab-tips" class="admin-tab flex-1 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-800 text-stone-300">Tip / Článek</button>
+      <button onclick="switchTab('photos')" id="tab-photos" class="admin-tab flex-1 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-800 text-stone-300">Fotka</button>
     </div>
 
     <!-- SEKCE 1: PŘIDÁNÍ KOLOBĚŽKY -->
@@ -74,7 +75,22 @@
       </div>
     </div>
 
-    <!-- SEKCE 2: FOTKY -->
+    <!-- SEKCE 2: PŘIDÁNÍ TIPU / ČLÁNKU -->
+    <div id="sec-tips" class="space-y-6 hidden">
+      <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 shadow-xl space-y-4">
+        <h2 class="heading-font text-lg text-white">Přidat nový tip nebo zájímavost</h2>
+        <div class="space-y-3 text-xs">
+          <input type="text" id="t-title" placeholder="Název článku (např. Výběr brzd)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
+          <input type="text" id="t-cat" placeholder="Štítek kategorie (např. VÝBAVA, BEZPEČNOST)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
+          <textarea id="t-perex" rows="2" placeholder="Krátký perex (zobrazí se v seznamu)..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
+          <textarea id="t-text" rows="5" placeholder="Plný text článku (v detailu po rozkliknutí)..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
+          <input type="text" id="t-img" value="./public/images/hero.jpg" placeholder="Cesta k fotce" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white font-mono">
+          <button onclick="addTip()" class="lime-btn w-full py-3 rounded-xl font-bold uppercase text-xs shadow">Přidat článek do Tipech</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEKCE 3: FOTKY -->
     <div id="sec-photos" class="space-y-6 hidden">
       <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 shadow-xl space-y-4">
         <h2 class="heading-font text-lg text-white">Nahrát fotku do galerie</h2>
@@ -102,7 +118,7 @@
     }
 
     function switchTab(tab) {
-      ['scooters', 'photos'].forEach(t => {
+      ['scooters', 'tips', 'photos'].forEach(t => {
         document.getElementById(`tab-${t}`).classList.remove('active');
         document.getElementById(`sec-${t}`).classList.add('hidden');
       });
@@ -115,7 +131,9 @@
         const f = e.target.files[0];
         const cleanName = f.name.toLowerCase().replace(/\s+/g, '-');
         document.getElementById('img-name').value = cleanName;
-        document.getElementById('s-img').value = `./public/images/${cleanName}`;
+        const targetPath = `./public/images/${cleanName}`;
+        document.getElementById('s-img').value = targetPath;
+        document.getElementById('t-img').value = targetPath;
       }
     });
 
@@ -169,6 +187,53 @@
       }
     }
 
+    async function addTip() {
+      const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo'), status = document.getElementById('global-status');
+      if (!token || !repo) { alert('Vyplň připojení nahoře!'); return; }
+
+      const title = document.getElementById('t-title').value.trim();
+      const category = document.getElementById('t-cat').value.trim().toUpperCase();
+      const perex = document.getElementById('t-perex').value.trim();
+      const text = document.getElementById('t-text').value.trim();
+      const img = document.getElementById('t-img').value.trim();
+
+      if (!title || !text) { alert('Vyplň název a text článku.'); return; }
+      status.innerText = 'Odesílám nový tip na GitHub...';
+
+      try {
+        const res = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, { headers: { 'Authorization': `token ${token}` } });
+        if (!res.ok) throw new Error('Chyba při čtení index.html');
+        const fileData = await res.json();
+        const htmlContent = new TextDecoder().decode(Uint8Array.from(atob(fileData.content), c => c.codePointAt(0)));
+
+        const newItemStr = `      { id: ${Date.now()}, title: "${title}", category: "${category}", img: "${img}", perex: "${perex}", text: \`${text}\` },\n`;
+
+        const marker = "const tipsData = [";
+        const startIdx = htmlContent.indexOf(marker);
+        if (startIdx === -1) throw new Error('Nenalezeno pole tipů v index.html');
+
+        const insertPos = startIdx + marker.length;
+        const updatedHtml = htmlContent.slice(0, insertPos) + "\n" + newItemStr + htmlContent.slice(insertPos);
+
+        const put = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, {
+          method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: `Admin: Přidán tip ${title}`, content: btoa(unescape(encodeURIComponent(updatedHtml))), sha: fileData.sha })
+        });
+
+        if (put.ok) {
+          status.innerText = 'Tip úspěšně přidán do rubriky Tipy & Výbava!';
+          document.getElementById('t-title').value = '';
+          document.getElementById('t-cat').value = '';
+          document.getElementById('t-perex').value = '';
+          document.getElementById('t-text').value = '';
+        } else {
+          status.innerText = 'Chyba při ukládání tipu.';
+        }
+      } catch (err) {
+        status.innerText = 'Chyba: ' + err.message;
+      }
+    }
+
     async function uploadPhoto() {
       const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo');
       const fileInput = document.getElementById('img-file'), filename = document.getElementById('img-name').value.trim();
@@ -196,7 +261,7 @@
           body: JSON.stringify(body)
         });
 
-        if (put.ok) status.innerText = 'Fotka úspěšně nahrána! Cesta se vložila do formuláře koloběžky.';
+        if (put.ok) status.innerText = 'Fotka nahrána! Cesta se automaticky nastavila do formulářů.';
         else status.innerText = 'Chyba nahrávání fotky.';
       };
     }
