@@ -53,6 +53,7 @@
         <button onclick="navigateTo('home')" class="nav-link hover:text-[#C6F135] transition text-[#C6F135]" data-target="home">Úvod</button>
         <button onclick="navigateTo('testy')" class="nav-link hover:text-[#C6F135] transition" data-target="testy">Testy</button>
         <button onclick="navigateTo('tipy')" class="nav-link hover:text-[#C6F135] transition" data-target="tipy">Tipy & Výbava</button>
+        <button onclick="navigateTo('odkazy')" class="nav-link hover:text-[#C6F135] transition" data-target="odkazy">Odkazy</button>
         <button onclick="navigateTo('pribeh')" class="nav-link hover:text-[#C6F135] transition" data-target="pribeh">O mně</button>
         <button onclick="navigateTo('kontakt')" class="nav-link hover:text-[#C6F135] transition" data-target="kontakt">Kontakt</button>
       </nav>
@@ -70,6 +71,7 @@
       <button onclick="navigateTo('home'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">Úvod</button>
       <button onclick="navigateTo('testy'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">Testy koloběžek</button>
       <button onclick="navigateTo('tipy'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">Zajímavosti a tipy</button>
+      <button onclick="navigateTo('odkazy'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">Odkazy</button>
       <button onclick="navigateTo('pribeh'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">O mně</button>
       <button onclick="navigateTo('kontakt'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">Kontakt</button>
     </div>
@@ -165,6 +167,35 @@
       </div>
     </div>
 
+    <!-- ==================== ODKAZY ==================== -->
+    <div id="page-odkazy" class="page-view py-14 px-5">
+      <div class="max-w-xl mx-auto bg-white rounded-3xl p-6 sm:p-8 border border-stone-300 shadow-sm space-y-6 text-sm sm:text-base leading-relaxed">
+        <div>
+          <span class="heading-font text-xs tracking-widest text-lime-700 font-bold block mb-1">UŽITEČNÉ WEBY</span>
+          <h2 class="heading-font text-3xl sm:text-4xl font-bold text-stone-950 leading-tight">
+            ZAJÍMAVÉ ODKAZY
+          </h2>
+        </div>
+        <p class="text-stone-700 text-xs sm:text-sm">
+          Ověřené stránky, zajímavé projekty a partnerské weby, které stojí za návštěvu.
+        </p>
+        <ul class="space-y-3 font-medium">
+          <li>
+            <a href="https://vydelkypresklikacky.webnode.cz/" target="_blank" class="flex items-center justify-between p-4 bg-[#F0ECE1] rounded-2xl border border-stone-300 hover:border-black transition">
+              <span class="heading-font tracking-wide text-stone-950">Výdělky přes klikačky</span>
+              <span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/vojtechkolmacka" target="_blank" class="flex items-center justify-between p-4 bg-[#F0ECE1] rounded-2xl border border-stone-300 hover:border-black transition">
+              <span class="heading-font tracking-wide text-stone-950">Můj GitHub Profil</span>
+              <span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
     <!-- ==================== O MNĚ ==================== -->
     <div id="page-pribeh" class="page-view py-14 px-5">
       <div class="max-w-xl mx-auto bg-white rounded-3xl p-6 sm:p-8 border border-stone-300 shadow-sm space-y-5 text-sm sm:text-base leading-relaxed">
@@ -216,6 +247,13 @@
       <p class="text-xs leading-relaxed text-stone-400 mb-4">
         Nezávislé testy skládacích a elektrických koloběžek. Servis, zaučení a zátěžovky z kraje lesa nad Růžďkou.
       </p>
+      
+      <!-- Počítadlo návštěv -->
+      <div class="bg-stone-900 border border-stone-800 p-3 rounded-xl inline-flex items-center gap-2 mb-6">
+        <span class="text-xs uppercase font-bold text-stone-400 heading-font">Návštěvy:</span>
+        <span id="visitor-count" class="text-lime-400 font-mono font-bold text-sm">1284</span>
+      </div>
+
       <div class="heading-font text-lg font-bold text-[#C6F135] tracking-wider mb-6">
         VŠEM KOLOBĚŽNÍKŮM R.E.S.P.E.C.T.
       </div>
@@ -281,6 +319,16 @@
   </div>
 
   <script>
+    // Počítadlo návštěv (ukládá se do paměti prohlížeče /LocalStorage/)
+    let visits = localStorage.getItem('kolobeznik_visits');
+    if (!visits) {
+      visits = 1250; // Základní počáteční číslo
+    } else {
+      visits = parseInt(visits) + 1;
+    }
+    localStorage.setItem('kolobeznik_visits', visits);
+    document.getElementById('visitor-count').innerText = visits;
+
     const categoriesData = [
       { id: 'folding', name: 'Skládací', text: 'Skládací modely pro každodenní rychlé přesuny po městě i dopravu.', img: '' },
       { id: 'sport', name: 'Sportovní', text: 'Sportovní koloběžky s velkými koly pro delší trasy a cyklostezky.', img: '' },
@@ -361,7 +409,6 @@
       const catImgWrap = document.getElementById('cat-img-wrap');
       const catImage = document.getElementById('cat-image');
 
-      // Zjištění informací o rubrice
       const currentCat = categoriesData.find(c => c.id === catId);
       if (currentCat && (currentCat.text || currentCat.img)) {
         contentBox.classList.remove('hidden');
