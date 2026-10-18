@@ -173,12 +173,12 @@
         <div>
           <span class="heading-font text-xs tracking-widest text-lime-700 font-bold block mb-1">UŽITEČNÉ WEBY</span>
           <h2 class="heading-font text-3xl sm:text-4xl font-bold text-stone-950 leading-tight">
-            ZAJÍMAVÉ ODKAZY
+            ZAJÍMAVÉ ODKAZY A BANNERY
           </h2>
         </div>
         
-        <div class="space-y-3" id="links-container">
-          <!-- Dynamicky se vykreslí z linksData -->
+        <div class="space-y-4" id="links-container">
+          <!-- Dynamicky se vykreslí s bannery z linksData -->
         </div>
       </div>
     </div>
@@ -324,26 +324,26 @@
     ];
 
     const linksData = [
-      { id: 1, name: "Výdělky přes internet", url: "http://vydelkypresinternet.webnode.cz/" },
-      { id: 2, name: "Nice Babes", url: "http://nicebabes.webnode.cz/" },
-      { id: 3, name: "Červený trpaslík", url: "http://cervenytrpaslik.webnode.cz/" },
-      { id: 4, name: "Nice Babes 2", url: "http://nicebabes2.webnode.cz/" },
-      { id: 5, name: "SMS Freee", url: "http://smsfreee.webnode.cz/" },
-      { id: 6, name: "Slevové portály", url: "http://slevoveportaly.webnode.cz/" },
-      { id: 7, name: "LOL Jokes 3", url: "http://loljokes3.webnode.cz/" },
-      { id: 8, name: "NetCash Forum", url: "http://netcash.forumczech.com/forum" },
-      { id: 9, name: "South Park", url: "http://southpark.webnode.cz/" },
-      { id: 10, name: "The Big Bang Theory", url: "http://bigbangtheoryserial.webnode.cz/" },
-      { id: 11, name: "Placené ankety", url: "http://placeneankety.webnode.cz/" },
-      { id: 12, name: "SMS Free 2U", url: "http://smsfree2u.webnode.cz/" },
-      { id: 13, name: "Czech Geocache", url: "http://czechgeocache.webnode.cz/" },
-      { id: 14, name: "LOL Jokes 2U", url: "http://lol-jokes-2u.webnode.cz/" },
-      { id: 15, name: "Hubnutí a dieta", url: "http://hubnuti-a-dieta.webnode.cz/" },
-      { id: 16, name: "Top Celebrity", url: "http://topcelebrity.webnode.cz/" },
-      { id: 17, name: "České holky", url: "http://ceskeholky.webnode.cz/" },
-      { id: 18, name: "Počítačový kurz pro seniory", url: "http://pocitacovykursproseniory.webnode.cz/" },
-      { id: 19, name: "Zpětné odkazy zdarma", url: "http://zpetneodkazyzdarma.webnode.cz/" },
-      { id: 20, name: "Simpsonovy", url: "http://simpsonovy.webnode.cz/" }
+      { id: 1, name: "Výdělky přes internet", url: "http://vydelkypresinternet.webnode.cz/", img: "./public/images/banner-10.jpg" },
+      { id: 2, name: "Nice Babes", url: "http://nicebabes.webnode.cz/", img: "./public/images/banner-11.jpg" },
+      { id: 3, name: "Červený trpaslík", url: "http://cervenytrpaslik.webnode.cz/", img: "./public/images/banner-12.jpg" },
+      { id: 4, name: "Nice Babes 2", url: "http://nicebabes2.webnode.cz/", img: "./public/images/banner-13.jpg" },
+      { id: 5, name: "SMS Freee", url: "http://smsfreee.webnode.cz/", img: "./public/images/banner-14.jpg" },
+      { id: 6, name: "Slevové portály", url: "http://slevoveportaly.webnode.cz/", img: "./public/images/banner-15.jpg" },
+      { id: 7, name: "LOL Jokes 3", url: "http://loljokes3.webnode.cz/", img: "./public/images/banner-16.jpg" },
+      { id: 8, name: "NetCash Forum", url: "http://netcash.forumczech.com/forum", img: "./public/images/banner-17.jpg" },
+      { id: 9, name: "South Park", url: "http://southpark.webnode.cz/", img: "./public/images/banner-18.jpg" },
+      { id: 10, name: "The Big Bang Theory", url: "http://bigbangtheoryserial.webnode.cz/", img: "./public/images/banner-19.jpg" },
+      { id: 11, name: "Placené ankety", url: "http://placeneankety.webnode.cz/", img: "./public/images/banner-20.jpg" },
+      { id: 12, name: "SMS Free 2U", url: "http://smsfree2u.webnode.cz/", img: "" },
+      { id: 13, name: "Czech Geocache", url: "http://czechgeocache.webnode.cz/", img: "" },
+      { id: 14, name: "LOL Jokes 2U", url: "http://lol-jokes-2u.webnode.cz/", img: "" },
+      { id: 15, name: "Hubnutí a dieta", url: "http://hubnuti-a-dieta.webnode.cz/", img: "" },
+      { id: 16, name: "Top Celebrity", url: "http://topcelebrity.webnode.cz/", img: "" },
+      { id: 17, name: "České holky", url: "http://ceskeholky.webnode.cz/", img: "" },
+      { id: 18, name: "Počítačový kurz pro seniory", url: "http://pocitacovykursproseniory.webnode.cz/", img: "" },
+      { id: 19, name: "Zpětné odkazy zdarma", url: "http://zpetneodkazyzdarma.webnode.cz/", img: "" },
+      { id: 20, name: "Simpsonovy", url: "http://simpsonovy.webnode.cz/", img: "" }
     ];
 
     function renderLinks() {
@@ -354,8 +354,14 @@
         const a = document.createElement('a');
         a.href = l.url;
         a.target = "_blank";
-        a.className = "flex items-center justify-between p-4 bg-white rounded-2xl border border-stone-300 shadow-sm hover:border-black transition";
-        a.innerHTML = `<span class="heading-font text-base text-stone-950">${l.name}</span><span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span>`;
+        a.className = "block bg-white rounded-2xl overflow-hidden border border-stone-300 shadow-sm hover:border-black transition";
+        
+        let imgHtml = '';
+        if (l.img && l.img.trim() !== '') {
+          imgHtml = `<div class="p-2 bg-stone-100 border-b border-stone-200"><img src="${l.img}" alt="${l.name}" class="w-full h-auto object-cover rounded-lg" onerror="this.style.display='none'"></div>`;
+        }
+        
+        a.innerHTML = `${imgHtml}<div class="p-4 flex justify-between items-center"><span class="heading-font text-lg text-stone-950">${l.name}</span><span class="text-xs text-lime-800 font-bold">&rarr; Navštívit</span></div>`;
         container.appendChild(a);
       });
     }
@@ -545,3 +551,58 @@
       const tip = tipsData.find(item => item.id === id);
       if (!tip) return;
       document.getElementById('tip-modal-badge').innerText = tip.category;
+      document.getElementById('tip-modal-image').src = tip.img;
+      document.getElementById('tip-modal-title').innerText = tip.title;
+      document.getElementById('tip-modal-content').innerText = tip.text;
+      const m = document.getElementById('tip-modal');
+      m.classList.remove('hidden');
+      m.classList.add('flex');
+    }
+
+    function closeTipModal() {
+      document.getElementById('tip-modal').classList.add('hidden');
+      document.getElementById('tip-modal').classList.remove('flex');
+    }
+
+    function openScooterModal(id) {
+      const s = scooters.find(item => item.id === id);
+      if (!s) return;
+      document.getElementById('modal-category-badge').innerText = s.catLabel || '';
+      document.getElementById('modal-verdict-badge').innerHTML = getVerdictBadge(s.verdict);
+      document.getElementById('modal-image').src = s.img;
+      document.getElementById('modal-title').innerText = s.name;
+      document.getElementById('modal-blurb').innerText = s.blurb;
+
+      const specsWrap = document.getElementById('modal-specs-wrap');
+      const specsList = document.getElementById('modal-specs-list');
+      if (s.specs && s.specs.length > 0) {
+        specsList.innerHTML = s.specs.map(item => `<li>• ${item}</li>`).join('');
+        specsWrap.classList.remove('hidden');
+      } else {
+        specsWrap.classList.add('hidden');
+      }
+
+      document.getElementById('modal-pros-list').innerHTML = s.pros ? s.pros.map(p => `<li>✓ ${p}</li>`).join('') : '';
+      document.getElementById('modal-cons-list').innerHTML = s.cons ? s.cons.map(c => `<li>— ${c}</li>`).join('') : '';
+
+      const m = document.getElementById('scooter-modal');
+      m.classList.remove('hidden');
+      m.classList.add('flex');
+    }
+
+    function closeScooterModal() {
+      document.getElementById('scooter-modal').classList.add('hidden');
+      document.getElementById('scooter-modal').classList.remove('flex');
+    }
+
+    function toggleMenu() {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    }
+
+    window.onclick = function(e) {
+      if (e.target === document.getElementById('scooter-modal')) closeScooterModal();
+      if (e.target === document.getElementById('tip-modal')) closeTipModal();
+    };
+  </script>
+</body>
+</html>
