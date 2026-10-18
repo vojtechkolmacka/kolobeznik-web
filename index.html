@@ -7,11 +7,11 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    .glow-card:hover {
-      box-shadow: 0 0 25px -5px rgba(163, 230, 53, 0.2), 0 0 10px -5px rgba(6, 182, 212, 0.2);
+    .glow-effect {
+      box-shadow: 0 0 35px -5px rgba(163, 230, 53, 0.25), 0 0 15px -5px rgba(6, 182, 212, 0.2);
     }
     .custom-scroll::-webkit-scrollbar { width: 6px; }
     .custom-scroll::-webkit-scrollbar-track { background: #020617; }
@@ -20,18 +20,18 @@
 </head>
 <body class="bg-slate-950 text-slate-100 antialiased selection:bg-lime-400 selection:text-slate-950 pb-20 md:pb-0">
 
-  <!-- Ambientní dynamické světlo v pozadí -->
+  <!-- Světelné pozadí / ambientní záře -->
   <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
-    <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[850px] h-[550px] bg-gradient-to-tr from-lime-500/25 via-emerald-500/15 to-cyan-500/20 blur-[140px] rounded-full"></div>
-    <div class="absolute top-[900px] -left-48 w-[600px] h-[600px] bg-cyan-500/15 blur-[160px] rounded-full"></div>
-    <div class="absolute top-[1800px] -right-48 w-[600px] h-[600px] bg-lime-500/15 blur-[160px] rounded-full"></div>
+    <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[900px] h-[550px] bg-gradient-to-tr from-lime-500/20 via-emerald-500/20 to-cyan-500/25 blur-[140px] rounded-full"></div>
+    <div class="absolute top-[800px] -left-48 w-[650px] h-[650px] bg-cyan-500/15 blur-[160px] rounded-full"></div>
+    <div class="absolute top-[1700px] -right-48 w-[650px] h-[650px] bg-lime-500/20 blur-[160px] rounded-full"></div>
   </div>
 
   <!-- Plovoucí moderní navigace -->
   <header class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[94%] max-w-5xl">
-    <div class="backdrop-blur-2xl bg-slate-900/85 border border-slate-700/60 rounded-2xl px-5 h-14 flex items-center justify-between shadow-2xl shadow-black/60">
+    <div class="backdrop-blur-2xl bg-slate-900/85 border border-slate-700/70 rounded-2xl px-5 h-14 flex items-center justify-between shadow-2xl shadow-black/60">
       <a href="#" class="flex items-center gap-2.5">
-        <span class="w-8 h-8 rounded-xl bg-gradient-to-tr from-lime-400 to-cyan-400 flex items-center justify-center text-slate-950 font-black text-sm shadow-md shadow-lime-400/30">K</span>
+        <span class="w-8 h-8 rounded-xl bg-gradient-to-tr from-lime-400 via-emerald-400 to-cyan-400 flex items-center justify-center text-slate-950 font-black text-sm shadow-md shadow-lime-400/30">K</span>
         <span class="text-lg font-black tracking-tight text-white">Koloběžník<span class="text-lime-400">.cz</span></span>
       </a>
       <nav class="hidden md:flex items-center space-x-6 text-xs font-bold uppercase tracking-wider text-slate-300">
@@ -40,7 +40,7 @@
         <a href="#sluzby" class="hover:text-lime-400 transition">Služby</a>
         <a href="#kontakt" class="hover:text-lime-400 transition">Kontakt</a>
       </nav>
-      <a href="#testy" class="text-xs font-extrabold px-3.5 py-1.5 rounded-xl bg-lime-400 text-slate-950 hover:bg-lime-300 transition shadow-sm shadow-lime-400/20">
+      <a href="#testy" class="text-xs font-extrabold px-3.5 py-1.5 rounded-xl bg-lime-400 text-slate-950 hover:bg-lime-300 transition shadow-sm shadow-lime-400/25">
         27 Modelů
       </a>
     </div>
@@ -50,7 +50,6 @@
   <section class="relative z-10 pt-28 pb-14 md:pt-36 md:pb-20 overflow-hidden">
     <div class="max-w-6xl mx-auto px-4 text-center">
       
-      <!-- Živý status tag -->
       <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-900/90 border border-slate-700/80 shadow-inner mb-6">
         <span class="relative flex h-2.5 w-2.5">
           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-lime-400 opacity-75"></span>
@@ -68,13 +67,12 @@
         Představuji vám modely koloběžek, které jsem si osobně vyzkoušel a porovnal jejich vlastnosti, výhody a nevýhody. Žádné marketingové fráze – jen čistá praxe.
       </p>
 
-      <!-- Interaktivní Hero Showcase -->
+      <!-- Hero fotka se zářením -->
       <div class="relative max-w-4xl mx-auto mb-12 group">
         <div class="absolute -inset-1.5 bg-gradient-to-r from-lime-400 via-cyan-400 to-emerald-400 rounded-3xl blur-xl opacity-35 group-hover:opacity-70 transition duration-700"></div>
         <div class="relative rounded-3xl overflow-hidden border border-slate-700/80 bg-slate-900/90 shadow-2xl p-2.5">
           <img src="./public/images/hero.jpg" alt="Koloběžník v akci" class="w-full h-auto object-contain rounded-2xl max-h-[500px]">
-          <!-- Překryvný moderní štítek -->
-          <div class="absolute bottom-6 left-6 right-6 backdrop-blur-xl bg-slate-950/70 border border-slate-700/60 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-left">
+          <div class="absolute bottom-6 left-6 right-6 backdrop-blur-xl bg-slate-950/75 border border-slate-700/60 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-left">
             <div>
               <span class="text-[10px] font-black uppercase tracking-widest text-lime-400">Filozofie webu</span>
               <div class="text-sm font-bold text-white">Koloběžky pro město, sport i extrémní terén</div>
@@ -86,7 +84,7 @@
         </div>
       </div>
 
-      <!-- Metriky / Statistiky (HUD Bar) -->
+      <!-- HUD metrika -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl mx-auto">
         <div class="backdrop-blur-md bg-slate-900/60 border border-slate-800/80 rounded-2xl p-4 text-center">
           <div class="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-lime-400 to-emerald-300">27</div>
@@ -124,7 +122,7 @@
         <div>
           <span class="text-xs font-black uppercase tracking-wider text-lime-400">Katalog modelů</span>
           <h2 class="text-3xl sm:text-4xl font-black tracking-tight text-white mt-1">Moje recenze koloběžek</h2>
-          <p class="text-slate-400 text-sm mt-1">Vyber si kategorii nebo vyhledej konkrétní stroj.</p>
+          <p class="text-slate-400 text-sm mt-1">Kliknutím na kartu otevřeš podrobné hodnocení a parametry.</p>
         </div>
         
         <!-- Searchbox -->
@@ -201,7 +199,7 @@
       <p class="text-slate-400 text-sm mb-12">Ověřené postřehy a výstroj z každodenního ježdění.</p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="p-6 rounded-3xl bg-slate-900/80 border border-slate-800 hover:border-cyan-500/40 transition flex flex-col sm:flex-row gap-5 items-start group glow-card">
+        <div class="p-6 rounded-3xl bg-slate-900/80 border border-slate-800 hover:border-cyan-500/40 transition flex flex-col sm:flex-row gap-5 items-start group glow-effect">
           <img src="./public/images/cyclers.jpg" alt="Aplikace Cyclers" class="w-24 h-24 rounded-2xl object-contain bg-slate-950 border border-slate-800 shrink-0 p-1 group-hover:scale-105 transition" onerror="this.style.display='none'">
           <div>
             <span class="text-[10px] font-black text-cyan-400 uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-cyan-950/60 border border-cyan-500/30">Aplikace</span>
@@ -212,7 +210,7 @@
           </div>
         </div>
 
-        <div class="p-6 rounded-3xl bg-slate-900/80 border border-slate-800 hover:border-amber-500/40 transition flex flex-col sm:flex-row gap-5 items-start group glow-card">
+        <div class="p-6 rounded-3xl bg-slate-900/80 border border-slate-800 hover:border-amber-500/40 transition flex flex-col sm:flex-row gap-5 items-start group glow-effect">
           <img src="./public/images/tip-hovding.jpg" alt="Airbag Hövding" class="w-24 h-24 rounded-2xl object-contain bg-slate-950 border border-slate-800 shrink-0 p-1 group-hover:scale-105 transition" onerror="this.style.display='none'">
           <div>
             <span class="text-[10px] font-black text-amber-400 uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-amber-950/60 border border-amber-500/30">Bezpečnost</span>
@@ -223,7 +221,7 @@
           </div>
         </div>
 
-        <div class="p-6 rounded-3xl bg-slate-900/80 border border-slate-800 hover:border-lime-500/40 transition flex flex-col sm:flex-row gap-5 items-start group glow-card">
+        <div class="p-6 rounded-3xl bg-slate-900/80 border border-slate-800 hover:border-lime-500/40 transition flex flex-col sm:flex-row gap-5 items-start group glow-effect">
           <img src="./public/images/tip-dirtsuit.jpg" alt="Kombinéza Dirtlej" class="w-24 h-24 rounded-2xl object-contain bg-slate-950 border border-slate-800 shrink-0 p-1 group-hover:scale-105 transition" onerror="this.style.display='none'">
           <div>
             <span class="text-[10px] font-black text-lime-400 uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-lime-950/60 border border-lime-500/30">Výbava</span>
@@ -234,7 +232,7 @@
           </div>
         </div>
 
-        <div class="p-6 rounded-3xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/40 transition flex flex-col sm:flex-row gap-5 items-start group glow-card">
+        <div class="p-6 rounded-3xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/40 transition flex flex-col sm:flex-row gap-5 items-start group glow-effect">
           <img src="./public/images/field.jpg" alt="Technika jízdy" class="w-24 h-24 rounded-2xl object-contain bg-slate-950 border border-slate-800 shrink-0 p-1 group-hover:scale-105 transition" onerror="this.style.display='none'">
           <div>
             <span class="text-[10px] font-black text-emerald-400 uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-emerald-950/60 border border-emerald-500/30">Technika</span>
@@ -256,14 +254,14 @@
       <p class="text-slate-400 text-sm mb-12">Osobní konzultace výběru stroje i zaučení správné techniky odrazu.</p>
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
-        <div class="p-8 rounded-3xl bg-slate-900/80 border border-slate-800 hover:border-lime-500/30 transition glow-card">
+        <div class="p-8 rounded-3xl bg-slate-900/80 border border-slate-800 hover:border-lime-500/30 transition glow-effect">
           <div class="text-lime-400 font-black text-2xl mb-2">Individuálně</div>
           <h3 class="text-xl font-bold text-white mb-2">Poradenství s výběrem</h3>
           <p class="text-slate-400 text-sm leading-relaxed">
             Pomoc s výběrem správné koloběžky přesně podle tvé výšky, váhy a terénu, kde chceš jezdit.
           </p>
         </div>
-        <div class="p-8 rounded-3xl bg-slate-900/80 border border-slate-800 hover:border-cyan-500/30 transition glow-card">
+        <div class="p-8 rounded-3xl bg-slate-900/80 border border-slate-800 hover:border-cyan-500/30 transition glow-effect">
           <div class="text-cyan-400 font-black text-2xl mb-2">Dle domluvy</div>
           <h3 class="text-xl font-bold text-white mb-2">Technika jízdy a odrazu</h3>
           <p class="text-slate-400 text-sm leading-relaxed">
@@ -297,6 +295,7 @@
         cat: "folding",
         catLabel: "Skládací",
         img: "./public/images/scooter-01.jpg",
+        badgeText: "200 mm PU kola",
         blurb: "Základní skládací model pro každodenní přesuny.",
         pros: ["Lehká", "Skladná", "Jednoduše přenosná"],
         cons: ["Složitější systém skládání"],
@@ -308,6 +307,7 @@
         cat: "folding",
         catLabel: "Skládací",
         img: "./public/images/scooter-02.jpg",
+        badgeText: "3 zimy v provozu",
         blurb: "Zatím asi nejkvalitněji zpracovaná koloběžka, která se mnou odjezdila dokonce 3 zimy! Opravdu jedna z mála, ne-li jediná skládací koloběžka, se kterou je možno jezdit i lehký freestyle.",
         pros: ["Velmi kvalitní konstrukce", "Lehká i skladná", "Mezipoloha pro odstavení koloběžky (místo stojánku)", "Odjezdila se mnou 3 zimy bez zaváhání"],
         cons: ["Malá kolečka, vcelku se člověk nadře"],
@@ -319,6 +319,7 @@
         cat: "folding",
         catLabel: "Skládací",
         img: "./public/images/scooter-03.jpg",
+        badgeText: "Pozor na rám",
         blurb: "Lákavý model výbavou a cenou, ale bohužel s fatální konstrukční vadou.",
         pros: ["Výbava + nízká cena", "Velká kola", "Rychlá"],
         cons: ["Velmi chabá konstrukce – vepředu u skládání se mi ani ne po měsíci rozlomila téměř vejpůl!"],
@@ -330,6 +331,7 @@
         cat: "folding",
         catLabel: "Skládací",
         img: "./public/images/scooter-04.jpg",
+        badgeText: "6.5 kg • Kotouč",
         blurb: "Bohatě vybavená skládací koloběžka s kotoučovou brzdou a odpružením.",
         pros: ["Velká 200mm kola, rychlá", "Držák na lahve, stojánek", "Kotoučová zadní brzda", "Široký a snížený nášlap", "Skládací mechanismus na sešlápnutí", "Tvarovaný představec pro pohodlný úchop", "Odpružení předního i zadního kola", "Mezipoloha pro parkování bez stojanu", "Váha cca 6.5 kg"],
         cons: ["Po delší době používání se ozývá chrastění", "Třecí brzda je po nějaké době 'ohořená' (materiál plast + kov)"],
@@ -341,6 +343,7 @@
         cat: "folding",
         catLabel: "Skládací",
         img: "./public/images/scooter-05.jpg",
+        badgeText: "Listové tlumiče",
         blurb: "Druhá generace Jumba s listovými tlumiči, lehká, ale s rezervami v odolnosti.",
         pros: ["Rychlá", "Zadní odpružení (listové tlumiče)", "I přes robustní konstrukci je velmi lehká", "Třecí brzda s velmi dobrým odvodem tepla"],
         cons: ["Po delší době používání se ozývá tentýž problém jako u Kruzzel Hyperion", "Třecí brzda málo účinná", "Méně praktický skládací mechanismus"],
@@ -352,6 +355,7 @@
         cat: "folding",
         catLabel: "Skládací",
         img: "./public/images/scooter-06.jpg",
+        badgeText: "Letecký hliník",
         blurb: "Špičková konstrukce z leteckého hliníku a výborné jízdní vlastnosti.",
         pros: ["Kvalitní zpracování a konstrukce z leteckého hliníku", "Velmi lehká i rychlá", "205mm kola", "Stojánek", "Kvalitní zadní třecí brzda s výborným odvodem tepla"],
         cons: ["Stojánek by nemusel být tolik 'utopený' pod nášlapnou deskou"],
@@ -363,6 +367,7 @@
         cat: "folding",
         catLabel: "Skládací",
         img: "./public/images/scooter-07.jpg",
+        badgeText: "Trolley systém",
         blurb: "Městská skládačka s praktickým režimem kufru na kolečkách.",
         pros: ["Tvarovaná konstrukce pro režim trolley (kufr na kolečkách)", "200mm kola", "Držák na lahve", "Kotoučová zadní brzda", "Skládací mechanismus na sešlápnutí", "Odpružení předního kola"],
         cons: ["Vyšší nášlap (vyšší lidé dělají 'dřepy')", "Upevnění předního kola má tendenci se vcelku rychle vychodit a házet do osmičky"],
@@ -374,6 +379,7 @@
         cat: "folding",
         catLabel: "Skládací",
         img: "./public/images/scooter-08.jpg",
+        badgeText: "Německá výroba",
         blurb: "Německá klasika a osvědčený etalon mezi skládacími koloběžkami.",
         pros: ["Rychlá", "Rychlé a jednoduché složení díky patentovanému mechanismu", "Kvalitní německá výroba"],
         cons: ["Chybí pojistka proti samovolnému skládání"],
@@ -385,6 +391,7 @@
         cat: "folding",
         catLabel: "Skládací",
         img: "./public/images/scooter-09.jpg",
+        badgeText: "Nosnost 300 kg",
         blurb: "Hodně kvalitní koloběžka americké výroby s neuvěřitelnou nosností až 300 kg (většina skládaček má max 130 kg). Tento parametr je vykoupen trochu vyšší cenou kolem 10.000 Kč.",
         pros: ["Rychlá", "Jednoduché složení a rozložení", "Lehká", "Obrovská nosnost až 300 kg"],
         cons: ["Vyšší cena (kolem 10.000 Kč)", "Díky nízkoprofilovým kolům cítíte každý šutr"],
@@ -396,6 +403,7 @@
         cat: "folding",
         catLabel: "Skládací",
         img: "./public/images/scooter-10.jpg",
+        badgeText: "Široké pneu",
         blurb: "Komfortnější verze s extra širokým obutím pro příjemnější svezení.",
         pros: ["Rychlá a pohodlná jízda díky extra širokým pneumatikám"],
         cons: ["Slabší účinnost nášlapné brzdy"],
@@ -407,6 +415,7 @@
         cat: "folding",
         catLabel: "Skládací",
         img: "./public/images/scooter-11.jpg",
+        badgeText: "Váha pod 3 kg",
         blurb: "Švýcarská preciznost v kapesním balení, kde je většina dílů šroubovaná.",
         pros: ["Švýcarská výroba", "Velmi skladná, patentovaný skládací mechanismus", "Skládací rukojeti, stojánek, nízký nášlap", "Na tak malou koloběžku velmi rychlá", "Většina dílů je přišroubována – tudíž snadno vyměnitelná"],
         cons: ["Velmi malá kolečka"],
@@ -418,6 +427,7 @@
         cat: "special",
         catLabel: "Speciály",
         img: "./public/images/snow.jpg",
+        badgeText: "Bez brzd na sníh",
         blurb: "Sněhoběžka, když kola selhávají...",
         pros: ["Na sněhu až neuvěřitelně rychlá!"],
         cons: ["Nemá brzdu!"],
@@ -429,6 +439,7 @@
         cat: "folding",
         catLabel: "Skládací",
         img: "./public/images/scooter-13.jpg",
+        badgeText: "Půlení nášlapu",
         blurb: "Jedna z nejskladnějších koloběžek vůbec. Lze v pohodě složit do kufru a vzít s sebou na dovolenou. Přitom není vůbec drahá, koupit lze už za 1.500 Kč.",
         pros: ["Levná (kolem 1.500 Kč)", "Maximálně skladná a mobilní koloběžka do kufru auta"],
         cons: ["Docela brzo se objevil problém se skládacím mechanismem v místě kloubu půlení nášlapné desky"],
@@ -440,6 +451,7 @@
         cat: "folding",
         catLabel: "Skládací",
         img: "./public/images/scooter-14.jpg",
+        badgeText: "Kapesní rozměr",
         blurb: "Lehoučká, skladná i vcelku rychlá koloběžka.",
         pros: ["Velmi skladná", "Kvalitní konstrukce a zpracování", "Velmi lehká"],
         cons: ["Malá kolečka", "Malá manévrovatelnost"],
@@ -451,6 +463,7 @@
         cat: "sport",
         catLabel: "Sportovní",
         img: "./public/images/scooter-15.jpg",
+        badgeText: "26\" / 20\" kola",
         blurb: "Sportovní koloběžka Sulov CONDOR je díky velkým nafukovacím kolům 26\"/20\" ideální pro jízdu ve městě i na zpevněných cyklostezkách.",
         pros: ["Velká kola: přední 26\" skvěle přejíždí nerovnosti, zajistí pohodlnou jízdu i na horším povrchu", "Dobrý poměr cena/výkon se slušnou výbavou", "Vysoká stabilita a plynulost jízdy", "Praktičnost: držák na lahev, blatník a stojánek zpříjemní používání"],
         cons: ["Hmotnost: s téměř 13 kg nepatří mezi nejlehčí, méně snadné přenášení", "Ocelový rám je těžší než hliník", "V ostrých zatáčkách méně obratná v porovnání s malými koly"],
@@ -462,6 +475,7 @@
         cat: "sport",
         catLabel: "Sportovní",
         img: "./public/images/scooter-16.jpg",
+        badgeText: "Nosnost 150 kg",
         blurb: "Univerzální a stabilní koloběžka na rovné povrchy s obrovskou nosností až 150 kg.",
         pros: ["Stabilita a rychlost: ocelový rám a kombinace kol 20/16 drží slušnou rychlost", "Univerzálnost: pro dospívající i dospělé, super volba pro celou rodinu", "Vysoká nosnost: 150 kg je výjimečná hodnota!", "Pohodlí: výškově nastavitelná řídítka a ergonomické gripy", "Ideální na město, parky a cyklostezky"],
         cons: ["Ocelový rám je těžší (7,4 kg)", "Není vhodná do těžšího terénu mimo zpevněné cesty", "V-brzdy za mokra nefungují tak dobře jako kotouče"],
@@ -473,6 +487,7 @@
         cat: "sport",
         catLabel: "Sportovní",
         img: "./public/images/scooter-17.jpg",
+        badgeText: "9.3 kg • Obratná",
         blurb: "Ideální volba, pokud chceš něco lehkého, s čím se budeš prohánět po městě.",
         pros: ["Výborná manévrovatelnost: neskutečně obratná v městském provozu", "Nízká hmotnost okolo 9,3 kg – snadno se vynese do schodů i naloží do MHD", "Kvalitní zpracování značky Yedoo zaručuje spolehlivost", "Na rovném asfaltu je jako doma, snadno se odráží"],
         cons: ["Horší jízda v terénu: menší kola na kostkách či šotolině pocítí každý kamínek", "Nižší rychlost oproti velkým kolům typu Condor", "Některé modely nemají v základu stojánek či blatníky"],
@@ -484,6 +499,7 @@
         cat: "sport",
         catLabel: "Sportovní",
         img: "./public/images/scooter-18.jpg",
+        badgeText: "12\" obratná",
         blurb: "Kompaktní městská koloběžka s nafukovacími koly.",
         pros: ["Obratnost ve stísněném prostoru", "Nafukovací kola"],
         cons: ["Kratší stupátko pro dospělého jezdce"],
@@ -495,6 +511,7 @@
         cat: "folding",
         catLabel: "Skládací",
         img: "./public/images/scooter-19.jpg",
+        badgeText: "Nízkotlaká pneu",
         blurb: "Skladná koloběžka s pneumatikami, která díky patentované konstrukci ani po delší době nechrastí.",
         pros: ["Velmi skladná, kvalitní konstrukce a zpracování", "Velmi lehká", "Pohodlná foukací kola", "Díky patentované konstrukci ani po delší době používání 'nechrastí'"],
         cons: ["Foukaná kolečka jsou pomalejší než plná, nefoukaná"],
@@ -506,6 +523,7 @@
         cat: "electric",
         catLabel: "Elektrické",
         img: "./public/images/scooter-20.jpg",
+        badgeText: "5600W • 90 km/h",
         blurb: "Naprostá bestie dělaná pro fajnšmekry, co chtějí jezdit mimo silnice a potřebují obrovský výkon a rychlost.",
         pros: ["Brutální výkon a rychlost: celkový výkon 5600W (2x 2800W), žádný kopec není problém", "Dlouhý dojezd s obrovskou 35Ah baterií (až 100 km)", "Komfort a bezpečí: plně hydraulické odpružení a 11\" off-road kola"],
         cons: ["Hmotnost téměř 50 kg – není určená k přenášení", "Žádná homologace pro provoz na českých silnicích", "Vysoká pořizovací cena"],
@@ -517,6 +535,7 @@
         cat: "electric",
         catLabel: "Elektrické",
         img: "./public/images/scooter-21.jpg",
+        badgeText: "2 zimy v mrazu",
         blurb: "Poctivý stroj, který se mnou odjezdil 2 celé zimy! Za přijatelnou cenu nabídl skvělý výkon a spolehlivost.",
         pros: ["Skvělý poměr cena/výkon", "Odolnost: vydržel 2× celou zimu v mrazech a soli!", "Dostupnost a nízká cena náhradních dílů pro snadnou opravu", "Výkon v kopcích: s dopomocí odrazů vyjede kopce efektivněji než těžší stroje", "10\" perforovaná kola bez obav z defektu"],
         cons: ["Žádné odpružení – absence tlumičů je na horších silnicích znát", "Dnes již starší model z roku 2021"],
@@ -528,6 +547,7 @@
         cat: "electric",
         catLabel: "Elektrické",
         img: "./public/images/scooter-22.jpg",
+        badgeText: "1000W řetěz",
         blurb: "Opravdový kus železa s řetězovým převodem a silným krouticím momentem do kopců.",
         pros: ["1000W vzduchem chlazený motor si poradí s kopci i terénem", "Pohodlí: plné odpružení a možnost jízdy se sedadlem", "Univerzálnost na lesní i polní cesty", "Bezpečnost: dvě kotoučové brzdy", "Řetězový převod má lepší krouticí moment než motor v kole"],
         cons: ["Hmotnost 38 kg – přenášení do schodů či MHD je téměř nemožné", "Údržba řetězu (mazání, napínání)", "Těžké olověné baterie s kratší životností a menším dojezdem", "Nemá homologaci pro provoz na pozemních komunikacích"],
@@ -539,6 +559,7 @@
         cat: "electric",
         catLabel: "Elektrické",
         img: "./public/images/scooter-23.jpg",
+        badgeText: "Homologace pro ČR",
         blurb: "Česká elektrokoloběžka s plnou homologací na silnice a vyjímatelnou baterií.",
         pros: ["Homologace: zásadní výhoda, legální provoz na veřejných komunikacích", "Odnímatelná 48V baterie pro snadné nabíjení doma či výměnu za náhradní", "Bezpečné brzdy (bubnová + elektrická vpředu, třecí vzadu)", "Dvojité přední LED světlo (denní/noční) + zadní USB světlo", "Česká značka a dobrá dostupnost servisu a dílů"],
         cons: ["Výkon v kopcích: 500W motor v prudkých kopcích rychle ztrácí dech a vyžaduje odrážení"],
@@ -550,6 +571,7 @@
         cat: "electric",
         catLabel: "Elektrické",
         img: "./public/images/scooter-24.jpg",
+        badgeText: "Centrální alarm",
         blurb: "Cenově dostupnější elektrokoloběžka se solidním dojezdem a alarmem.",
         pros: ["Výkon 500W je pro městské ježdění a výlety dostatečný", "Solidní reálný dojezd 40–50 km", "Komfort: přední i zadní odpružení a kotoučové brzdy", "Výborné zabezpečení: pohybový senzor proti krádeži, centrální alarm a dálkový ovladač", "Podsvícení decku"],
         cons: ["Výrobce neuvádí konkrétní úhel stoupání", "Horší dostupnost originálního servisu a dílů"],
@@ -561,6 +583,7 @@
         cat: "electric",
         catLabel: "Elektrické",
         img: "./public/images/scooter-25.jpg",
+        badgeText: "Servis doma • 800W",
         blurb: "Kvalitní a silná koloběžka prověřené značky s prémiovým servisem u zákazníka.",
         pros: ["Výkon a stoupání: 800W motor zvládne stoupání až 25°", "Pohodlí: pružinové odpružení, 10\" nafukovací kola a kotoučové brzdy", "Stylové podsvícení decku pro noční bezpečnost", "Servis u zákazníka: Kaabo nabízí vyzvednutí přímo doma", "Vysoká kvalita a široká dostupnost dílů"],
         cons: ["Hmotnost kolem 20 kg", "Vyšší cena odpovídající výbavě"],
@@ -572,6 +595,7 @@
         cat: "sport",
         catLabel: "Sportovní",
         img: "./public/images/scooter-26.jpg",
+        badgeText: "Cena / výkon",
         blurb: "Klasická sportovní koloběžka pro rekreační jízdu po cyklostezkách.",
         pros: ["Příznivá cena", "Dobrá ovladatelnost"],
         cons: ["Základní komponenty"],
@@ -583,6 +607,7 @@
         cat: "electric",
         catLabel: "Elektrické",
         img: "./public/images/scooter-27.jpg",
+        badgeText: "6000W • 85 km/h",
         blurb: "Elektrická koloběžka pro nejnáročnější. Dva motory o výkonu 3000 W tě rozjedou až na 85 km/h.",
         pros: ["Brutální výkon 2× 3000W a rychlost až 85 km/h", "Obří dojezd až 100 km díky 38Ah 60V baterii", "Zvládne stoupání až neuvěřitelných 45 stupňů", "Přední i zadní odpružení a 11\" terénní gumy", "Odolnost proti dešti a LED angel-eyes osvětlení", "Duální nabíjení: se dvěma nabíječkami nabito za 3–4 hodiny"],
         cons: ["Hmotnost 50 kg", "Obrovská bestie vyžadující maximální respekt a kompletní chrániče"],
@@ -590,16 +615,16 @@
       }
     ];
 
-    // Štítky kategorií s moderními barvami
+    // Živé štítky kategorií
     function getCategoryBadge(cat, label) {
       if (cat === 'sport') {
-        return `<span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-cyan-950/90 text-cyan-300 border border-cyan-500/40 shadow-sm">${label}</span>`;
+        return `<span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm">${label}</span>`;
       } else if (cat === 'electric') {
-        return `<span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-lime-950/90 text-lime-300 border border-lime-400/40 shadow-sm">${label}</span>`;
+        return `<span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-lime-400/20 text-lime-300 border border-lime-400/40 shadow-sm">${label}</span>`;
       } else if (cat === 'special') {
-        return `<span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-purple-950/90 text-purple-300 border border-purple-500/40 shadow-sm">${label}</span>`;
+        return `<span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/40 shadow-sm">${label}</span>`;
       }
-      return `<span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-950/90 text-amber-300 border border-amber-400/40 shadow-sm">${label}</span>`;
+      return `<span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-400/20 text-amber-300 border border-amber-400/40 shadow-sm">${label}</span>`;
     }
 
     // Vykreslení karet
@@ -610,26 +635,24 @@
       items.forEach(s => {
         const badge = getCategoryBadge(s.cat, s.catLabel);
         const card = document.createElement('div');
-        card.className = "scooter-card group bg-slate-900/80 rounded-3xl border border-slate-800/90 hover:border-lime-500/40 transition-all duration-300 flex flex-col cursor-pointer overflow-hidden transform hover:-translate-y-1.5 glow-card";
+        card.className = "scooter-card group bg-slate-900/80 rounded-3xl border border-slate-800/90 hover:border-lime-400/50 transition-all duration-300 flex flex-col cursor-pointer overflow-hidden transform hover:-translate-y-2 glow-effect";
         card.setAttribute('data-category', s.cat);
         card.onclick = () => openModal(s.id);
 
-        let firstSpec = s.specs && s.specs.length > 0 ? s.specs[0] : "";
-
         card.innerHTML = `
-          <div class="h-60 bg-slate-950 p-4 flex items-center justify-center relative border-b border-slate-800/80">
-            <img src="${s.img}" alt="${s.name}" class="w-full h-full object-contain group-hover:scale-105 transition duration-500" onerror="this.src='./public/images/hero.jpg'">
+          <div class="h-60 bg-gradient-to-b from-slate-950 to-slate-900/90 p-4 flex items-center justify-center relative border-b border-slate-800/80">
+            <img src="${s.img}" alt="${s.name}" class="w-full h-full object-contain group-hover:scale-110 transition duration-500" onerror="this.src='./public/images/hero.jpg'">
             <div class="absolute top-3.5 left-3.5">${badge}</div>
+            ${s.badgeText ? `<div class="absolute bottom-3 right-3 text-[10px] font-extrabold px-2.5 py-1 rounded-lg bg-slate-950/80 text-slate-300 border border-slate-800 backdrop-blur-sm">${s.badgeText}</div>` : ''}
           </div>
           <div class="p-6 flex-1 flex flex-col justify-between">
             <div>
-              <h3 class="text-xl font-extrabold text-white mb-2 leading-snug group-hover:text-lime-300 transition">${s.name}</h3>
+              <h3 class="text-xl font-black text-white mb-2 leading-snug group-hover:text-lime-300 transition">${s.name}</h3>
               <p class="text-slate-400 text-xs mb-4 leading-relaxed line-clamp-3">${s.blurb}</p>
-              ${firstSpec ? `<div class="mb-3 inline-block px-2.5 py-1 rounded-lg bg-slate-950 text-[11px] font-semibold text-slate-300 border border-slate-800">${firstSpec}</div>` : ''}
             </div>
             <div class="flex items-center justify-between pt-4 border-t border-slate-800/80 text-xs">
-              <span class="text-slate-400 font-medium">Výhody: <strong class="text-emerald-400 font-bold">${s.pros.length}</strong> | Zápory: <strong class="text-rose-400 font-bold">${s.cons.length}</strong></span>
-              <span class="text-lime-400 font-bold group-hover:translate-x-1 transition flex items-center gap-1">Detail &rarr;</span>
+              <span class="text-slate-400 font-semibold">Výhody: <strong class="text-emerald-400 font-bold">${s.pros.length}</strong> | Zápory: <strong class="text-rose-400 font-bold">${s.cons.length}</strong></span>
+              <span class="text-lime-400 font-extrabold group-hover:translate-x-1.5 transition flex items-center gap-1">Detail testu &rarr;</span>
             </div>
           </div>
         `;
@@ -667,7 +690,7 @@
       const term = document.getElementById('search-input').value.toLowerCase().trim();
       const filtered = scootersData.filter(s => {
         const matchesCategory = (currentCategory === 'all' || s.cat === currentCategory);
-        const matchesSearch = s.name.toLowerCase().includes(term) || s.blurb.toLowerCase().includes(term);
+        const matchesSearch = s.name.toLowerCase().includes(term) || s.blurb.toLowerCase().includes(term) || (s.badgeText && s.badgeText.toLowerCase().includes(term));
         return matchesCategory && matchesSearch;
       });
       renderScooters(filtered);
