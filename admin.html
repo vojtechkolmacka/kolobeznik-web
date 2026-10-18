@@ -72,35 +72,31 @@
         const fileData = await res.json();
         const htmlContent = new TextDecoder().decode(Uint8Array.from(atob(fileData.content), c => c.codePointAt(0)));
 
-        // Univerzálně vyhledáme výskyt slova scooters v souboru
         const marker = "scooters";
         const startIdx = htmlContent.indexOf(marker);
-        if (startIdx === -1) {
-          box.innerHTML = '<p class="text-rose-400">Chyba: V index.html se nenašlo slovo scooters</p>';
-          return;
-        }
+        let scooters = [];
 
-        // Najdeme první hranatou závorku po tomto slovu
-        const bracketIdx = htmlContent.indexOf('[', startIdx);
-        if (bracketIdx === -1) {
-          box.innerHTML = '<p class="text-rose-400">Chyba: Nenalezeno otevírací pole.</p>';
-          return;
-        }
-
-        let bracketCount = 0, endIdx = -1;
-        for (let i = bracketIdx; i < htmlContent.length; i++) {
-          if (htmlContent[i] === '[') bracketCount++;
-          if (htmlContent[i] === ']') {
-            bracketCount--;
-            if (bracketCount === 0) { endIdx = i + 1; break; }
+        if (startIdx !== -1) {
+          const bracketIdx = htmlContent.indexOf('[', startIdx);
+          if (bracketIdx !== -1) {
+            let bracketCount = 0, endIdx = -1;
+            for (let i = bracketIdx; i < htmlContent.length; i++) {
+              if (htmlContent[i] === '[') bracketCount++;
+              if (htmlContent[i] === ']') {
+                bracketCount--;
+                if (bracketCount === 0) { endIdx = i + 1; break; }
+              }
+            }
+            if (endIdx !== -1) {
+              try {
+                scooters = eval(htmlContent.substring(bracketIdx, endIdx));
+              } catch (e) { console.error(e); }
+            }
           }
         }
 
-        const arrayCode = htmlContent.substring(bracketIdx, endIdx);
-        const scooters = eval(arrayCode);
-
         if (!scooters || scooters.length === 0) {
-          box.innerHTML = '<p class="text-stone-400">Žádné položky.</p>';
+          box.innerHTML = '<p class="text-amber-400">V index.html nebyly nalezeny žádné koloběžky. Můžeš je začít přidávat!</p>';
           return;
         }
 
@@ -108,7 +104,7 @@
         scooters.forEach(s => {
           const row = document.createElement('div');
           row.className = "bg-stone-950 p-2.5 rounded-xl flex items-center justify-between border border-stone-800 mb-1";
-          row.innerHTML = `<span class="text-white font-bold">${s.name}</span> <span class="text-[10px] text-stone-400">${s.verdict || ''}</span>`;
+          row.innerHTML = `<span class="text-white font-bold">${s.name || 'Neznámý'}</span> <span class="text-[10px] text-stone-400">${s.verdict || ''}</span>`;
           box.appendChild(row);
         });
 
