@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Koloběžník.cz | Svět koloběžek, recenze a testy</title>
+  <title>Koloběžník.cz | Svět koloběžek, styl a recenze</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,16 +11,15 @@
   <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
     
-    /* Dynamická energetická záře */
-    @keyframes pulse-sun {
-      0%, 100% { transform: scale(1) translate(0px, 0px); opacity: 0.35; }
-      50% { transform: scale(1.2) translate(30px, -20px); opacity: 0.6; }
+    /* Dynamické energetické pozadí s koloběžkovým motivem */
+    .hero-bg {
+      background-image: linear-gradient(to bottom, rgba(5, 8, 20, 0.75), rgba(5, 8, 20, 0.95)), url('./public/images/cyclers.jpg');
+      background-size: cover;
+      background-position: center 25%;
     }
-    .sun-glow { animation: pulse-sun 9s ease-in-out infinite; }
     
-    /* Živá skleněná karta s barevným odrazem */
     .action-card {
-      background: linear-gradient(135deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%);
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.88) 0%, rgba(15, 23, 42, 0.96) 100%);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.12);
@@ -29,62 +28,53 @@
     .action-card:hover {
       transform: translateY(-8px) scale(1.015);
       border-color: rgba(251, 146, 60, 0.6);
-      box-shadow: 0 25px 45px -15px rgba(249, 115, 22, 0.3), 0 0 35px -5px rgba(163, 230, 53, 0.25);
+      box-shadow: 0 25px 45px -15px rgba(249, 115, 22, 0.35), 0 0 35px -5px rgba(163, 230, 53, 0.25);
     }
 
     .custom-scroll::-webkit-scrollbar { width: 6px; }
     .custom-scroll::-webkit-scrollbar-track { background: #030712; }
-    .custom-scroll::-webkit-scrollbar-thumb { background: #ea580c; border-radius: 9999px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #f97316; border-radius: 9999px; }
   </style>
 </head>
 <body class="bg-[#050814] text-slate-100 antialiased selection:bg-orange-500 selection:text-white pb-24 md:pb-0">
 
-  <!-- Šťavnaté světelné pozadí plné slunce a energie -->
-  <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
-    <div class="sun-glow absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[550px] bg-gradient-to-tr from-amber-500/35 via-orange-500/30 to-lime-400/25 blur-[130px] rounded-full"></div>
-    <div class="sun-glow absolute top-[850px] -left-48 w-[650px] h-[650px] bg-cyan-500/20 blur-[150px] rounded-full"></div>
-    <div class="sun-glow absolute top-[1700px] -right-48 w-[700px] h-[700px] bg-orange-500/25 blur-[160px] rounded-full"></div>
-  </div>
-
-  <!-- Plovoucí navigační pilulka -->
+  <!-- Plovoucí navigační lišta -->
   <header class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[94%] max-w-5xl">
     <div class="backdrop-blur-2xl bg-slate-900/90 border border-slate-700/80 rounded-2xl px-5 h-15 flex items-center justify-between shadow-2xl shadow-black/80">
       <a href="#" class="flex items-center gap-2.5 group">
-        <span class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-400 via-orange-500 to-rose-500 flex items-center justify-center text-white font-black text-base shadow-lg shadow-orange-500/40 group-hover:rotate-6 transition">K</span>
+        <span class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-400 via-orange-500 to-rose-500 flex items-center justify-center text-white font-black text-base shadow-lg shadow-orange-500/40 group-hover:rotate-6 transition">🛴</span>
         <span class="text-xl font-black tracking-tight text-white">Koloběžník<span class="text-amber-400">.cz</span></span>
       </a>
       <nav class="hidden md:flex items-center space-x-7 text-xs font-extrabold uppercase tracking-wider text-slate-200">
-        <a href="#testy" class="hover:text-amber-400 transition">Katalog (27)</a>
-        <a href="#tipy" class="hover:text-amber-400 transition">Tipy & Zkušenosti</a>
+        <a href="#testy" class="hover:text-amber-400 transition">Katalog testů (27)</a>
+        <a href="#lifestyle" class="hover:text-rose-400 transition">Styl & Pohyb</a>
+        <a href="#tipy" class="hover:text-amber-400 transition">Tipy & Články</a>
         <a href="#sluzby" class="hover:text-amber-400 transition">Služby</a>
         <a href="#kontakt" class="hover:text-amber-400 transition">Kontakt</a>
       </nav>
       <a href="#testy" class="text-xs font-black px-4 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 hover:brightness-110 transition shadow-md shadow-orange-500/30">
-        Vyběhni na trať 🛴
+        Vyběhni na trať 💨
       </a>
     </div>
   </header>
 
-  <!-- Hero sekce plná energie -->
-  <section class="relative z-10 pt-28 pb-14 md:pt-36 md:pb-20 overflow-hidden">
+  <!-- Hero sekce s plným tematickým pozadím -->
+  <section class="hero-bg relative z-10 pt-32 pb-20 md:pt-44 md:pb-28 border-b border-orange-500/30">
     <div class="max-w-6xl mx-auto px-4 text-center">
       
       <!-- Živý badge -->
-      <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-orange-950/60 border border-orange-500/40 shadow-inner mb-6">
-        <span class="relative flex h-2.5 w-2.5">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-400"></span>
-        </span>
-        <span class="text-xs font-black uppercase tracking-wider text-amber-300">Svoboda • Pohyb • Adrenalin</span>
+      <div class="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-orange-950/70 border border-orange-500/50 shadow-lg mb-6 backdrop-blur-md">
+        <span class="text-base">✨</span>
+        <span class="text-xs font-black uppercase tracking-wider text-amber-300">Svoboda • Pohyb • Krása • Adrenalin</span>
       </div>
 
-      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white mb-6 leading-[1.1]">
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white mb-6 leading-[1.1] drop-shadow-md">
         Začněte jezdit na koloběžce <br class="hidden sm:inline">
         <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-400 to-rose-400">už dnes!</span>
       </h1>
       
-      <p class="max-w-2xl mx-auto text-base sm:text-lg text-slate-200 mb-10 font-medium leading-relaxed">
-        Představuji vám modely koloběžek, které jsem si osobně vyzkoušel a porovnal jejich vlastnosti, výhody a nevýhody. Žádné vymyšlené parametry – jen čistá praxe.
+      <p class="max-w-2xl mx-auto text-base sm:text-lg text-slate-200 mb-10 font-medium leading-relaxed drop-shadow">
+        Koloběh není jen přesun z bodu A do B. Je to radost z pohybu, dokonalé tvarování postavy, čistá hlava a styl, který tě chytne a nepustí.
       </p>
 
       <!-- Interaktivní Hero Showcase -->
@@ -96,7 +86,7 @@
           <!-- Překryvný moderní štítek -->
           <div class="absolute bottom-5 left-5 right-5 sm:bottom-7 sm:left-7 sm:right-7 backdrop-blur-xl bg-slate-950/85 border border-orange-500/30 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-left">
             <div>
-              <span class="text-[10px] font-black uppercase tracking-widest text-amber-400">Můj showroom</span>
+              <span class="text-[10px] font-black uppercase tracking-widest text-amber-400">Showroom & Zkušenosti</span>
               <div class="text-sm sm:text-base font-extrabold text-white">27 otestovaných koloběžek – Skládací, Sportovní i Elektro</div>
             </div>
             <a href="#testy" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 font-black text-xs uppercase tracking-wider hover:brightness-110 transition whitespace-nowrap shadow-lg shadow-orange-500/30">
@@ -106,7 +96,7 @@
         </div>
       </div>
 
-      <!-- Statistiky / Metriky (HUD Bar s barvami) -->
+      <!-- Statistiky / Metriky (HUD Bar) -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 max-w-4xl mx-auto">
         <div class="action-card rounded-2xl p-4 text-center border-l-4 border-l-amber-400">
           <div class="text-3xl sm:text-4xl font-black text-amber-400">27</div>
@@ -133,6 +123,63 @@
   <section class="relative z-10 py-5 bg-gradient-to-r from-orange-950/80 via-slate-900 to-orange-950/80 border-y border-orange-500/30">
     <div class="max-w-4xl mx-auto px-4 text-center text-sm sm:text-base font-bold tracking-wide text-slate-200">
       „Všem koloběžníkům <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 font-black tracking-widest text-lg">R.E.S.P.E.C.T.</span>“
+    </div>
+  </section>
+
+  <!-- Sekce: Krása v pohybu & Životní styl -->
+  <section id="lifestyle" class="relative z-10 py-16 md:py-24 border-b border-slate-800/80 bg-gradient-to-b from-slate-950 via-slate-900/60 to-slate-950">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <span class="text-xs font-black uppercase tracking-widest text-rose-400">Životní styl & Elegance</span>
+        <h2 class="text-3xl sm:text-4xl font-black tracking-tight text-white mt-1">Krása v pohybu: Koloběh a zdraví</h2>
+        <p class="text-slate-300 text-sm sm:text-base mt-2">
+          Jízda na koloběžce zapojuje celé tělo, přirozeně zpevňuje hýždě, břicho a nohy a šetří klouby i páteř. Sport, který sluší každé ženě i muži.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="action-card rounded-3xl overflow-hidden p-3 group border-t-2 border-t-rose-400">
+          <div class="h-64 rounded-2xl overflow-hidden bg-slate-950 relative">
+            <img src="./public/images/cyclers.jpg" alt="Ženy a sport na koloběžce" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+            <div class="absolute bottom-4 left-4 right-4">
+              <span class="text-[10px] font-black uppercase tracking-wider text-rose-400">Kondice</span>
+              <h4 class="text-base font-extrabold text-white">Přirozené tvarování postavy</h4>
+            </div>
+          </div>
+          <p class="text-slate-400 text-xs p-3 leading-relaxed">
+            Při správném odrazu aktivně posilujete hýžďové a zádové svaly bez tvrdých nárazů, kterými trpí klouby při běhu.
+          </p>
+        </div>
+
+        <div class="action-card rounded-3xl overflow-hidden p-3 group border-t-2 border-t-amber-400">
+          <div class="h-64 rounded-2xl overflow-hidden bg-slate-950 relative">
+            <img src="./public/images/field.jpg" alt="Výlety do přírody" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+            <div class="absolute bottom-4 left-4 right-4">
+              <span class="text-[10px] font-black uppercase tracking-wider text-amber-400">Příroda & Relax</span>
+              <h4 class="text-base font-extrabold text-white">Čistá hlava a svoboda</h4>
+            </div>
+          </div>
+          <p class="text-slate-400 text-xs p-3 leading-relaxed">
+            Vyrazit na cyklostezku nebo polní cestu, vnímat vítr a vyčistit si hlavu po celém dni. Koloběžka dává naprostou volnost.
+          </p>
+        </div>
+
+        <div class="action-card rounded-3xl overflow-hidden p-3 group border-t-2 border-t-cyan-400">
+          <div class="h-64 rounded-2xl overflow-hidden bg-slate-950 relative">
+            <img src="./public/images/night-ride.jpg" alt="Noční městské jízdy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+            <div class="absolute bottom-4 left-4 right-4">
+              <span class="text-[10px] font-black uppercase tracking-wider text-cyan-400">Urban Style</span>
+              <h4 class="text-base font-extrabold text-white">Noční jízdy a městský tep</h4>
+            </div>
+          </div>
+          <p class="text-slate-400 text-xs p-3 leading-relaxed">
+            Kombinace stylu, kvalitního osvětlení a rychlých přesunů městem. Být vidět a užívat si atmosféru nočního města.
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -300,13 +347,13 @@
       <span class="text-base">🛴</span>
       <span>Testy</span>
     </a>
+    <a href="#lifestyle" class="flex flex-col items-center text-[10px] font-bold text-rose-400">
+      <span class="text-base">✨</span>
+      <span>Styl</span>
+    </a>
     <a href="#tipy" class="flex flex-col items-center text-[10px] font-bold text-slate-300 hover:text-white">
       <span class="text-base">💡</span>
       <span>Tipy</span>
-    </a>
-    <a href="#sluzby" class="flex flex-col items-center text-[10px] font-bold text-slate-300 hover:text-white">
-      <span class="text-base">🤝</span>
-      <span>Služby</span>
     </a>
     <a href="#kontakt" class="flex flex-col items-center text-[10px] font-bold text-slate-300 hover:text-white">
       <span class="text-base">✉️</span>
@@ -657,7 +704,7 @@
       }
     ];
 
-    // Štítky kategorií s živými barvami
+    // Štítky kategorií
     function getCategoryBadge(cat, label) {
       if (cat === 'sport') {
         return `<span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-cyan-500/25 text-cyan-300 border border-cyan-400/50 shadow-sm">${label}</span>`;
