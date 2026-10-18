@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Koloběžník — Administrace & Fotky</title>
+  <title>Koloběžník — Kompletní Administrace</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,16 +20,16 @@
   <div>
     <div class="flex items-center justify-between mb-6 border-b border-stone-800 pb-4">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl lime-bg flex items-center justify-center text-black font-black text-xl">📸</div>
+        <div class="w-10 h-10 rounded-xl lime-bg flex items-center justify-center text-black font-black text-xl">🛠️</div>
         <div>
           <span class="text-[10px] uppercase font-bold text-lime-400 tracking-widest block">INTERNÍ APP</span>
-          <h1 class="heading-font text-2xl text-white">SPRÁVA A FOTKY</h1>
+          <h1 class="heading-font text-2xl text-white">PLNÁ SPRÁVA WEBU</h1>
         </div>
       </div>
       <a href="./index.html" class="text-xs text-stone-400 hover:text-white underline">Zpět na web &rarr;</a>
     </div>
 
-    <!-- Nastavení GitHub Tokenu -->
+    <!-- 1. Připojení -->
     <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 mb-6 shadow-xl space-y-4">
       <h2 class="heading-font text-lg text-white">1. GitHub Připojení</h2>
       <div class="space-y-3 text-xs">
@@ -45,28 +45,30 @@
       </div>
     </div>
 
-    <!-- Nahrání fotky -->
+    <!-- 2. Nahrát fotku -->
     <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 mb-6 shadow-xl space-y-4">
       <h2 class="heading-font text-lg text-white">2. Nahrát fotku z mobilu</h2>
       <div class="space-y-3 text-xs">
         <div>
-          <label class="block font-bold mb-1 text-stone-300">Vybrat obrázek z galerie:</label>
-          <input type="file" id="image-file" accept="image/*" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#C6F135] file:text-black hover:file:bg-[#b3df22]">
+          <input type="file" id="image-file" accept="image/*" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#C6F135] file:text-black">
         </div>
         <div>
-          <label class="block font-bold mb-1 text-stone-300">Název souboru na webu (např. mojeskrin.jpg):</label>
+          <label class="block font-bold mb-1 text-stone-300">Název souboru:</label>
           <input type="text" id="image-name" placeholder="fotka.jpg" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white font-mono">
         </div>
-        <button onclick="uploadImageToGitHub()" class="bg-white text-stone-950 w-full py-3 rounded-xl font-bold uppercase text-xs hover:bg-stone-200 transition">
-          Nahrát fotku do public/images/
-        </button>
+        <button onclick="uploadImageToGitHub()" class="bg-white text-stone-950 w-full py-3 rounded-xl font-bold uppercase text-xs hover:bg-stone-200 transition">Nahrát do public/images/</button>
         <p id="img-status-msg" class="text-center font-bold text-lime-400 mt-2"></p>
       </div>
     </div>
 
-    <!-- Formulář pro novou koloběžku -->
-    <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 shadow-xl space-y-4">
-      <h2 class="heading-font text-lg text-white">3. Přidat novou koloběžku / recenzi</h2>
+    <!-- 3. Přidat nebo Upravit koloběžku -->
+    <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 mb-6 shadow-xl space-y-4">
+      <div class="flex justify-between items-center">
+        <h2 id="form-title" class="heading-font text-lg text-white">3. Přidat novou koloběžku</h2>
+        <button id="cancel-edit-btn" onclick="resetForm()" class="hidden text-xs bg-stone-800 text-stone-300 px-3 py-1 rounded-lg">Zrušit úpravy</button>
+      </div>
+      <input type="hidden" id="edit-scooter-id" value="">
+      
       <div class="space-y-3 text-xs">
         <div>
           <label class="block font-bold mb-1 text-stone-300">Název stroje:</label>
@@ -104,13 +106,25 @@
           <input type="text" id="scooter-cons" placeholder="Vyšší cena, Horší brzdy" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
         </div>
         <div>
-          <label class="block font-bold mb-1 text-stone-300">Cesta k fotce (např. ./public/images/fotka.jpg):</label>
+          <label class="block font-bold mb-1 text-stone-300">Cesta k fotce:</label>
           <input type="text" id="scooter-img" value="./public/images/" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white font-mono">
         </div>
-        <button onclick="addScooterToGitHub()" class="lime-btn w-full py-3 rounded-xl font-bold uppercase text-xs shadow-md">
-          Uložit koloběžku na GitHub
+        <button onclick="saveScooterToGitHub()" class="lime-btn w-full py-3 rounded-xl font-bold uppercase text-xs shadow-md">
+          Uložit změny na GitHub
         </button>
         <p id="status-msg" class="text-center font-bold text-lime-400 mt-2"></p>
+      </div>
+    </div>
+
+    <!-- 4. Seznam stávajících koloběžek pro úpravu -->
+    <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 shadow-xl space-y-4">
+      <div class="flex justify-between items-center">
+        <h2 class="heading-font text-lg text-white">4. Seznam a úprava stávajících</h2>
+        <button onclick="loadScootersList()" class="bg-stone-800 text-stone-200 text-xs px-3 py-1.5 rounded-xl hover:bg-stone-700">Načíst seznam</button>
+      </div>
+      <p class="text-xs text-stone-400">Po načtení můžeš jakoukoliv koloběžku upravit nebo smazat.</p>
+      <div id="scooters-admin-list" class="space-y-2 max-h-96 overflow-y-auto pr-1 text-xs">
+        <p class="text-stone-500 italic">Klikni na „Načíst seznam“ pro zobrazení...</p>
       </div>
     </div>
   </div>
@@ -129,7 +143,6 @@
       alert('Nastavení uloženo v paměti telefonu!');
     }
 
-    // Automatické vyplnění názvu souboru fotky podle vybraného souboru
     document.getElementById('image-file').addEventListener('change', function(e) {
       if (e.target.files.length > 0) {
         const file = e.target.files[0];
@@ -145,144 +158,256 @@
       const filenameInput = document.getElementById('image-name').value.trim();
       const statusEl = document.getElementById('img-status-msg');
 
-      if (!token || !repo) {
-        alert('Nejprve vyplň a ulož GitHub token nahoře!');
-        return;
-      }
-      if (fileInput.files.length === 0 || !filenameInput) {
-        alert('Vyber fotku z galerie a zadej název souboru.');
-        return;
-      }
+      if (!token || !repo) { alert('Vyplň token!'); return; }
+      if (fileInput.files.length === 0 || !filenameInput) { alert('Vyber fotku a název.'); return; }
 
-      const file = fileInput.files[0];
-      statusEl.innerText = 'Převádím a nahrávám fotku...';
+      statusEl.innerText = 'Nahrávám fotku...';
+      const reader = new FileReader();
+      reader.readAsDataURL(fileInput.files[0]);
+      reader.onload = async function() {
+        const base64Content = reader.result.split(',')[1];
+        const path = `public/images/${filenameInput}`;
+        const url = `https://api.github.com/repos/${repo}/contents/${path}`;
+
+        let sha = null;
+        const checkRes = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
+        if (checkRes.ok) sha = (await checkRes.json()).sha;
+
+        const bodyData = { message: `Admin: Nahrán obrázek ${filenameInput}`, content: base64Content };
+        if (sha) bodyData.sha = sha;
+
+        const putRes = await fetch(url, {
+          method: 'PUT',
+          headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify(bodyData)
+        });
+
+        if (putRes.ok) statusEl.innerText = 'Fotka úspěšně nahrána!';
+        else statusEl.innerText = 'Chyba při nahrávání.';
+      };
+    }
+
+    // Pomocná funkce pro bezpečné parsování koloběžek z index.html
+    async function fetchIndexFile() {
+      const token = localStorage.getItem('kol_token');
+      const repo = localStorage.getItem('kol_repo');
+      const url = `https://api.github.com/repos/${repo}/contents/index.html`;
+      
+      const res = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
+      if (!res.ok) throw new Error('Nepodařilo se načíst index.html');
+      const fileData = await res.json();
+      
+      const binaryString = atob(fileData.content);
+      const bytes = Uint8Array.from(binaryString, (m) => m.codePointAt(0));
+      const htmlContent = new TextDecoder().decode(bytes);
+
+      return { fileData, htmlContent };
+    }
+
+    // Načtení seznamu koloběžek do administrace
+    async function loadScootersList() {
+      const token = localStorage.getItem('kol_token');
+      const repo = localStorage.getItem('kol_repo');
+      const listEl = document.getElementById('scooters-admin-list');
+
+      if (!token || !repo) { alert('Vyplň token!'); return; }
+      listEl.innerHTML = '<p class="text-stone-400">Načítám data z GitHubu...</p>';
 
       try {
-        // Pevný převod obrázku na Base64
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = async function() {
-          // Získáme čistý Base64 řetězec (odstraníme hlavičku typu data:image/jpeg;base64,)
-          const base64Content = reader.result.split(',')[1];
-          const path = `public/images/${filenameInput}`;
-          const url = `https://api.github.com/repos/${repo}/contents/${path}`;
+        const { htmlContent } = await fetchIndexFile();
+        const scooters = extractScootersArray(htmlContent);
 
-          // Kontrola existence souboru (kvůli SHA)
-          let sha = null;
-          const checkRes = await fetch(url, {
-            headers: { 'Authorization': `token ${token}` }
-          });
-          if (checkRes.ok) {
-            const fileData = await checkRes.json();
-            sha = fileData.sha;
-          }
+        if (scooters.length === 0) {
+          listEl.innerHTML = '<p class="text-stone-400">Žádné koloběžky nenalezeny.</p>';
+          return;
+        }
 
-          const bodyData = {
-            message: `Admin PWA: Nahrán obrázek ${filenameInput}`,
-            content: base64Content
-          };
-          if (sha) bodyData.sha = sha;
-
-          const putRes = await fetch(url, {
-            method: 'PUT',
-            headers: {
-              'Authorization': `token ${token}`,
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(bodyData)
-          });
-
-          if (putRes.ok) {
-            statusEl.innerText = `Fotka úspěšně nahrána! Cesta je nastavená ve formuláři níže.`;
-          } else {
-            const err = await putRes.json();
-            statusEl.innerText = 'Chyba při nahrávání: ' + (err.message || 'Neznámá chyba');
-          }
-        };
+        listEl.innerHTML = '';
+        scooters.forEach(s => {
+          const row = document.createElement('div');
+          row.className = "bg-stone-950 p-3 rounded-xl flex items-center justify-between border border-stone-800";
+          row.innerHTML = `
+            <div>
+              <span class="font-bold text-white">${s.name}</span>
+              <span class="text-[10px] text-stone-400 block">${s.catLabel} | ${s.verdict}</span>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="editScooter(${s.id})" class="bg-stone-800 text-lime-400 px-3 py-1.5 rounded-lg font-bold">Upravit</button>
+              <button onclick="deleteScooter(${s.id})" class="bg-rose-950 text-rose-300 px-3 py-1.5 rounded-lg font-bold">Smazat</button>
+            </div>
+          `;
+          listEl.appendChild(row);
+        });
       } catch (err) {
-        statusEl.innerText = 'Chyba: ' + err.message;
+        listEl.innerHTML = `<p class="text-rose-400">Chyba: ${err.message}</p>`;
       }
     }
 
-    async function addScooterToGitHub() {
+    // Extrakce pole koloběžek pomocí regexu z kódu index.html
+    function extractScootersArray(html) {
+      const startMarker = "const scooters = [";
+      const startIdx = html.indexOf(startMarker);
+      if (startIdx === -1) return [];
+      
+      // Najdeme odpovídající uzavírací hranatou závorku pole
+      let bracketCount = 0;
+      let endIdx = -1;
+      for (let i = startIdx + startMarker.length - 1; i < html.length; i++) {
+        if (html[i] === '[') bracketCount++;
+        if (html[i] === ']') {
+          bracketCount--;
+          if (bracketCount === 0) {
+            endIdx = i + 1;
+            break;
+          }
+        }
+      }
+      if (endIdx === -1) return [];
+      
+      const arrayCode = html.substring(startIdx + startMarker.length - 1, endIdx);
+      try {
+        return eval(arrayCode);
+      } catch (e) {
+        console.error("Chyba parsování:", e);
+        return [];
+      }
+    }
+
+    // Příprava formuláře pro úpravu existující koloběžky
+    async function editScooter(id) {
+      const token = localStorage.getItem('kol_token');
+      const repo = localStorage.getItem('kol_repo');
+      
+      try {
+        const { htmlContent } = await fetchIndexFile();
+        const scooters = extractScootersArray(htmlContent);
+        const scooter = scooters.find(s => s.id === id);
+        if (!scooter) { alert('Koloběžka nenalezena'); return; }
+
+        document.getElementById('edit-scooter-id').value = scooter.id;
+        document.getElementById('scooter-name').value = scooter.name;
+        document.getElementById('scooter-cat').value = scooter.cat;
+        document.getElementById('scooter-verdict').value = scooter.verdict;
+        document.getElementById('scooter-blurb').value = scooter.blurb;
+        document.getElementById('scooter-pros').value = scooter.pros ? scooter.pros.join(', ') : '';
+        document.getElementById('scooter-cons').value = scooter.cons ? scooter.cons.join(', ') : '';
+        document.getElementById('scooter-img').value = scooter.img;
+
+        document.getElementById('form-title').innerText = `3. Úprava: ${scooter.name}`;
+        document.getElementById('cancel-edit-btn').classList.remove('hidden');
+        window.scrollTo({ top: 400, behavior: 'smooth' });
+      } catch (err) {
+        alert('Chyba při načítání detailu: ' + err.message);
+      }
+    }
+
+    function resetForm() {
+      document.getElementById('edit-scooter-id').value = '';
+      document.getElementById('scooter-name').value = '';
+      document.getElementById('scooter-blurb').value = '';
+      document.getElementById('scooter-pros').value = '';
+      document.getElementById('scooter-cons').value = '';
+      document.getElementById('scooter-img').value = './public/images/';
+      document.getElementById('form-title').innerText = '3. Přidat novou koloběžku';
+      document.getElementById('cancel-edit-btn').classList.add('hidden');
+    }
+
+    // Smazání koloběžky
+    async function deleteScooter(id) {
+      if (!confirm('Opravdu chceš tuto koloběžku smazat z webu?')) return;
+      await saveScooterToGitHub(id, true);
+    }
+
+    // Uložení (přidání, úprava nebo smazání) na GitHub
+    async function saveScooterToGitHub(deleteId = null, isDelete = false) {
       const token = localStorage.getItem('kol_token');
       const repo = localStorage.getItem('kol_repo');
       const statusEl = document.getElementById('status-msg');
 
-      if (!token || !repo) {
-        alert('Nejprve vyplň a ulož GitHub token nahoře!');
-        return;
-      }
-
-      const name = document.getElementById('scooter-name').value.trim();
-      const cat = document.getElementById('scooter-cat').value;
-      const verdict = document.getElementById('scooter-verdict').value;
-      const blurb = document.getElementById('scooter-blurb').value.trim();
-      const prosStr = document.getElementById('scooter-pros').value;
-      const consStr = document.getElementById('scooter-cons').value;
-      const img = document.getElementById('scooter-img').value.trim();
-
-      if (!name || !blurb) {
-        alert('Vyplň alespoň název koloběžky a popis.');
-        return;
-      }
-
-      const pros = prosStr ? prosStr.split(',').map(s => s.trim()).filter(Boolean) : [];
-      const cons = consStr ? consStr.split(',').map(s => s.trim()).filter(Boolean) : [];
-      
-      let catLabel = "SKLÁDACÍ";
-      if (cat === 'sport') catLabel = "SPORTOVNÍ";
-      if (cat === 'electric') catLabel = "ELEKTRICKÉ";
-      if (cat === 'special') catLabel = "SPECIÁLY";
+      if (!token || !repo) { alert('Vyplň token!'); return; }
 
       statusEl.innerText = 'Stahuji aktuální kód webu...';
-      const url = `https://api.github.com/repos/${repo}/contents/index.html`;
 
       try {
-        const getRes = await fetch(url, {
-          headers: { 'Authorization': `token ${token}` }
-        });
-        if (!getRes.ok) throw new Error('Nepodařilo se načíst index.html z GitHubu.');
-        
-        const fileData = await getRes.json();
-        const binaryString = atob(fileData.content);
-        const bytes = Uint8Array.from(binaryString, (m) => m.codePointAt(0));
-        const htmlContent = new TextDecoder().decode(bytes);
+        const { fileData, htmlContent } = await fetchIndexFile();
+        let scooters = extractScootersArray(htmlContent);
 
-        const newScooterObj = `      { id: Date.now(), name: "${name}", cat: "${cat}", catLabel: "${catLabel}", verdict: "${verdict}", img: "${img}", blurb: "${blurb}", pros: ${JSON.stringify(pros)}, cons: ${JSON.stringify(cons)}, specs: ["Zátěžový test"] },\n`;
+        const editId = document.getElementById('edit-scooter-id').value;
 
-        const targetMarker = "const scooters = [";
-        const markerIndex = htmlContent.indexOf(targetMarker);
-        if (markerIndex === -1) throw new Error('V index.html se nepodařilo najít pole koloběžek.');
+        if (isDelete) {
+          scooters = scooters.filter(s => s.id !== deleteId);
+        } else {
+          const name = document.getElementById('scooter-name').value.trim();
+          const cat = document.getElementById('scooter-cat').value;
+          const verdict = document.getElementById('scooter-verdict').value;
+          const blurb = document.getElementById('scooter-blurb').value.trim();
+          const prosStr = document.getElementById('scooter-pros').value;
+          const consStr = document.getElementById('scooter-cons').value;
+          const img = document.getElementById('scooter-img').value.trim();
 
-        const insertPos = markerIndex + targetMarker.length;
-        const updatedHtml = htmlContent.slice(0, insertPos) + "\n" + newScooterObj + htmlContent.slice(insertPos);
+          if (!name || !blurb) { alert('Vyplň název a popis.'); return; }
 
-        statusEl.innerText = 'Odesílám aktualizovaný kód na GitHub...';
+          const pros = prosStr ? prosStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+          const cons = consStr ? consStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+          
+          let catLabel = "SKLÁDACÍ";
+          if (cat === 'sport') catLabel = "SPORTOVNÍ";
+          if (cat === 'electric') catLabel = "ELEKTRICKÉ";
+          if (cat === 'special') catLabel = "SPECIÁLY";
+
+          const scooterData = {
+            id: editId ? Number(editId) : Date.now(),
+            name, cat, catLabel, verdict, img, blurb, pros, cons, specs: ["Zátěžový test"]
+          };
+
+          if (editId) {
+            const index = scooters.findIndex(s => s.id === Number(editId));
+            if (index !== -1) scooters[index] = scooterData;
+            else scooters.push(scooterData);
+          } else {
+            scooters.push(scooterData);
+          }
+        }
+
+        // Vygenerování nového bloku kódu pole scooters
+        const newScootersArrayCode = "const scooters = " + JSON.stringify(scooters, null, 2) + ";";
+
+        // Nahrazení starého pole v index.html novým
+        const startMarker = "const scooters = [";
+        const startIdx = htmlContent.indexOf(startMarker);
+        if (startIdx === -1) throw new Error('Nalezeno chybné pole v index.html');
+
+        let bracketCount = 0;
+        let endIdx = -1;
+        for (let i = startIdx + startMarker.length - 1; i < htmlContent.length; i++) {
+          if (htmlContent[i] === '[') bracketCount++;
+          if (htmlContent[i] === ']') {
+            bracketCount--;
+            if (bracketCount === 0) { endIdx = i + 1; break; }
+          }
+        }
+
+        const updatedHtml = htmlContent.substring(0, startIdx) + newScootersArrayCode + htmlContent.substring(endIdx);
+
+        statusEl.innerText = 'Odesílám změny na GitHub...';
         const updatedBase64 = btoa(unescape(encodeURIComponent(updatedHtml)));
 
-        const putRes = await fetch(url, {
+        const putRes = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, {
           method: 'PUT',
-          headers: {
-            'Authorization': `token ${token}`,
-            'Content-Type': 'application/json'
-          },
+          headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            message: `Admin PWA: Přidána koloběžka ${name}`,
+            message: isDelete ? `Admin: Smazána koloběžka` : (editId ? `Admin: Upravena koloběžka` : `Admin: Přidána koloběžka`),
             content: updatedBase64,
             sha: fileData.sha
           })
         });
 
         if (putRes.ok) {
-          statusEl.innerText = 'Úspěšně uloženo! Nová koloběžka je na webu.';
-          document.getElementById('scooter-name').value = '';
-          document.getElementById('scooter-blurb').value = '';
-          document.getElementById('scooter-pros').value = '';
-          document.getElementById('scooter-cons').value = '';
+          statusEl.innerText = 'Hotovo! Změny byly úspěšně uloženy na web.';
+          resetForm();
+          loadScootersList();
         } else {
-          const err = await putRes.json();
-          statusEl.innerText = 'Chyba při odesílání: ' + (err.message || 'Neznámá chyba');
+          statusEl.innerText = 'Chyba při ukládání na GitHub.';
         }
 
       } catch (err) {
