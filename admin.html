@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Koloběžník — Administrace & Přidávání koloběžek</title>
+  <title>Koloběžník — Administrace & Fotky</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,10 +20,10 @@
   <div>
     <div class="flex items-center justify-between mb-6 border-b border-stone-800 pb-4">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl lime-bg flex items-center justify-center text-black font-black text-xl">🛴</div>
+        <div class="w-10 h-10 rounded-xl lime-bg flex items-center justify-center text-black font-black text-xl">📸</div>
         <div>
           <span class="text-[10px] uppercase font-bold text-lime-400 tracking-widest block">INTERNÍ APP</span>
-          <h1 class="heading-font text-2xl text-white">SPRÁVA KOLOBĚŽEK</h1>
+          <h1 class="heading-font text-2xl text-white">SPRÁVA A FOTKY</h1>
         </div>
       </div>
       <a href="./index.html" class="text-xs text-stone-400 hover:text-white underline">Zpět na web &rarr;</a>
@@ -45,9 +45,28 @@
       </div>
     </div>
 
+    <!-- Nahrání fotky -->
+    <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 mb-6 shadow-xl space-y-4">
+      <h2 class="heading-font text-lg text-white">2. Nahrát fotku z mobilu</h2>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold mb-1 text-stone-300">Vybrat obrázek z galerie:</label>
+          <input type="file" id="image-file" accept="image/*" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#C6F135] file:text-black hover:file:bg-[#b3df22]">
+        </div>
+        <div>
+          <label class="block font-bold mb-1 text-stone-300">Název souboru na webu (např. mojeskrin.jpg):</label>
+          <input type="text" id="image-name" placeholder="fotka.jpg" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white font-mono">
+        </div>
+        <button onclick="uploadImageToGitHub()" class="bg-white text-stone-950 w-full py-3 rounded-xl font-bold uppercase text-xs hover:bg-stone-200 transition">
+          Nahrát fotku do public/images/
+        </button>
+        <p id="img-status-msg" class="text-center font-bold text-lime-400 mt-2"></p>
+      </div>
+    </div>
+
     <!-- Formulář pro novou koloběžku -->
     <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 shadow-xl space-y-4">
-      <h2 class="heading-font text-lg text-white">2. Přidat novou koloběžku / recenzi</h2>
+      <h2 class="heading-font text-lg text-white">3. Přidat novou koloběžku / recenzi</h2>
       <div class="space-y-3 text-xs">
         <div>
           <label class="block font-bold mb-1 text-stone-300">Název stroje:</label>
@@ -85,11 +104,11 @@
           <input type="text" id="scooter-cons" placeholder="Vyšší cena, Horší brzdy" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
         </div>
         <div>
-          <label class="block font-bold mb-1 text-stone-300">Cesta k fotce:</label>
-          <input type="text" id="scooter-img" value="./public/images/hero.jpg" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white font-mono">
+          <label class="block font-bold mb-1 text-stone-300">Cesta k fotce (např. ./public/images/fotka.jpg):</label>
+          <input type="text" id="scooter-img" value="./public/images/" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white font-mono">
         </div>
         <button onclick="addScooterToGitHub()" class="lime-btn w-full py-3 rounded-xl font-bold uppercase text-xs shadow-md">
-          Uložit a odeslat na GitHub
+          Uložit koloběžku na GitHub
         </button>
         <p id="status-msg" class="text-center font-bold text-lime-400 mt-2"></p>
       </div>
@@ -108,6 +127,81 @@
       localStorage.setItem('kol_token', document.getElementById('admin-token').value);
       localStorage.setItem('kol_repo', document.getElementById('admin-repo').value);
       alert('Nastavení uloženo v paměti telefonu!');
+    }
+
+    // Automatické vyplnění názvu souboru fotky podle vybraného souboru
+    document.getElementById('image-file').addEventListener('change', function(e) {
+      if (e.target.files.length > 0) {
+        const file = e.target.files[0];
+        document.getElementById('image-name').value = file.name.toLowerCase().replace(/\s+/g, '-');
+        document.getElementById('scooter-img').value = `./public/images/${file.name.toLowerCase().replace(/\s+/g, '-')}`;
+      }
+    });
+
+    async function uploadImageToGitHub() {
+      const token = localStorage.getItem('kol_token');
+      const repo = localStorage.getItem('kol_repo');
+      const fileInput = document.getElementById('image-file');
+      const filenameInput = document.getElementById('image-name').value.trim();
+      const statusEl = document.getElementById('img-status-msg');
+
+      if (!token || !repo) {
+        alert('Nejprve vyplň a ulož GitHub token nahoře!');
+        return;
+      }
+      if (fileInput.files.length === 0 || !filenameInput) {
+        alert('Vyber fotku z galerie a zadej název souboru.');
+        return;
+      }
+
+      const file = fileInput.files[0];
+      statusEl.innerText = 'Převádím a nahrávám fotku...';
+
+      try {
+        // Pevný převod obrázku na Base64
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = async function() {
+          // Získáme čistý Base64 řetězec (odstraníme hlavičku typu data:image/jpeg;base64,)
+          const base64Content = reader.result.split(',')[1];
+          const path = `public/images/${filenameInput}`;
+          const url = `https://api.github.com/repos/${repo}/contents/${path}`;
+
+          // Kontrola existence souboru (kvůli SHA)
+          let sha = null;
+          const checkRes = await fetch(url, {
+            headers: { 'Authorization': `token ${token}` }
+          });
+          if (checkRes.ok) {
+            const fileData = await checkRes.json();
+            sha = fileData.sha;
+          }
+
+          const bodyData = {
+            message: `Admin PWA: Nahrán obrázek ${filenameInput}`,
+            content: base64Content
+          };
+          if (sha) bodyData.sha = sha;
+
+          const putRes = await fetch(url, {
+            method: 'PUT',
+            headers: {
+              'Authorization': `token ${token}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(bodyData)
+          });
+
+          if (putRes.ok) {
+            statusEl.innerText = `Fotka úspěšně nahrána! Cesta je nastavená ve formuláři níže.`;
+          } else {
+            const err = await putRes.json();
+            statusEl.innerText = 'Chyba při nahrávání: ' + (err.message || 'Neznámá chyba');
+          }
+        };
+      } catch (err) {
+        statusEl.innerText = 'Chyba: ' + err.message;
+      }
     }
 
     async function addScooterToGitHub() {
@@ -151,16 +245,12 @@
         if (!getRes.ok) throw new Error('Nepodařilo se načíst index.html z GitHubu.');
         
         const fileData = await getRes.json();
-        // Dekódování obsahu z Base64 (UTF-8 bezpečně)
         const binaryString = atob(fileData.content);
         const bytes = Uint8Array.from(binaryString, (m) => m.codePointAt(0));
         const htmlContent = new TextDecoder().decode(bytes);
 
-        // Vytvoření objektu nové koloběžky
-        // Zjistíme nové ID (spočíteme koloběžky nebo dáme náhodné/časové)
         const newScooterObj = `      { id: Date.now(), name: "${name}", cat: "${cat}", catLabel: "${catLabel}", verdict: "${verdict}", img: "${img}", blurb: "${blurb}", pros: ${JSON.stringify(pros)}, cons: ${JSON.stringify(cons)}, specs: ["Zátěžový test"] },\n`;
 
-        // Najdeme místo, kam v index.html vložit novou koloběžku do pole `const scooters = [`
         const targetMarker = "const scooters = [";
         const markerIndex = htmlContent.indexOf(targetMarker);
         if (markerIndex === -1) throw new Error('V index.html se nepodařilo najít pole koloběžek.');
@@ -169,8 +259,6 @@
         const updatedHtml = htmlContent.slice(0, insertPos) + "\n" + newScooterObj + htmlContent.slice(insertPos);
 
         statusEl.innerText = 'Odesílám aktualizovaný kód na GitHub...';
-
-        // Zakódování zpět do Base64
         const updatedBase64 = btoa(unescape(encodeURIComponent(updatedHtml)));
 
         const putRes = await fetch(url, {
@@ -180,7 +268,7 @@
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            message: `Admin PWA: Přidána nová koloběžka ${name}`,
+            message: `Admin PWA: Přidána koloběžka ${name}`,
             content: updatedBase64,
             sha: fileData.sha
           })
@@ -188,7 +276,6 @@
 
         if (putRes.ok) {
           statusEl.innerText = 'Úspěšně uloženo! Nová koloběžka je na webu.';
-          // Vymazání formuláře
           document.getElementById('scooter-name').value = '';
           document.getElementById('scooter-blurb').value = '';
           document.getElementById('scooter-pros').value = '';
