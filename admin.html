@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Koloběžník — Administrace</title>
+  <title>Koloběžník — Administrace & Přidávání koloběžek</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,10 +20,10 @@
   <div>
     <div class="flex items-center justify-between mb-6 border-b border-stone-800 pb-4">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl lime-bg flex items-center justify-center text-black font-black text-xl">⚙️</div>
+        <div class="w-10 h-10 rounded-xl lime-bg flex items-center justify-center text-black font-black text-xl">🛴</div>
         <div>
           <span class="text-[10px] uppercase font-bold text-lime-400 tracking-widest block">INTERNÍ APP</span>
-          <h1 class="heading-font text-2xl text-white">KOLOBĚŽNÍK ADMIN</h1>
+          <h1 class="heading-font text-2xl text-white">SPRÁVA KOLOBĚŽEK</h1>
         </div>
       </div>
       <a href="./index.html" class="text-xs text-stone-400 hover:text-white underline">Zpět na web &rarr;</a>
@@ -31,37 +31,66 @@
 
     <!-- Nastavení GitHub Tokenu -->
     <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 mb-6 shadow-xl space-y-4">
-      <h2 class="heading-font text-lg text-white">1. Připojení k GitHubu</h2>
-      <p class="text-xs text-stone-400 leading-relaxed">
-        Zadej svůj GitHub token (PAT) s oprávněním <code>repo</code>. Údaje se ukládají pouze do paměti tvého telefonu.
-      </p>
+      <h2 class="heading-font text-lg text-white">1. GitHub Připojení</h2>
       <div class="space-y-3 text-xs">
         <div>
-          <label class="block font-bold mb-1 text-stone-300">GitHub Token:</label>
+          <label class="block font-bold mb-1 text-stone-300">GitHub Token (PAT):</label>
           <input type="password" id="admin-token" placeholder="ghp_..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white font-mono">
         </div>
         <div>
           <label class="block font-bold mb-1 text-stone-300">Repozitář:</label>
           <input type="text" id="admin-repo" value="vojtechkolmacka/kolobeznik-web" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white font-mono">
         </div>
-        <button onclick="saveSettings()" class="lime-btn w-full py-3 rounded-xl font-bold uppercase text-xs">Uložit údaje v zařízení</button>
+        <button onclick="saveSettings()" class="lime-btn w-full py-3 rounded-xl font-bold uppercase text-xs">Uložit v zařízení</button>
       </div>
     </div>
 
-    <!-- Přidání poznámky / souboru -->
+    <!-- Formulář pro novou koloběžku -->
     <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 shadow-xl space-y-4">
-      <h2 class="heading-font text-lg text-white">2. Rychlý zápis poznámky</h2>
-      <p class="text-xs text-stone-400">Vytvoří nový textový soubor ve složce repozitáře.</p>
+      <h2 class="heading-font text-lg text-white">2. Přidat novou koloběžku / recenzi</h2>
       <div class="space-y-3 text-xs">
         <div>
-          <label class="block font-bold mb-1 text-stone-300">Název souboru (např. clanek.txt):</label>
-          <input type="text" id="file-name" placeholder="zapis.txt" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white font-mono">
+          <label class="block font-bold mb-1 text-stone-300">Název stroje:</label>
+          <input type="text" id="scooter-name" placeholder="Např. CRUSSIS URBAN" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold mb-1 text-stone-300">Kategorie:</label>
+            <select id="scooter-cat" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
+              <option value="folding">Skládací</option>
+              <option value="sport">Sportovní</option>
+              <option value="electric">Elektro</option>
+              <option value="special">Speciály</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold mb-1 text-stone-300">Verdikt:</label>
+            <select id="scooter-verdict" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
+              <option value="Doporučuji">Doporučuji</option>
+              <option value="Nedoporučuji">Nedoporučuji</option>
+              <option value="Bestie">⚡ Bestie</option>
+            </select>
+          </div>
         </div>
         <div>
-          <label class="block font-bold mb-1 text-stone-300">Obsah:</label>
-          <textarea id="file-content" rows="4" placeholder="Sem napiš text..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
+          <label class="block font-bold mb-1 text-stone-300">Krátký popis (perex):</label>
+          <textarea id="scooter-blurb" rows="2" placeholder="Hlavní dojmy z jízdy..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
         </div>
-        <button onclick="pushToGitHub()" class="bg-white text-stone-950 w-full py-3 rounded-xl font-bold uppercase text-xs hover:bg-stone-200 transition">Odeslat na GitHub</button>
+        <div>
+          <label class="block font-bold mb-1 text-stone-300">Klady (oddělené čárkou):</label>
+          <input type="text" id="scooter-pros" placeholder="Lehká konstrukce, Velká kola" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
+        </div>
+        <div>
+          <label class="block font-bold mb-1 text-stone-300">Zápory (oddělené čárkou):</label>
+          <input type="text" id="scooter-cons" placeholder="Vyšší cena, Horší brzdy" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
+        </div>
+        <div>
+          <label class="block font-bold mb-1 text-stone-300">Cesta k fotce:</label>
+          <input type="text" id="scooter-img" value="./public/images/hero.jpg" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white font-mono">
+        </div>
+        <button onclick="addScooterToGitHub()" class="lime-btn w-full py-3 rounded-xl font-bold uppercase text-xs shadow-md">
+          Uložit a odeslat na GitHub
+        </button>
         <p id="status-msg" class="text-center font-bold text-lime-400 mt-2"></p>
       </div>
     </div>
@@ -81,63 +110,96 @@
       alert('Nastavení uloženo v paměti telefonu!');
     }
 
-    async function pushToGitHub() {
+    async function addScooterToGitHub() {
       const token = localStorage.getItem('kol_token');
       const repo = localStorage.getItem('kol_repo');
-      const filename = document.getElementById('file-name').value.trim();
-      const content = document.getElementById('file-content').value;
       const statusEl = document.getElementById('status-msg');
 
       if (!token || !repo) {
         alert('Nejprve vyplň a ulož GitHub token nahoře!');
         return;
       }
-      if (!filename || !content) {
-        alert('Vyplň název souboru i obsah.');
+
+      const name = document.getElementById('scooter-name').value.trim();
+      const cat = document.getElementById('scooter-cat').value;
+      const verdict = document.getElementById('scooter-verdict').value;
+      const blurb = document.getElementById('scooter-blurb').value.trim();
+      const prosStr = document.getElementById('scooter-pros').value;
+      const consStr = document.getElementById('scooter-cons').value;
+      const img = document.getElementById('scooter-img').value.trim();
+
+      if (!name || !blurb) {
+        alert('Vyplň alespoň název koloběžky a popis.');
         return;
       }
 
-      statusEl.innerText = 'Odesílám požadavek na GitHub...';
+      const pros = prosStr ? prosStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+      const cons = consStr ? consStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+      
+      let catLabel = "SKLÁDACÍ";
+      if (cat === 'sport') catLabel = "SPORTOVNÍ";
+      if (cat === 'electric') catLabel = "ELEKTRICKÉ";
+      if (cat === 'special') catLabel = "SPECIÁLY";
 
-      // GitHub API vyžaduje obsah zakódovaný v Base64
-      const encodedContent = btoa(unescape(encodeURIComponent(content)));
-      const url = `https://api.github.com/repos/${repo}/contents/${filename}`;
+      statusEl.innerText = 'Stahuji aktuální kód webu...';
+      const url = `https://api.github.com/repos/${repo}/contents/index.html`;
 
       try {
-        // Nejprve zkontrolujeme, jestli soubor už existuje (kvůli SHA)
-        let sha = null;
-        const checkRes = await fetch(url, {
+        const getRes = await fetch(url, {
           headers: { 'Authorization': `token ${token}` }
         });
-        if (checkRes.ok) {
-          const fileData = await checkRes.json();
-          sha = fileData.sha;
-        }
+        if (!getRes.ok) throw new Error('Nepodařilo se načíst index.html z GitHubu.');
+        
+        const fileData = await getRes.json();
+        // Dekódování obsahu z Base64 (UTF-8 bezpečně)
+        const binaryString = atob(fileData.content);
+        const bytes = Uint8Array.from(binaryString, (m) => m.codePointAt(0));
+        const htmlContent = new TextDecoder().decode(bytes);
 
-        // Odeslání nového obsahu
-        const bodyData = {
-          message: `Admin PWA: Automatický zápis ${filename}`,
-          content: encodedContent
-        };
-        if (sha) bodyData.sha = sha; // Pokud soubor existuje, musíme poslat jeho SHA
+        // Vytvoření objektu nové koloběžky
+        // Zjistíme nové ID (spočíteme koloběžky nebo dáme náhodné/časové)
+        const newScooterObj = `      { id: Date.now(), name: "${name}", cat: "${cat}", catLabel: "${catLabel}", verdict: "${verdict}", img: "${img}", blurb: "${blurb}", pros: ${JSON.stringify(pros)}, cons: ${JSON.stringify(cons)}, specs: ["Zátěžový test"] },\n`;
 
-        const response = await fetch(url, {
+        // Najdeme místo, kam v index.html vložit novou koloběžku do pole `const scooters = [`
+        const targetMarker = "const scooters = [";
+        const markerIndex = htmlContent.indexOf(targetMarker);
+        if (markerIndex === -1) throw new Error('V index.html se nepodařilo najít pole koloběžek.');
+
+        const insertPos = markerIndex + targetMarker.length;
+        const updatedHtml = htmlContent.slice(0, insertPos) + "\n" + newScooterObj + htmlContent.slice(insertPos);
+
+        statusEl.innerText = 'Odesílám aktualizovaný kód na GitHub...';
+
+        // Zakódování zpět do Base64
+        const updatedBase64 = btoa(unescape(encodeURIComponent(updatedHtml)));
+
+        const putRes = await fetch(url, {
           method: 'PUT',
           headers: {
             'Authorization': `token ${token}`,
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(bodyData)
+          body: JSON.stringify({
+            message: `Admin PWA: Přidána nová koloběžka ${name}`,
+            content: updatedBase64,
+            sha: fileData.sha
+          })
         });
 
-        if (response.ok) {
-          statusEl.innerText = 'Úspěšně uloženo na GitHub! Web se za chvíli aktualizuje.';
+        if (putRes.ok) {
+          statusEl.innerText = 'Úspěšně uloženo! Nová koloběžka je na webu.';
+          // Vymazání formuláře
+          document.getElementById('scooter-name').value = '';
+          document.getElementById('scooter-blurb').value = '';
+          document.getElementById('scooter-pros').value = '';
+          document.getElementById('scooter-cons').value = '';
         } else {
-          const err = await response.json();
-          statusEl.innerText = 'Chyba: ' + (err.message || 'Nepodařilo se uložit.');
+          const err = await putRes.json();
+          statusEl.innerText = 'Chyba při odesílání: ' + (err.message || 'Neznámá chyba');
         }
-      } catch (error) {
-        statusEl.innerText = 'Chyba připojení: ' + error.message;
+
+      } catch (err) {
+        statusEl.innerText = 'Chyba: ' + err.message;
       }
     }
   </script>
