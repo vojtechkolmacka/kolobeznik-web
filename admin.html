@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Koloběžník — Rychlá Administrace</title>
+  <title>Koloběžník — Kompletní Administrace</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,8 +23,8 @@
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl lime-bg flex items-center justify-center text-black font-black text-xl">⚡</div>
         <div>
-          <span class="text-[10px] uppercase font-bold text-lime-400 tracking-widest block">RYCHLÝ ADMIN</span>
-          <h1 class="heading-font text-2xl text-white">PŘIDÁVÁNÍ OBSAHU</h1>
+          <span class="text-[10px] uppercase font-bold text-lime-400 tracking-widest block">MASTER ADMIN</span>
+          <h1 class="heading-font text-2xl text-white">SPRÁVA A RUBRIKY</h1>
         </div>
       </div>
       <a href="./index.html" class="text-xs text-stone-400 hover:text-white underline">Zpět na web &rarr;</a>
@@ -40,19 +40,20 @@
       </div>
     </div>
 
-    <!-- Přepínání -->
-    <div class="flex gap-2 mb-6">
-      <button onclick="switchTab('scooters')" id="tab-scooters" class="admin-tab active flex-1 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-800 text-stone-300">Koloběžka</button>
-      <button onclick="switchTab('tips')" id="tab-tips" class="admin-tab flex-1 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-800 text-stone-300">Tip / Článek</button>
-      <button onclick="switchTab('photos')" id="tab-photos" class="admin-tab flex-1 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-800 text-stone-300">Fotka</button>
+    <!-- Přepínání záložek adminu -->
+    <div class="flex gap-1.5 mb-6 overflow-x-auto pb-1">
+      <button onclick="switchTab('scooters')" id="tab-scooters" class="admin-tab active py-2 px-3 rounded-xl text-xs font-bold uppercase heading-font bg-stone-800 text-stone-300 whitespace-nowrap">Koloběžka</button>
+      <button onclick="switchTab('tips')" id="tab-tips" class="admin-tab py-2 px-3 rounded-xl text-xs font-bold uppercase heading-font bg-stone-800 text-stone-300 whitespace-nowrap">Tip</button>
+      <button onclick="switchTab('sections')" id="tab-sections" class="admin-tab py-2 px-3 rounded-xl text-xs font-bold uppercase heading-font bg-stone-800 text-stone-300 whitespace-nowrap">➕ Rubrika</button>
+      <button onclick="switchTab('photos')" id="tab-photos" class="admin-tab py-2 px-3 rounded-xl text-xs font-bold uppercase heading-font bg-stone-800 text-stone-300 whitespace-nowrap">Fotka</button>
     </div>
 
-    <!-- SEKCE 1: PŘIDÁNÍ KOLOBĚŽKY -->
+    <!-- SEKCE 1: KOLOBĚŽKA -->
     <div id="sec-scooters" class="space-y-6">
       <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 shadow-xl space-y-4">
         <h2 class="heading-font text-lg text-white">Přidat novou koloběžku</h2>
         <div class="space-y-3 text-xs">
-          <input type="text" id="s-name" placeholder="Název stroje (např. CRUSSIS)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
+          <input type="text" id="s-name" placeholder="Název stroje" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
           <div class="grid grid-cols-2 gap-2">
             <select id="s-cat" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
               <option value="folding">Skládací</option>
@@ -67,33 +68,46 @@
             </select>
           </div>
           <textarea id="s-blurb" rows="2" placeholder="Krátký popis..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
-          <input type="text" id="s-pros" placeholder="Klady oddělené čárkou" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
-          <input type="text" id="s-cons" placeholder="Zápory oddělené čárkou" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
+          <input type="text" id="s-pros" placeholder="Klady (čárkou)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
+          <input type="text" id="s-cons" placeholder="Zápory (čárkou)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
           <input type="text" id="s-img" value="./public/images/hero.jpg" placeholder="Cesta k fotce" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white font-mono">
-          <button onclick="addScooter()" class="lime-btn w-full py-3 rounded-xl font-bold uppercase text-xs shadow">Přidat koloběžku na web</button>
+          <button onclick="addScooter()" class="lime-btn w-full py-3 rounded-xl font-bold uppercase text-xs shadow">Přidat koloběžku</button>
         </div>
       </div>
     </div>
 
-    <!-- SEKCE 2: PŘIDÁNÍ TIPU / ČLÁNKU -->
+    <!-- SEKCE 2: TIP -->
     <div id="sec-tips" class="space-y-6 hidden">
       <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 shadow-xl space-y-4">
-        <h2 class="heading-font text-lg text-white">Přidat nový tip nebo zájímavost</h2>
+        <h2 class="heading-font text-lg text-white">Přidat článek do Tipech</h2>
         <div class="space-y-3 text-xs">
-          <input type="text" id="t-title" placeholder="Název článku (např. Výběr brzd)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
-          <input type="text" id="t-cat" placeholder="Štítek kategorie (např. VÝBAVA, BEZPEČNOST)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
-          <textarea id="t-perex" rows="2" placeholder="Krátký perex (zobrazí se v seznamu)..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
-          <textarea id="t-text" rows="5" placeholder="Plný text článku (v detailu po rozkliknutí)..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
+          <input type="text" id="t-title" placeholder="Název článku" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
+          <input type="text" id="t-cat" placeholder="Štítek (např. VÝBAVA)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
+          <textarea id="t-perex" rows="2" placeholder="Perex..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
+          <textarea id="t-text" rows="4" placeholder="Plný text..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
           <input type="text" id="t-img" value="./public/images/hero.jpg" placeholder="Cesta k fotce" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white font-mono">
-          <button onclick="addTip()" class="lime-btn w-full py-3 rounded-xl font-bold uppercase text-xs shadow">Přidat článek do Tipech</button>
+          <button onclick="addTip()" class="lime-btn w-full py-3 rounded-xl font-bold uppercase text-xs shadow">Přidat článek</button>
         </div>
       </div>
     </div>
 
-    <!-- SEKCE 3: FOTKY -->
+    <!-- SEKCE 3: NOVÁ RUBRIKA -->
+    <div id="sec-sections" class="space-y-6 hidden">
+      <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 shadow-xl space-y-4">
+        <h2 class="heading-font text-lg text-white">Vytvořit novou rubriku / záložku</h2>
+        <p class="text-xs text-stone-400">Automaticky přidá nové tlačítko do horního menu webu a vytvoří pro něj prázdnou stránku.</p>
+        <div class="space-y-3 text-xs">
+          <input type="text" id="sec-name" placeholder="Název rubriky (např. Servis)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
+          <input type="text" id="sec-id" placeholder="ID bez mezer (např. servis)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white font-mono">
+          <button onclick="addNewSection()" class="lime-btn w-full py-3 rounded-xl font-bold uppercase text-xs">Vytvořit novou rubriku</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEKCE 4: FOTKA -->
     <div id="sec-photos" class="space-y-6 hidden">
       <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 shadow-xl space-y-4">
-        <h2 class="heading-font text-lg text-white">Nahrát fotku do galerie</h2>
+        <h2 class="heading-font text-lg text-white">Nahrát fotku</h2>
         <div class="space-y-3 text-xs">
           <input type="file" id="img-file" accept="image/*" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#C6F135] file:text-black">
           <input type="text" id="img-name" placeholder="foto.jpg" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white font-mono">
@@ -118,7 +132,7 @@
     }
 
     function switchTab(tab) {
-      ['scooters', 'tips', 'photos'].forEach(t => {
+      ['scooters', 'tips', 'sections', 'photos'].forEach(t => {
         document.getElementById(`tab-${t}`).classList.remove('active');
         document.getElementById(`sec-${t}`).classList.add('hidden');
       });
@@ -150,11 +164,11 @@
       const img = document.getElementById('s-img').value.trim();
 
       if (!name || !blurb) { alert('Vyplň název a popis.'); return; }
-      status.innerText = 'Odesílám novou koloběžku na GitHub...';
+      status.innerText = 'Odesílám koloběžku...';
 
       try {
         const res = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, { headers: { 'Authorization': `token ${token}` } });
-        if (!res.ok) throw new Error('Chyba při čtení index.html');
+        if (!res.ok) throw new Error('Chyba čtení index.html');
         const fileData = await res.json();
         const htmlContent = new TextDecoder().decode(Uint8Array.from(atob(fileData.content), c => c.codePointAt(0)));
 
@@ -163,7 +177,7 @@
 
         const marker = "const scooters = [";
         const startIdx = htmlContent.indexOf(marker);
-        if (startIdx === -1) throw new Error('Nenalezeno pole koloběžek v index.html');
+        if (startIdx === -1) throw new Error('Nenalezeno pole koloběžek');
 
         const insertPos = startIdx + marker.length;
         const updatedHtml = htmlContent.slice(0, insertPos) + "\n" + newItemStr + htmlContent.slice(insertPos);
@@ -173,18 +187,9 @@
           body: JSON.stringify({ message: `Admin: Přidána koloběžka ${name}`, content: btoa(unescape(encodeURIComponent(updatedHtml))), sha: fileData.sha })
         });
 
-        if (put.ok) {
-          status.innerText = 'Koloběžka úspěšně přidána na web!';
-          document.getElementById('s-name').value = '';
-          document.getElementById('s-blurb').value = '';
-          document.getElementById('s-pros').value = '';
-          document.getElementById('s-cons').value = '';
-        } else {
-          status.innerText = 'Chyba při ukládání.';
-        }
-      } catch (err) {
-        status.innerText = 'Chyba: ' + err.message;
-      }
+        if (put.ok) { status.innerText = 'Koloběžka úspěšně přidána!'; document.getElementById('s-name').value = ''; document.getElementById('s-blurb').value = ''; }
+        else { status.innerText = 'Chyba ukládání.'; }
+      } catch (err) { status.innerText = 'Chyba: ' + err.message; }
     }
 
     async function addTip() {
@@ -197,12 +202,12 @@
       const text = document.getElementById('t-text').value.trim();
       const img = document.getElementById('t-img').value.trim();
 
-      if (!title || !text) { alert('Vyplň název a text článku.'); return; }
-      status.innerText = 'Odesílám nový tip na GitHub...';
+      if (!title || !text) { alert('Vyplň název a text.'); return; }
+      status.innerText = 'Odesílám tip...';
 
       try {
         const res = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, { headers: { 'Authorization': `token ${token}` } });
-        if (!res.ok) throw new Error('Chyba při čtení index.html');
+        if (!res.ok) throw new Error('Chyba čtení index.html');
         const fileData = await res.json();
         const htmlContent = new TextDecoder().decode(Uint8Array.from(atob(fileData.content), c => c.codePointAt(0)));
 
@@ -210,7 +215,7 @@
 
         const marker = "const tipsData = [";
         const startIdx = htmlContent.indexOf(marker);
-        if (startIdx === -1) throw new Error('Nenalezeno pole tipů v index.html');
+        if (startIdx === -1) throw new Error('Nenalezeno pole tipů');
 
         const insertPos = startIdx + marker.length;
         const updatedHtml = htmlContent.slice(0, insertPos) + "\n" + newItemStr + htmlContent.slice(insertPos);
@@ -220,14 +225,46 @@
           body: JSON.stringify({ message: `Admin: Přidán tip ${title}`, content: btoa(unescape(encodeURIComponent(updatedHtml))), sha: fileData.sha })
         });
 
+        if (put.ok) { status.innerText = 'Tip úspěšně přidán!'; document.getElementById('t-title').value = ''; document.getElementById('t-text').value = ''; }
+        else { status.innerText = 'Chyba ukládání.'; }
+      } catch (err) { status.innerText = 'Chyba: ' + err.message; }
+    }
+
+    async function addNewSection() {
+      const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo'), status = document.getElementById('global-status');
+      const name = document.getElementById('sec-name').value.trim();
+      const id = document.getElementById('sec-id').value.trim().toLowerCase();
+
+      if (!token || !repo) { alert('Vyplň připojení nahoře!'); return; }
+      if (!name || !id) { alert('Vyplň název i ID rubriky.'); return; }
+
+      status.innerText = 'Vytvářím novou rubriku na webu...';
+
+      try {
+        const res = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, { headers: { 'Authorization': `token ${token}` } });
+        if (!res.ok) throw new Error('Chyba čtení index.html');
+        const fileData = await res.json();
+        const htmlContent = new TextDecoder().decode(Uint8Array.from(atob(fileData.content), c => c.codePointAt(0)));
+
+        const navMarker = '<button onclick="navigateTo(\'kontakt\')"';
+        const newNavBtn = `<button onclick="navigateTo('${id}')" class="nav-link hover:text-[#C6F135] transition" data-target="${id}">${name}</button>\n        ` + navMarker;
+        
+        const pageMarker = '<!-- ==================== KONTAKT ==================== -->';
+        const newPageDiv = `<!-- ==================== ${name.toUpperCase()} ==================== -->\n    <div id="page-${id}" class="page-view py-14 px-5 max-w-xl mx-auto">\n      <div class="bg-white rounded-3xl p-6 border border-stone-300 shadow-sm space-y-4">\n        <h2 class="heading-font text-3xl font-bold text-stone-950">${name}</h2>\n        <p class="text-stone-700 text-sm">Zde budou články a obsah pro rubriku ${name}.</p>\n      </div>\n    </div>\n\n    ` + pageMarker;
+
+        const updatedHtml = htmlContent.replace(navMarker, newNavBtn).replace(pageMarker, newPageDiv);
+
+        const put = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, {
+          method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: `Admin: Vytvořena nová rubrika ${name}`, content: btoa(unescape(encodeURIComponent(updatedHtml))), sha: fileData.sha })
+        });
+
         if (put.ok) {
-          status.innerText = 'Tip úspěšně přidán do rubriky Tipy & Výbava!';
-          document.getElementById('t-title').value = '';
-          document.getElementById('t-cat').value = '';
-          document.getElementById('t-perex').value = '';
-          document.getElementById('t-text').value = '';
+          status.innerText = `Rubrika "${name}" byla úspěšně vytvořena!`;
+          document.getElementById('sec-name').value = '';
+          document.getElementById('sec-id').value = '';
         } else {
-          status.innerText = 'Chyba při ukládání tipu.';
+          status.innerText = 'Chyba při vytváření rubriky.';
         }
       } catch (err) {
         status.innerText = 'Chyba: ' + err.message;
@@ -261,8 +298,8 @@
           body: JSON.stringify(body)
         });
 
-        if (put.ok) status.innerText = 'Fotka nahrána! Cesta se automaticky nastavila do formulářů.';
-        else status.innerText = 'Chyba nahrávání fotky.';
+        if (put.ok) status.innerText = 'Fotka úspěšně nahrána!';
+        else status.innerText = 'Chyba nahrávání.';
       };
     }
   </script>
