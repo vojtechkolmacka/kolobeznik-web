@@ -42,8 +42,9 @@
 
     <!-- Přepínání sekcí v administraci -->
     <div class="flex gap-2 mb-6">
-      <button onclick="switchAdminTab('scooters')" id="tab-scooters" class="tab-btn active flex-1 py-2.5 rounded-xl text-xs font-bold uppercase heading-font bg-stone-800 text-stone-300 transition">Koloběžky</button>
-      <button onclick="switchAdminTab('tips')" id="tab-tips" class="tab-btn flex-1 py-2.5 rounded-xl text-xs font-bold uppercase heading-font bg-stone-800 text-stone-300 transition">Tipy & Výbava</button>
+      <button onclick="switchAdminTab('scooters')" id="tab-scooters" class="tab-btn active flex-1 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-800 text-stone-300 transition">Koloběžky</button>
+      <button onclick="switchAdminTab('tips')" id="tab-tips" class="tab-btn flex-1 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-800 text-stone-300 transition">Tipy</button>
+      <button onclick="switchAdminTab('categories')" id="tab-categories" class="tab-btn flex-1 py-2 rounded-xl text-xs font-bold uppercase heading-font bg-stone-800 text-stone-300 transition">Rubriky</button>
     </div>
 
     <!-- ================= SEKCE KOLOBĚŽKY ================= -->
@@ -94,7 +95,7 @@
       </div>
     </div>
 
-    <!-- ================= SEKCE TIPY & VÝBAVA ================= -->
+    <!-- ================= SEKCE TIPY ================= -->
     <div id="section-tips" class="space-y-6 hidden">
       <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 shadow-xl space-y-4">
         <div class="flex justify-between items-center">
@@ -129,6 +130,32 @@
       </div>
     </div>
 
+    <!-- ================= SEKCE RUBRIKY ================= -->
+    <div id="section-categories" class="space-y-6 hidden">
+      <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 shadow-xl space-y-4">
+        <div class="flex justify-between items-center">
+          <h2 id="cat-form-title" class="heading-font text-lg text-white">Přidat novou rubriku</h2>
+          <button id="cat-cancel-btn" onclick="resetCatForm()" class="hidden text-xs bg-stone-800 text-stone-300 px-3 py-1 rounded">Zrušit</button>
+        </div>
+        <input type="hidden" id="edit-cat-id" value="">
+        <div class="space-y-3 text-xs">
+          <input type="text" id="c-id" placeholder="ID (např. city, cargo, custom)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white font-mono">
+          <input type="text" id="c-name" placeholder="Název rubriky (např. Městské speciály)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
+          <button onclick="saveCategory()" class="lime-btn w-full py-3 rounded-xl font-bold uppercase text-xs shadow">Uložit rubriku na GitHub</button>
+        </div>
+      </div>
+
+      <div class="bg-stone-900 border border-stone-800 rounded-3xl p-6 shadow-xl space-y-4">
+        <div class="flex justify-between items-center">
+          <h2 class="heading-font text-lg text-white">Seznam rubrik</h2>
+          <button onclick="loadData()" class="bg-stone-800 text-stone-200 text-xs px-3 py-1.5 rounded-xl">Načíst data</button>
+        </div>
+        <div id="list-categories" class="space-y-2 max-h-80 overflow-y-auto text-xs">
+          <p class="text-stone-500 italic">Klikni na „Načíst data“...</p>
+        </div>
+      </div>
+    </div>
+
     <p id="status-msg" class="text-center font-bold text-lime-400 my-4 text-xs"></p>
   </div>
 
@@ -145,17 +172,18 @@
     function switchAdminTab(tab) {
       document.getElementById('tab-scooters').classList.toggle('active', tab === 'scooters');
       document.getElementById('tab-tips').classList.toggle('active', tab === 'tips');
+      document.getElementById('tab-categories').classList.toggle('active', tab === 'categories');
+      
       document.getElementById('section-scooters').classList.toggle('hidden', tab !== 'scooters');
       document.getElementById('section-tips').classList.toggle('hidden', tab !== 'tips');
+      document.getElementById('section-categories').classList.toggle('hidden', tab !== 'categories');
       loadData();
     }
 
-    // Nahrávání fotky pro koloběžky
+    // Nahrávání fotek
     document.getElementById('s-img-file').addEventListener('change', async (e) => {
       if (e.target.files.length > 0) uploadFile(e.target.files[0], 's-img');
     });
-
-    // Nahrávání fotky pro tipy
     document.getElementById('t-img-file').addEventListener('change', async (e) => {
       if (e.target.files.length > 0) uploadFile(e.target.files[0], 't-img');
     });
@@ -240,6 +268,17 @@
           row.className = "bg-stone-950 p-2.5 rounded-xl flex items-center justify-between border border-stone-800 mb-1";
           row.innerHTML = `<div><strong class="text-white">${t.title}</strong> <span class="text-[10px] text-stone-400 block">${t.category}</span></div><div class="flex gap-1"><button onclick="editTip(${t.id})" class="bg-stone-800 text-lime-400 px-2 py-1 rounded font-bold">Upravit</button><button onclick="deleteTip(${t.id})" class="bg-rose-950 text-rose-300 px-2 py-1 rounded font-bold">Smazat</button></div>`;
           tBox.appendChild(row);
+        });
+
+        // Rubriky (Kategorie)
+        const categories = extractVariable(htmlContent, 'categoriesData');
+        const cBox = document.getElementById('list-categories');
+        cBox.innerHTML = categories.length ? '' : '<p class="text-stone-400">Žádné rubriky.</p>';
+        categories.forEach(c => {
+          const row = document.createElement('div');
+          row.className = "bg-stone-950 p-2.5 rounded-xl flex items-center justify-between border border-stone-800 mb-1";
+          row.innerHTML = `<div><strong class="text-white">${c.name}</strong> <span class="text-[10px] text-stone-400 font-mono block">id: ${c.id}</span></div><div class="flex gap-1"><button onclick="editCategory('${c.id}')" class="bg-stone-800 text-lime-400 px-2 py-1 rounded font-bold">Upravit</button><button onclick="deleteCategory('${c.id}')" class="bg-rose-950 text-rose-300 px-2 py-1 rounded font-bold">Smazat</button></div>`;
+          cBox.appendChild(row);
         });
 
       } catch (err) {
@@ -398,6 +437,96 @@
       } catch (err) { status.innerText = 'Chyba: ' + err.message; }
     }
 
+    // --- SPRÁVA RUBRIK ---
+    async function editCategory(id) {
+      const { htmlContent } = await fetchIndex();
+      let categories = extractVariable(htmlContent, 'categoriesData');
+      if (!categories.length) {
+        categories = [
+          { id: 'folding', name: 'Skládací' },
+          { id: 'sport', name: 'Sportovní' },
+          { id: 'electric', name: 'Elektro' },
+          { id: 'special', name: 'Speciály' }
+        ];
+      }
+      const c = categories.find(x => x.id === id);
+      if (!c) return;
+
+      document.getElementById('edit-cat-id').value = c.id;
+      document.getElementById('c-id').value = c.id;
+      document.getElementById('c-id').disabled = true;
+      document.getElementById('c-name').value = c.name || '';
+
+      document.getElementById('cat-form-title').innerText = `Úprava rubriky: ${c.name}`;
+      document.getElementById('cat-cancel-btn').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function resetCatForm() {
+      document.getElementById('edit-cat-id').value = '';
+      document.getElementById('c-id').value = '';
+      document.getElementById('c-id').disabled = false;
+      document.getElementById('c-name').value = '';
+      document.getElementById('cat-form-title').innerText = 'Přidat novou rubriku';
+      document.getElementById('cat-cancel-btn').classList.add('hidden');
+    }
+
+    async function deleteCategory(id) {
+      if (confirm('Opravdu smazat tuto rubriku?')) await saveCategoryData(id, true);
+    }
+    async function saveCategory() { await saveCategoryData(); }
+
+    async function saveCategoryData(delId = null, isDel = false) {
+      const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo'), status = document.getElementById('status-msg');
+      if (!token || !repo) { alert('Vyplň token!'); return; }
+      status.innerText = 'Ukládám rubriky na GitHub...';
+
+      try {
+        const { fileData, htmlContent } = await fetchIndex();
+        let categories = extractVariable(htmlContent, 'categoriesData');
+        if (!categories.length) {
+          categories = [
+            { id: 'folding', name: 'Skládací' },
+            { id: 'sport', name: 'Sportovní' },
+            { id: 'electric', name: 'Elektro' },
+            { id: 'special', name: 'Speciály' }
+          ];
+        }
+        const editId = document.getElementById('edit-cat-id').value;
+
+        if (isDel) {
+          categories = categories.filter(x => x.id !== delId);
+        } else {
+          const idVal = document.getElementById('c-id').value.trim().toLowerCase().replace(/\s+/g, '-');
+          const nameVal = document.getElementById('c-name').value.trim();
+          if (!idVal || !nameVal) { alert('Vyplň ID i název rubriky!'); return; }
+
+          const item = { id: idVal, name: nameVal };
+
+          if (editId) {
+            const idx = categories.findIndex(x => x.id === editId);
+            if (idx !== -1) categories[idx] = item; else categories.push(item);
+          } else {
+            if (categories.some(x => x.id === idVal)) { alert('Rubrika s tímto ID již existuje!'); return; }
+            categories.push(item);
+          }
+        }
+
+        const newCode = "const categoriesData = " + JSON.stringify(categories, null, 2) + ";";
+        let updatedHtml = htmlContent;
+        if (htmlContent.includes('const categoriesData =')) {
+          updatedHtml = replaceVariableInHtml(htmlContent, 'categoriesData', newCode);
+        } else {
+          // Pokud v index.html proměnná nebyla, přidáme ji pod scooters
+          updatedHtml = htmlContent.replace('const scooters =', newCode + '\n    const scooters =');
+        }
+
+        await pushToGitHub(fileData, updatedHtml, status, 'Rubriky aktualizovány');
+        resetCatForm();
+        loadData();
+      } catch (err) { status.innerText = 'Chyba: ' + err.message; }
+    }
+
     function replaceVariableInHtml(html, varName, newCode) {
       const marker = `const ${varName} = [`;
       const startIdx = html.indexOf(marker);
@@ -427,7 +556,6 @@
       else throw new Error('Chyba při zápisu na GitHub.');
     }
 
-    // Automatické načtení seznamů po startu
     loadData();
   </script>
 </body>
