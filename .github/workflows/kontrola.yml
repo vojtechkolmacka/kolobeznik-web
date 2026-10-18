@@ -11,12 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Nacist repozitar
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Nastavit Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@v4
         with:
-          node-version: "22.18.0"
+          node-version: "22"
           cache: npm
 
       - name: Nainstalovat zavislosti
@@ -24,3 +24,6 @@ jobs:
 
       - name: TypeScript kontrola
         run: npm run typecheck
+
+      - name: Test sestaveni (build)
+        run: npm run build
