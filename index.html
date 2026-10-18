@@ -139,6 +139,14 @@
         <!-- Dynamické záložky rubrik -->
         <div class="flex flex-wrap gap-2 mb-6" id="category-tabs"></div>
 
+        <!-- Místo pro text a obrázek aktuální rubriky -->
+        <div id="category-content-box" class="mb-6 bg-white rounded-3xl p-5 border border-stone-300 shadow-sm hidden space-y-4">
+          <div id="cat-img-wrap" class="rounded-xl overflow-hidden hidden bg-stone-100 p-2 border border-stone-200">
+            <img id="cat-image" src="" alt="" class="w-full h-auto object-contain rounded-lg">
+          </div>
+          <div id="cat-text" class="text-stone-700 text-sm leading-relaxed whitespace-pre-line"></div>
+        </div>
+
         <div class="space-y-6" id="scooter-list"></div>
       </section>
     </div>
@@ -274,27 +282,13 @@
 
   <script>
     const categoriesData = [
-  {
-    "id": "folding",
-    "name": "Skládací"
-  },
-  {
-    "id": "sport",
-    "name": "Sportovní"
-  },
-  {
-    "id": "electric",
-    "name": "Elektro"
-  },
-  {
-    "id": "special",
-    "name": "Speciály"
-  },
-  {
-    "id": "mikromobilita",
-    "name": "Mikro mobilita - novinky"
-  }
-];;
+      { id: 'folding', name: 'Skládací', text: 'Skládací modely pro každodenní rychlé přesuny po městě i dopravu.', img: '' },
+      { id: 'sport', name: 'Sportovní', text: 'Sportovní koloběžky s velkými koly pro delší trasy a cyklostezky.', img: '' },
+      { id: 'electric', name: 'Elektro', text: 'Elektrické stroje a monstrózní bestie s obrovským výkonem.', img: '' },
+      { id: 'special', name: 'Speciály', text: 'Netradiční sněžné koloběžky a speciální konstrukce.', img: '' },
+      { id: 'mikromobilita', name: 'Mikromobilita', text: 'Aktuality a pohledy do světa moderní mikromobility.', img: '' },
+      { id: 'novinky', name: 'Novinky', text: 'Nejnovější testy, přírůstky a zprávy z testovacího provozu.', img: '' }
+    ];
 
     const tipsData = [
       { id: 1, title: "Batoh na koloběžku", category: "VÝBAVA", img: "./public/images/tip-backpack.jpg", perex: "Při jízdě na koloběžce jste v neustálém pohybu. Základem je batoh, který pevně sedí a nerozhodí vás.", text: `Při jízdě na koloběžce jste v neustálém pohybu — neustále se střídají nohy, trup jde dopředu a dozadu a pracují i ramena. Obyčejný školní nebo městský batoh se okamžitě začne přesouvat ze strany na stranu, bouchá do zad a vyvádí z rovnováhy.\n\nIdeální batoh na koloběžku musí mít:\n1. Pevný hrudní popruh\n2. Bederní pás\n3. Odvětrávaná záda` },
@@ -360,11 +354,31 @@
       });
     }
 
-    function renderCategory(cat) {
+    function renderCategory(catId) {
       const list = document.getElementById('scooter-list');
+      const contentBox = document.getElementById('category-content-box');
+      const catText = document.getElementById('cat-text');
+      const catImgWrap = document.getElementById('cat-img-wrap');
+      const catImage = document.getElementById('cat-image');
+
+      // Zjištění informací o rubrice
+      const currentCat = categoriesData.find(c => c.id === catId);
+      if (currentCat && (currentCat.text || currentCat.img)) {
+        contentBox.classList.remove('hidden');
+        catText.innerText = currentCat.text || '';
+        if (currentCat.img) {
+          catImage.src = currentCat.img;
+          catImgWrap.classList.remove('hidden');
+        } else {
+          catImgWrap.classList.add('hidden');
+        }
+      } else {
+        contentBox.classList.add('hidden');
+      }
+
       if (!list) return;
       list.innerHTML = '';
-      const items = scooters.filter(s => s.cat === cat);
+      const items = scooters.filter(s => s.cat === catId);
 
       if (items.length === 0) {
         list.innerHTML = '<p class="text-stone-500 italic py-4">V této rubrice zatím nejsou žádné stroje.</p>';
