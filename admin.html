@@ -72,16 +72,23 @@
         const fileData = await res.json();
         const htmlContent = new TextDecoder().decode(Uint8Array.from(atob(fileData.content), c => c.codePointAt(0)));
 
-        // Hledání klíčového slova scooters = [ kdekoliv v textu
-        const marker = "scooters = [";
+        // Univerzálně vyhledáme výskyt slova scooters v souboru
+        const marker = "scooters";
         const startIdx = htmlContent.indexOf(marker);
         if (startIdx === -1) {
-          box.innerHTML = '<p class="text-rose-400">Chyba: V index.html se nenašlo "scooters = ["</p>';
+          box.innerHTML = '<p class="text-rose-400">Chyba: V index.html se nenašlo slovo scooters</p>';
+          return;
+        }
+
+        // Najdeme první hranatou závorku po tomto slovu
+        const bracketIdx = htmlContent.indexOf('[', startIdx);
+        if (bracketIdx === -1) {
+          box.innerHTML = '<p class="text-rose-400">Chyba: Nenalezeno otevírací pole.</p>';
           return;
         }
 
         let bracketCount = 0, endIdx = -1;
-        for (let i = startIdx + marker.length - 1; i < htmlContent.length; i++) {
+        for (let i = bracketIdx; i < htmlContent.length; i++) {
           if (htmlContent[i] === '[') bracketCount++;
           if (htmlContent[i] === ']') {
             bracketCount--;
@@ -89,7 +96,7 @@
           }
         }
 
-        const arrayCode = htmlContent.substring(startIdx + marker.length - 1, endIdx);
+        const arrayCode = htmlContent.substring(bracketIdx, endIdx);
         const scooters = eval(arrayCode);
 
         if (!scooters || scooters.length === 0) {
