@@ -64,7 +64,7 @@
 
       <!-- Desktop záložky -->
       <nav class="hidden md:flex items-center space-x-6 text-sm font-bold uppercase heading-font tracking-wider text-stone-300">
-        <button onclick="navigateTo('home')" class="nav-link hover:text-[#C6F135] transition" data-target="home">Úvod</button>
+        <button onclick="navigateTo('home')" class="nav-link hover:text-[#C6F135] transition text-[#C6F135]" data-target="home">Úvod</button>
         <button onclick="navigateTo('testy')" class="nav-link hover:text-[#C6F135] transition" data-target="testy">Testy</button>
         <button onclick="navigateTo('tipy')" class="nav-link hover:text-[#C6F135] transition" data-target="tipy">Tipy & Výbava</button>
         <button onclick="navigateTo('pribeh')" class="nav-link hover:text-[#C6F135] transition" data-target="pribeh">O mně</button>
@@ -489,7 +489,7 @@
         name: "SPOKEY TARANIS PLUS",
         cat: "folding",
         catLabel: "SKLÁDACÍ",
-        verdict: "Nedoporučuji",
+        verdict: "Doporučuji",
         img: "./public/images/scooter-07.jpg",
         blurb: "Městská skládačka s praktickým režimem kufru na kolečkách.",
         pros: ["Tvarovaná pro režim trolley (kufr na kolečkách)", "Kotoučová zadní brzda", "Skládání na sešlápnutí"],
@@ -561,7 +561,7 @@
         name: "MYHOOD TOUR",
         cat: "folding",
         catLabel: "SKLÁDACÍ",
-        verdict: "Nedoporučuji",
+        verdict: "Doporučuji",
         img: "./public/images/scooter-13.jpg",
         blurb: "Jedna z nejskladnějších koloběžek vůbec. Půlení nášlapné desky ji zmenší na minimum.",
         pros: ["Levná (kolem 1 500 Kč)", "Maximálně skladná do kufru auta na dovolenou"],
@@ -637,8 +637,11 @@
         img: "./public/images/scooter-19.jpg",
         blurb: "Skladná koloběžka s nízkotlakými pneumatikami, která nechrastí.",
         pros: ["Pohodlná foukací kola", "Díky patentované konstrukci ani po letech nechrastí", "Lehká a skladná"],
-        cons: ["Foukaná kola jedou pomaleji než tvrdá PU kolečka"],
-        specs: ["Kola: Nízkotlaká pneumatická", "Konstrukce: Anti-rattle"]
+        cons: [
+          "Velmi nízká světlá výška (světlost) — škrtá o nerovnosti a obrubníky",
+          "Foukaná kola jedou pomaleji než tvrdá PU kolečka"
+        ],
+        specs: ["Kola: Nízkotlaká pneumatická", "Konstrukce: Anti-rattle patent"]
       },
       {
         id: 20,
@@ -669,7 +672,7 @@
         name: "VEGA VIRON 1000W",
         cat: "electric",
         catLabel: "ELEKTRICKÉ",
-        verdict: "Nedoporučuji",
+        verdict: "Doporučuji",
         img: "./public/images/scooter-22.jpg",
         blurb: "Kus poctivého železa s řetězovým převodem a silným tahem v kopcích.",
         pros: ["Silný krouticí moment řetězového motoru do kopců", "Pohodlné sedadlo a odpružení", "Kotoučové brzdy"],
@@ -787,7 +790,7 @@
       });
     }
 
-    // Výchozí podkategorie
+    // Výchozí podkategorie v záložce Testy
     let activeCategoryTab = 'folding';
     renderCategory(activeCategoryTab);
 
@@ -801,7 +804,7 @@
       renderCategory(activeCategoryTab);
     }
 
-    // PŘEPÍNÁNÍ HLAVNÍCH ZÁLOŽEK WEBU
+    // Přepínání hlavních záložek webu
     function navigateTo(pageId) {
       document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
       const targetPage = document.getElementById('page-' + pageId);
