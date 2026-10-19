@@ -348,13 +348,13 @@
     async function reverseTipsOrder() {
       const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo'), status = document.getElementById('status-msg');
       if (!token || !repo) { alert('Vyplň token!'); return; }
-      status.innerText otřídit = 'Oracím pořadí tipů...';
+      status.innerText = 'Oracím pořadí tipů...';
       try {
         const { fileData, htmlContent } = await fetchIndex();
         let tips = extractVariable(htmlContent, 'tipsData');
         if (!tips.length) { alert('Žádné tipy k obrácení.'); status.innerText = ''; return; }
         
-        tips.reverse(); // Otočí pořadí pole
+        tips.reverse();
 
         const newCode = "const tipsData = " + JSON.stringify(tips, null, 2) + ";";
         const updatedHtml = replaceVariableInHtml(htmlContent, 'tipsData', newCode);
