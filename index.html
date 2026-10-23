@@ -316,34 +316,154 @@
     document.getElementById('visitor-count').innerText = visits;
 
     const categoriesData = [
-      { "id": "folding", "name": "Skládací", "text": "Skládací modely pro každodenní rychlé přesuny po městě i dopravu.", "img": "" },
-      { "id": "sport", "name": "Sportovní", "text": "Sportovní koloběžky s velkými koly pro delší trasy a cyklostezky.", "img": "" },
-      { "id": "electric", "name": "Elektro", "text": "Elektrické stroje a monstrózní bestie s obrovským výkonem.", "img": "" },
-      { "id": "special", "name": "Speciály", "text": "Netradiční sněžné koloběžky a speciální konstrukce.", "img": "" }
-    ];
+  {
+    "id": "folding",
+    "name": "Skládací",
+    "text": "Skládací modely pro každodenní rychlé přesuny po městě i dopravu.",
+    "img": ""
+  },
+  {
+    "id": "sport",
+    "name": "Sportovní",
+    "text": "Sportovní koloběžky s velkými koly pro delší trasy a cyklostezky.",
+    "img": ""
+  },
+  {
+    "id": "electric",
+    "name": "Elektro",
+    "text": "Elektrické stroje a monstrózní bestie s obrovským výkonem.",
+    "img": ""
+  },
+  {
+    "id": "special",
+    "name": "Speciály",
+    "text": "Netradiční sněžné koloběžky a speciální konstrukce.",
+    "img": ""
+  }
+];
 
     const linksData = [
-      { "id": 1, "name": "Výdělky přes internet", "url": "http://vydelkypresinternet.webnode.cz/", "img": "./public/images/1000133178.jpg" },
-      { "id": 2, "name": "Nice Babes", "url": "http://nicebabes.webnode.cz/", "img": "./public/images/1000133179.jpg" },
-      { "id": 3, "name": "Červený trpaslík", "url": "http://cervenytrpaslik.webnode.cz/", "img": "./public/images/1000133180.jpg" },
-      { "id": 4, "name": "Nice Babes 2", "url": "http://nicebabes2.webnode.cz/", "img": "./public/images/1000133181.jpg" },
-      { "id": 5, "name": "SMS Freee", "url": "http://smsfreee.webnode.cz/", "img": "./public/images/1000133182.jpg" },
-      { "id": 6, "name": "Slevové portály", "url": "http://slevoveportaly.webnode.cz/", "img": "./public/images/1000133183.jpg" },
-      { "id": 7, "name": "LOL Jokes 3", "url": "http://loljokes3.webnode.cz/", "img": "./public/images/1000133184.jpg" },
-      { "id": 8, "name": "NetCash Forum", "url": "http://netcash.forumczech.com/forum", "img": "./public/images/1000133197.jpg" },
-      { "id": 9, "name": "South Park", "url": "http://southpark.webnode.cz/", "img": "./public/images/1000133185.jpg" },
-      { "id": 10, "name": "The Big Bang Theory", "url": "http://bigbangtheoryserial.webnode.cz/", "img": "./public/images/1000133186.jpg" },
-      { "id": 11, "name": "Placené ankety", "url": "http://placeneankety.webnode.cz/", "img": "./public/images/1000133196.jpg" },
-      { "id": 12, "name": "SMS Free 2U", "url": "http://smsfree2u.webnode.cz/", "img": "./public/images/1000133187.jpg" },
-      { "id": 13, "name": "Czech Geocache", "url": "http://czechgeocache.webnode.cz/", "img": "./public/images/1000133188.jpg" },
-      { "id": 14, "name": "LOL Jokes 2U", "url": "http://lol-jokes-2u.webnode.cz/", "img": "./public/images/1000133189.jpg" },
-      { "id": 15, "name": "Hubnutí a dieta", "url": "http://hubnuti-a-dieta.webnode.cz/", "img": "./public/images/1000133190.jpg" },
-      { "id": 16, "name": "Top Celebrity", "url": "http://topcelebrity.webnode.cz/", "img": "./public/images/1000133191.jpg" },
-      { "id": 17, "name": "České holky", "url": "http://ceskeholky.webnode.cz/", "img": "./public/images/1000133192.jpg" },
-      { "id": 18, "name": "Počítačový kurz pro seniory", "url": "http://pocitacovykursproseniory.webnode.cz/", "img": "./public/images/1000133193.jpg" },
-      { "id": 19, "name": "Zpětné odkazy zdarma", "url": "http://zpetneodkazyzdarma.webnode.cz/", "img": "./public/images/1000133194.jpg" },
-      { "id": 20, "name": "Simpsonovy", "url": "http://simpsonovy.webnode.cz/", "img": "./public/images/1000133195.jpg" }
-    ];
+  {
+    "id": 1,
+    "name": "Výdělky přes internet",
+    "url": "http://vydelkypresinternet.webnode.cz/",
+    "img": "./public/images/1000133178.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Nice Babes",
+    "url": "http://nicebabes.webnode.cz/",
+    "img": "./public/images/1000133179.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Červený trpaslík",
+    "url": "http://cervenytrpaslik.webnode.cz/",
+    "img": "./public/images/1000133180.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Nice Babes 2",
+    "url": "http://nicebabes2.webnode.cz/",
+    "img": "./public/images/1000133181.jpg"
+  },
+  {
+    "id": 5,
+    "name": "SMS Freee",
+    "url": "http://smsfreee.webnode.cz/",
+    "img": "./public/images/1000133182.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Slevové portály",
+    "url": "http://slevoveportaly.webnode.cz/",
+    "img": "./public/images/1000133183.jpg"
+  },
+  {
+    "id": 7,
+    "name": "LOL Jokes 3",
+    "url": "http://loljokes3.webnode.cz/",
+    "img": "./public/images/1000133184.jpg"
+  },
+  {
+    "id": 8,
+    "name": "NetCash Forum",
+    "url": "http://netcash.forumczech.com/forum",
+    "img": "./public/images/1000133197.jpg"
+  },
+  {
+    "id": 9,
+    "name": "South Park",
+    "url": "http://southpark.webnode.cz/",
+    "img": "./public/images/1000133185.jpg"
+  },
+  {
+    "id": 10,
+    "name": "The Big Bang Theory",
+    "url": "http://bigbangtheoryserial.webnode.cz/",
+    "img": "./public/images/1000133186.jpg"
+  },
+  {
+    "id": 11,
+    "name": "Placené ankety",
+    "url": "http://placeneankety.webnode.cz/",
+    "img": "./public/images/1000133196.jpg"
+  },
+  {
+    "id": 12,
+    "name": "SMS Free 2U",
+    "url": "http://smsfree2u.webnode.cz/",
+    "img": "./public/images/1000133187.jpg"
+  },
+  {
+    "id": 13,
+    "name": "Czech Geocache",
+    "url": "http://czechgeocache.webnode.cz/",
+    "img": "./public/images/1000133188.jpg"
+  },
+  {
+    "id": 14,
+    "name": "LOL Jokes 2U",
+    "url": "http://lol-jokes-2u.webnode.cz/",
+    "img": "./public/images/1000133189.jpg"
+  },
+  {
+    "id": 15,
+    "name": "Hubnutí a dieta",
+    "url": "http://hubnuti-a-dieta.webnode.cz/",
+    "img": "./public/images/1000133190.jpg"
+  },
+  {
+    "id": 16,
+    "name": "Top Celebrity",
+    "url": "http://topcelebrity.webnode.cz/",
+    "img": "./public/images/1000133191.jpg"
+  },
+  {
+    "id": 17,
+    "name": "České holky",
+    "url": "http://ceskeholky.webnode.cz/",
+    "img": "./public/images/1000133192.jpg"
+  },
+  {
+    "id": 18,
+    "name": "Počítačový kurz pro seniory",
+    "url": "http://pocitacovykursproseniory.webnode.cz/",
+    "img": "./public/images/1000133193.jpg"
+  },
+  {
+    "id": 19,
+    "name": "Zpětné odkazy zdarma",
+    "url": "http://zpetneodkazyzdarma.webnode.cz/",
+    "img": "./public/images/1000133194.jpg"
+  },
+  {
+    "id": 20,
+    "name": "Simpsonovy",
+    "url": "http://simpsonovy.webnode.cz/",
+    "img": "./public/images/1000133195.jpg"
+  }
+];
 
     function renderLinks() {
       const container = document.getElementById('links-container');
@@ -365,354 +485,536 @@
     renderLinks();
 
     const tipsData = [
-      {
-        "id": 1792691964628,
-        "title": "Jak se starat o Li-ion baterii elektrokoloběžky, aby vydržela co nejdéle?",
-        "category": "Baterie",
-        "img": "./public/images/1000133861.png",
-        "perex": "Baterie je jednou z nejdražších součástí elektrické koloběžky. Správným nabíjením, vhodným skladováním a šetrným zacházením můžeš zpomalit její stárnutí a udržet si co nejdelší dojezd.",
-        "text": "🔋 Baterie je jednou z nejdražších součástí elektrické koloběžky..."
-      }
-    ];
+  {
+    "id": 1792691964628,
+    "title": "Jak se starat o Li-ion baterii elektrokoloběžky, aby vydržela co nejdéle?",
+    "category": "Baterie",
+    "img": "./public/images/1000133861.png",
+    "perex": "Baterie je jednou z nejdražších součástí elektrické koloběžky. Správným nabíjením, vhodným skladováním a šetrným zacházením můžeš zpomalit její stárnutí a udržet si co nejdelší dojezd. Jak nabíjet, kolik voltů už je málo a proč baterii nesvědčí zimní mrazy?",
+    "text": "🔋 Baterie je jednou z nejdražších součástí elektrické koloběžky..."
+  }
+];
 
     const scooters = [
-      {
-        "id": 1,
-        "name": "SPARTAN JUMBO",
-        "cat": "folding",
-        "catLabel": "SKLÁDACÍ",
-        "verdict": "Doporučuji",
-        "img": "./public/images/1000133010.jpg",
-        "blurb": "SPARTAN JUMBO\n\nPopis:\nSpartan je značka sportovního vybavení...\n\nVÝHODY:\n✓ Nízká hmotnost\n\nNEVÝHODY:\n— Složitější systém skládání",
-        "pros": ["Nízká hmotnost"],
-        "cons": ["Složitější systém skládání"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 2,
-        "name": "JD BUG MS132",
-        "cat": "folding",
-        "catLabel": "SKLÁDACÍ",
-        "verdict": "Doporučuji",
-        "img": "./public/images/scooter-02.jpg",
-        "blurb": "JD BUG MS132\n\nPopis:\nJD Bug MS132 je lehká skládací koloběžka...\n\nVÝHODY:\n✓ Vydržela 3 zimy\n✓ Lehká a tuhá\n\nNEVÝHODY:\n— Malá kolečka",
-        "pros": ["Vydržela 3 zimy", "Lehká a tuhá"],
-        "cons": ["Malá kolečka"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 3,
-        "name": "KRUZZEL HYPERION",
-        "cat": "folding",
-        "catLabel": "SKLÁDACÍ",
-        "verdict": "Nedoporučuji",
-        "img": "./public/images/scooter-03.jpg",
-        "blurb": "KRUZZEL HYPERION\n\nPopis:\nKruzzel je značka spotřebního zboží...\n\nVÝHODY:\n✓ Výbava za nízkou cenu\n✓ Velká kola\n\nNEVÝHODY:\n— Velmi slabá konstrukce\n— Přední skládací kloub téměř praskl",
-        "pros": ["Výbava za nízkou cenu", "Velká kola"],
-        "cons": ["Velmi slabá konstrukce", "Přední skládací kloub téměř praskl"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 4,
-        "name": "TEMPISH TECNIQUE TOP",
-        "cat": "folding",
-        "catLabel": "SKLÁDACÍ",
-        "verdict": "Doporučuji",
-        "img": "./public/images/scooter-04.jpg",
-        "blurb": "TEMPISH TECNIQUE TOP\n\nPopis:\nTEMPISH je česká značka...\n\nVÝHODY:\n✓ Velká kola a rychlá jízda\n✓ Držák na láhev a stojánek\n✓ Zadní kotoučová brzda\n\nNEVÝHODY:\n— Po delší době používání se ozývá chrastění\n— Třecí brzda se postupně opotřebovává",
-        "pros": ["Velká kola", "Kotoučová brzda", "Odpružení"],
-        "cons": ["Občasné chrastění"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 5,
-        "name": "SPARTAN JUMBO II",
-        "cat": "folding",
-        "catLabel": "SKLÁDACÍ",
-        "verdict": "Nedoporučuji",
-        "img": "./public/images/scooter-05.jpg",
-        "blurb": "SPARTAN JUMBO II\n\nPopis:\nSPARTAN je značka...",
-        "pros": ["Listové tlumiče"],
-        "cons": ["Problémy s konstrukcí"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 6,
-        "name": "SIX DEGREES ALUMINIUM LW 205",
-        "cat": "folding",
-        "catLabel": "SKLÁDACÍ",
-        "verdict": "Doporučuji",
-        "img": "./public/images/scooter-06.jpg",
-        "blurb": "SIX DEGREES\n\nVÝHODY:\n✓ Kvalitní zpracování\n\nNEVÝHODY:\n— Stojánek",
-        "pros": ["Letecký hliník", "Rychlá"],
-        "cons": ["Utopený stojánek"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 7,
-        "name": "SPOKEY TARANIS PLUS",
-        "cat": "folding",
-        "catLabel": "SKLÁDACÍ",
-        "verdict": "Doporučuji",
-        "img": "./public/images/scooter-07.jpg",
-        "blurb": "SPOKEY\n\nVÝHODY:\n✓ Trolley systém\n\nNEVÝHODY:\n— Vyšší nášlap",
-        "pros": ["Trolley systém"],
-        "cons": ["Vyšší nášlap"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 8,
-        "name": "HUDORA BIGWHEEL 205",
-        "cat": "folding",
-        "catLabel": "SKLÁDACÍ",
-        "verdict": "Doporučuji",
-        "img": "./public/images/scooter-08.jpg",
-        "blurb": "HUDORA\n\nVÝHODY:\n✓ Německá výroba\n\nNEVÝHODY:\n— Chybí pojistka",
-        "pros": ["Německá výroba", "Rychlý skládací mechanismus"],
-        "cons": ["Chybí pojistka skládacího mechanismu!"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 9,
-        "name": "XOOTR STREET",
-        "cat": "folding",
-        "catLabel": "SKLÁDACÍ",
-        "verdict": "Doporučuji",
-        "img": "./public/images/scooter-09.jpg",
-        "blurb": "XOOTR\n\nVÝHODY:\n✓ Nosnost 363 kg\n\nNEVÝHODY:\n— Vyšší cena",
-        "pros": ["Nosnost 363 kg"],
-        "cons": ["Vyšší cena"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 10,
-        "name": "JD BUG DELUXE B",
-        "cat": "folding",
-        "catLabel": "SKLÁDACÍ",
-        "verdict": "Doporučuji",
-        "img": "./public/images/scooter-10.jpg",
-        "blurb": "JD BUG\n\nVÝHODY:\n✓ Široké pneu\n\nNEVÝHODY:\n— Slabší brzda",
-        "pros": ["Široké pneu"],
-        "cons": ["Slabší brzda"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 11,
-        "name": "MICRO SPRITE",
-        "cat": "folding",
-        "catLabel": "SKLÁDACÍ",
-        "verdict": "Doporučuji",
-        "img": "./public/images/scooter-11.jpg",
-        "blurb": "MICRO\n\nVÝHODY:\n✓ Pod 3 kg\n\nNEVÝHODY:\n— Malá kolečka",
-        "pros": ["Pod 3 kg", "Šroubované díly"],
-        "cons": ["Malá kolečka"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 12,
-        "name": "SNĚHOBĚŽKA",
-        "cat": "special",
-        "catLabel": "SPECIÁLY",
-        "verdict": "Doporučuji",
-        "img": "./public/images/1000133058.jpg",
-        "blurb": "SNĚHOBĚŽKA\n\nVÝHODY:\n✓ Rychlá\n\nNEVÝHODY:\n— Nemá brzdu",
-        "pros": ["Na sněhu super rychlá"],
-        "cons": ["Nemá brzdu!"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 13,
-        "name": "MYHOOD TOUR",
-        "cat": "folding",
-        "catLabel": "SKLÁDACÍ",
-        "verdict": "Doporučuji",
-        "img": "./public/images/scooter-13.jpg",
-        "blurb": "MY HOOD",
-        "pros": ["Skladná do kufru"],
-        "cons": ["Problém s kloubem půlení"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 14,
-        "name": "JD BUG MS105",
-        "cat": "folding",
-        "catLabel": "SKLÁDACÍ",
-        "verdict": "Doporučuji",
-        "img": "./public/images/1000134138.png",
-        "blurb": "JD BUG",
-        "pros": ["Ultralehká"],
-        "cons": ["Malá kola"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 15,
-        "name": "SULOV CONDOR 26/20",
-        "cat": "sport",
-        "catLabel": "SPORTOVNÍ",
-        "verdict": "Doporučuji",
-        "img": "./public/images/scooter-15.jpg",
-        "blurb": "SULOV",
-        "pros": ["Skvělá na nerovnosti"],
-        "cons": ["Těžší"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 16,
-        "name": "QUICK SPORT TALA",
-        "cat": "sport",
-        "catLabel": "SPORTOVNÍ",
-        "verdict": "Doporučuji",
-        "img": "./public/images/scooter-16.jpg",
-        "blurb": "TALA",
-        "pros": ["Nosnost 150 kg"],
-        "cons": ["Ocelový rám"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 17,
-        "name": "YEDOO CITY",
-        "cat": "sport",
-        "catLabel": "SPORTOVNÍ",
-        "verdict": "Doporučuji",
-        "img": "./public/images/scooter-17.jpg",
-        "blurb": "YEDOO",
-        "pros": ["Obratná", "9.3 kg"],
-        "cons": ["Méně do terénu"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 18,
-        "name": "NIPPER N12",
-        "cat": "sport",
-        "catLabel": "SPORTOVNÍ",
-        "verdict": "Doporučuji",
-        "img": "./public/images/scooter-18.jpg",
-        "blurb": "NIPPER",
-        "pros": ["Nafukovací kola"],
-        "cons": ["Kratší stupátko"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 19,
-        "name": "RAZOR A5 AIR",
-        "cat": "folding",
-        "catLabel": "SKLÁDACÍ",
-        "verdict": "Doporučuji",
-        "img": "./public/images/scooter-19.jpg",
-        "blurb": "RAZOR",
-        "pros": ["Foukací kola", "Nezrchrastí"],
-        "cons": ["Velmi nízká světlá výška", "Pomalejší"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 20,
-        "name": "TOURSOR E5B 60V (2×2800W)",
-        "cat": "electric",
-        "catLabel": "ELEKTRO",
-        "verdict": "Bestie",
-        "img": "./public/images/scooter-20.jpg",
-        "blurb": "TOURSOR",
-        "pros": ["5600W výkon", "Hydraulika"],
-        "cons": ["Váha 50 kg"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 21,
-        "name": "SENCOR SCOOTER TWO LONG RANGE",
-        "cat": "electric",
-        "catLabel": "ELEKTRO",
-        "verdict": "Doporučuji",
-        "img": "./public/images/scooter-21.jpg",
-        "blurb": "SENCOR",
-        "pros": ["Výdrž v zimě", "10\" bezdefektová kola"],
-        "cons": ["Bez odpružení"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 22,
-        "name": "VEGA VIRON 1000W",
-        "cat": "electric",
-        "catLabel": "ELEKTRO",
-        "verdict": "Nedoporučuji",
-        "img": "./public/images/scooter-22.jpg",
-        "blurb": "VEGA",
-        "pros": ["Silný řetězový motor"],
-        "cons": ["Velmi krátký dojezd"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 23,
-        "name": "NITRO SCOOTER X500 PREMIUM",
-        "cat": "electric",
-        "catLabel": "ELEKTRO",
-        "verdict": "Nedoporučuji",
-        "img": "./public/images/scooter-23.jpg",
-        "blurb": "NITRO",
-        "pros": ["Homologace pro ČR"],
-        "cons": ["Slabší v kopcích"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 24,
-        "name": "TAJFUN 500W",
-        "cat": "electric",
-        "catLabel": "ELEKTRO",
-        "verdict": "Nedoporučuji",
-        "img": "./public/images/scooter-24.jpg",
-        "blurb": "TAJFUN",
-        "pros": ["Alarm a dálkový ovladač"],
-        "cons": ["Servis"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 25,
-        "name": "KAABO SKYWALKER 10H (CZ)",
-        "cat": "electric",
-        "catLabel": "ELEKTRO",
-        "verdict": "Doporučuji",
-        "img": "./public/images/scooter-25.jpg",
-        "blurb": "KAABO",
-        "pros": ["Servis u zákazníka doma"],
-        "cons": ["20 kg"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 26,
-        "name": "GALAXY CALYPSO",
-        "cat": "sport",
-        "catLabel": "SPORTOVNÍ",
-        "verdict": "Doporučuji",
-        "img": "./public/images/scooter-26.jpg",
-        "blurb": "GALAXY",
-        "pros": ["Příznivá cena"],
-        "cons": ["Základní díly"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 27,
-        "name": "BOUYEDA S3-11",
-        "cat": "electric",
-        "catLabel": "ELEKTRO",
-        "verdict": "Bestie",
-        "img": "./public/images/scooter-27.jpg",
-        "blurb": "BOUYEDA",
-        "pros": ["6000W", "85 km/h", "38Ah baterie"],
-        "cons": ["Váha 63 kg"],
-        "specs": ["Zátěžový test"]
-      },
-      {
-        "id": 1792359353170,
-        "name": "Koloběžka",
-        "cat": "sport",
-        "catLabel": "SPORTOVNÍ",
-        "verdict": "Doporučuji",
-        "img": "./public/images/1000133078.png",
-        "blurb": "No name koloběžka",
-        "pros": ["Obratná", "úzký nízký nášlap"],
-        "cons": ["úzký nízký nášlap"],
-        "specs": ["Zátěžový test"]
-      }
-    ];
+  {
+    "id": 1,
+    "name": "SPARTAN JUMBO",
+    "cat": "folding",
+    "catLabel": "SKLÁDACÍ",
+    "verdict": "Doporučuji",
+    "img": "./public/images/1000133010.jpg",
+    "blurb": "SPARTAN JUMBO\n\nPopis:\nSpartan je značka sportovního vybavení, která nabízí také koloběžky pro každodenní přesuny a volnočasové ježdění. Model Jumbo sází na lehkou hliníkovou konstrukci, velká 200mm kolečka a skládací provedení. Je určený především na pevné povrchy, například asfalt a beton.\n\n\n\nSpecifikace:\n\n- Hliníkový rám\n- PU kolečka 200 mm\n- Zadní nášlapná brzda\n- Nastavitelná řídítka\n- Nosnost až 100 kg\n- Hmotnost přibližně 3,5–4 kg podle varianty",
+    "pros": [
+      "✓ Nízká hmotnost"
+    ],
+    "cons": [
+      "— Složitější systém skládání"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 2,
+    "name": "JD BUG MS132",
+    "cat": "folding",
+    "catLabel": "SKLÁDACÍ",
+    "verdict": "Doporučuji",
+    "img": "./public/images/scooter-02.jpg",
+    "blurb": "JD BUG MS132\n\nPopis:\nJD Bug je značka zaměřená na koloběžky, u kterých hraje hlavní roli nízká hmotnost, skladnost a praktičnost. Model MS132 je lehká skládací koloběžka s hliníkovou konstrukcí. Zatím jde podle mých zkušeností o nejkvalitněji zpracovanou skládačku, kterou jsem vlastnil. Odjezdila se mnou dokonce tři zimy!\n\n\n\nZajímavostí je, že jde zatím o jedinou skládací koloběžku, u které jsem se setkal s tvrzením výrobce, že zvládne i lehký freestyle. To z ní ale nedělá plnohodnotnou freestyle koloběžku určenou na tvrdé triky a velké skoky.\n\n\n\nSpecifikace:\n\n- Hliníková konstrukce\n- Malá kolečka přibližně 145–150 mm podle varianty\n- Ložiska ABEC 5 podle provedení\n- Nastavitelná řídítka\n- Nízká hmotnost",
+    "pros": [
+      "Vydržela 3 zimy",
+      "Lehká a tuhá"
+    ],
+    "cons": [
+      "Malá kolečka"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 3,
+    "name": "KRUZZEL HYPERION",
+    "cat": "folding",
+    "catLabel": "SKLÁDACÍ",
+    "verdict": "Nedoporučuji",
+    "img": "./public/images/scooter-03.jpg",
+    "blurb": "Popis:\n\nKruzzel je značka spotřebního zboží spadající pod nabídku polské společnosti Iso Trade. Model Hyperion láká výbavou, odpružením a dvojicí brzd za dostupnou cenu. Moje zkušenost však dopadla špatně: koloběžka se mi téměř rozlomila v oblasti kloubu už po necelém měsíci používání. Kvůli této zásadní konstrukční závadě ji nedoporučuji.\n\n\n\nSpecifikace:\n\n- Skládací městská koloběžka\n- Hliníková konstrukce\n- Gumová kola o průměru 200 mm\n- Ložiska ABEC-9\n- Ruční kotoučová a zadní nášlapná brzda\n- Odpružení\n- Výškově nastavitelná řídítka ve čtyřech polohách\n- Hmotnost přibližně 4,9 kg podle údajů prodejce\n- Deklarovaná nosnost až 100 kg",
+    "pros": [
+      "Cena"
+    ],
+    "cons": [
+      "Rozlomila se téměř vejpůl po měsíci!"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 4,
+    "name": "TEMPISH TECNIQUE TOP",
+    "cat": "folding",
+    "catLabel": "SKLÁDACÍ",
+    "verdict": "Doporučuji",
+    "img": "./public/images/scooter-04.jpg",
+    "blurb": "Popis:\n\nTEMPISH je česká značka sportovního vybavení, známá především bruslemi a koloběžkami. Model TECNIQ TOP je bohatě vybavená skládací koloběžka s odpružením předního i zadního kola a zadní kotoučovou brzdou. Výrobce vyzdvihuje robustní konstrukci a skládací mechanismus ovládaný nohou. Je určená pro rekreační jízdu i delší přesuny.\n\nSpecifikace:\n\n- Hliníková nášlapná deska\n- Přední kolečko 230 mm, zadní 200 mm\n- Odpružení předního i zadního kola s nastavitelným tlumením\n- Zadní kotoučová brzda ovládaná ruční páčkou\n- Doplňková nášlapná brzda na zadním blatníku\n- Ložiska ABEC 7\n- Nastavitelná výška řídítek\n- Skládací mechanismus ovládaný nohou\n- Hmotnost přibližně 7 kg\n- Deklarovaná nosnost 100 kg",
+    "pros": [
+      "Kotoučová brzda",
+      "Odpružení"
+    ],
+    "cons": [
+      "Občasné chrastění"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 5,
+    "name": "SPARTAN JUMBO II",
+    "cat": "folding",
+    "catLabel": "SKLÁDACÍ",
+    "verdict": "Nedoporučuji",
+    "img": "./public/images/scooter-05.jpg",
+    "blurb": "Popis:\n\nSPARTAN je značka sportovního vybavení, která nabízí také skládací koloběžky pro každodenní přesuny a volný čas. Model Jumbo II je druhou generací oblíbené skládací koloběžky. Jeho zajímavostí jsou listové tlumiče, které mají zlepšovat pohodlí při jízdě. Moje zkušenost však odhalila problémy s konstrukcí, kvůli kterým tento model nedoporučuji.\n\nSpecifikace:\n\n- Skládací konstrukce\n- Listové tlumiče\n- Odpružení pro pohodlnější jízdu",
+    "pros": [
+      "Listové tlumiče"
+    ],
+    "cons": [
+      "Problémy s konstrukcí"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 6,
+    "name": "SIX DEGREES ALUMINIUM LW 205",
+    "cat": "folding",
+    "catLabel": "SKLÁDACÍ",
+    "verdict": "Doporučuji",
+    "img": "./public/images/scooter-06.jpg",
+    "blurb": "Popis:\n\nSix Degrees je značka zaměřená na skládací koloběžky, u kterých klade důraz na nízkou hmotnost, hliníkovou konstrukci a praktičnost. Model Aluminium LW 205 má velká 205mm kolečka, široká BMX řídítka a prostornou nášlapnou desku. Je vhodný pro každodenní přesuny po městě i svižnější jízdu po zpevněných cestách. Výrobce se chlubí kvalitním zpracováním a promyšlenými konstrukčními detaily. Mě osobně zaujala především špičková konstrukce a při jízdě mě překvapila její vysoká rychlost.\n\nSpecifikace:\n\n- Hliníková konstrukce\n- PU kolečka o průměru 205 mm\n- Široká BMX řídítka s ergonomickými rukojeťmi\n- Výškově nastavitelná řídítka (77–102 cm)\n- Prostorná nášlapná deska přibližně 57,5 × 15 cm s obvodovým zesílením\n- Ložiska ABEC 7\n- Zesílená objímka řídítek\n- Rychloupínání rukojetí\n- Skládací mechanismus Easy Fold s bezpečnostní pojistkou\n- Zadní nášlapná brzda\n- Stojánek\n- Deklarovaná nosnost 100 kg\n- Hmotnost přibližně 5,5 kg podle specifikace varianty",
+    "pros": [
+      "Letecký hliník",
+      "Rychlá"
+    ],
+    "cons": [
+      "Utopený stojánek"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 7,
+    "name": "SPOKEY TARANIS PLUS",
+    "cat": "folding",
+    "catLabel": "SKLÁDACÍ",
+    "verdict": "Doporučuji",
+    "img": "./public/images/scooter-07.jpg",
+    "blurb": "Popis:\n\nSpokey je značka sportovního vybavení, která klade důraz na funkčnost, pohodlí a moderní design. Model Taranis Plus je městská skládací koloběžka s odpružením obou kol, ruční brzdou a praktickým systémem přepravy ve stylu cestovního kufru. Po složení ji lze táhnout za sebou na kolečkách, což usnadňuje manipulaci při cestování. Zajímavostí je také držák na smartphone a úchyt na láhev. Nevýhodou je vyšší nášlapná deska – jezdci menší postavy si při odrazu mohou připadat, jako by dělali dřepy.\n\nSpecifikace:\n\n- Eloxovaná hliníková konstrukce\n- PU kolečka o průměru 200 mm, tvrdost 85 A\n- Ložiska ABEC 11\n- Přední a zadní odpružení\n- Široká protiskluzová pogumovaná nášlapná deska\n- Rozměry desky 48 × 16 cm, využitelná plocha 33 × 16 cm\n- Šířka řídítek 38 cm\n- Výškově nastavitelná řídítka (92–102 cm podle varianty)\n- Ruční a zadní nášlapná brzda\n- Skládací konstrukce s možností tažení jako kufr\n- Držák na smartphone a úchyt na láhev\n- Hmotnost přibližně 6 kg\n- Deklarovaná nosnost 100 kg",
+    "pros": [
+      "Trolley systém"
+    ],
+    "cons": [
+      "Vyšší nášlap"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 8,
+    "name": "HUDORA BIGWHEEL 205",
+    "cat": "folding",
+    "catLabel": "SKLÁDACÍ",
+    "verdict": "Doporučuji",
+    "img": "./public/images/scooter-08.jpg",
+    "blurb": "Popis:\n\nHUDORA je německá značka sportovního vybavení a model BigWheel 205 patří mezi její osvědčené klasiky. Nabízí lehkou hliníkovou konstrukci, velká 205mm kolečka a nízko položenou nášlapnou desku, která usnadňuje odrážení a zvyšuje pohodlí při jízdě. Výrobce sází na rychlost, praktičnost a robustní skládací mechanismus. Velkou výhodou je rychlé složení koloběžky, díky kterému se snadno přenáší a převáží.\n\nSpecifikace:\n\n- Hliníková konstrukce\n- PU kolečka o průměru 205 mm\n- Ložiska ABEC 5\n- Výškově nastavitelná řídítka (přibližně 79–104 cm podle varianty)\n- Nízko položená nášlapná deska\n- Rozměry nášlapné plochy přibližně 33 × 11,5 cm\n- Zadní nášlapná třecí brzda\n- Rychlý skládací mechanismus\n- Stojánek\n- Ochranné blatníky\n- Odrazky na řídítkách a nášlapné desce\n- Deklarovaná nosnost 100 kg\n- Hmotnost přibližně 4,1–4,8 kg podle varianty",
+    "pros": [
+      "Německá výroba",
+      "Rychlý skládací mechanismus"
+    ],
+    "cons": [
+      "Chybí pojistka skládacího mechanismu!"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 9,
+    "name": "XOOTR STREET",
+    "cat": "folding",
+    "catLabel": "SKLÁDACÍ",
+    "verdict": "Doporučuji",
+    "img": "./public/images/scooter-09.jpg",
+    "blurb": "Americká kvalita s neuvěřitelnou nosností až 363 kg.\n\nPopis:\n\nXOOTR je značka dospělých koloběžek s americkým konstrukčním původem, zaměřená na efektivní jízdu, odolnost a kvalitní zpracování. Model Street je vrcholně robustní městská skládačka, jejíž hlavní předností je masivní nášlapná deska CNC frézovaná z jednoho bloku hliníku 6061. Bez svařovaných spojů samotné desky vzniká mimořádně pevná konstrukce. Výrobce ji označuje za nejodolnější model své nabídky. Široká nášlapná plocha umožňuje postavit obě nohy vedle sebe a velká polyuretanová kola mají nízký valivý odpor, takže koloběžka velmi dobře jede po hladkém asfaltu. Je to prémiový stroj pro dospělé, u kterého je konstrukce hlavním důvodem vyšší ceny.\n\nSpecifikace:\n\n- Hliníková nášlapná deska z jednoho bloku slitiny 6061, CNC frézovaná\n- Polyuretanová kolečka o průměru 180 mm\n- Široká nášlapná deska o rozměrech přibližně 61 × 20 cm\n- Protiskluzová povrchová úprava nášlapu\n- Výškově nastavitelná řídítka (přibližně 63,5–96,5 cm od nášlapu)\n- Skládací mechanismus QuickClick\n- Zadní blatník sloužící jako brzda\n- Hmotnost přibližně 5,2 kg\n- Deklarovaná nosnost až 363 kg podle některých specifikací prodejců; ověřit pro konkrétní verzi\n- Cena: přibližně 9 990 Kč (dříve uváděná cena českého prodejce; aktuální dostupnost omezená)",
+    "pros": [
+      "Nosnost 363 kg"
+    ],
+    "cons": [
+      "Vyšší cena"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 10,
+    "name": "JD BUG DELUXE B",
+    "cat": "folding",
+    "catLabel": "SKLÁDACÍ",
+    "verdict": "Doporučuji",
+    "img": "./public/images/scooter-10.jpg",
+    "blurb": "Popis:\n\nJD Bug je značka specializující se na koloběžky, u kterých klade důraz na praktičnost, nízkou hmotnost a snadnou přepravu. Model Deluxe B je skládací koloběžka s velkými, širokými koly, která usnadňují jízdu po městě a pomáhají lépe zvládat drobné nerovnosti. Díky výškově nastavitelným řídítkům se dá přizpůsobit různým jezdcům.\n\nMoje zkušenost: Původně jsem si myslel, že široká kola budou mít větší valivý odpor a koloběžka proto pojede pomaleji. Opak byl pravdou! Široká kola mě překvapila nízkým valivým odporem a rychlostí, kterou koloběžka dokázala vyvinout. Její slabinou je však zadní nášlapná brzda, která mi připadá poměrně slabá.\n\nSpecifikace:\n\n- Hliníková konstrukce\n- Kolečka o průměru 200 mm\n- Ložiska ABEC 5\n- Výškově nastavitelná řídítka (přibližně 77–101 cm podle varianty)\n- Nášlapná deska dlouhá přibližně 34 cm u jedné z verzí\n- Zadní nášlapná brzda\n- Skládací mechanismus\n- Hmotnost přibližně 4,3 kg podle varianty\n- Deklarovaná nosnost 100 kg",
+    "pros": [
+      "Široké pneu"
+    ],
+    "cons": [
+      "Slabší brzda"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 11,
+    "name": "MICRO SPRITE",
+    "cat": "folding",
+    "catLabel": "SKLÁDACÍ",
+    "verdict": "Doporučuji",
+    "img": "./public/images/scooter-11.jpg",
+    "blurb": "Popis:\n\nMicro je švýcarská značka, která se zaměřuje na kvalitně zpracované koloběžky s důrazem na nízkou hmotnost, praktičnost a dlouhou životnost. Model Sprite patří mezi její klasické skládací koloběžky. Váží pouhých 2,85 kg, takže se snadno přenáší a hodí se nejen pro děti, ale i pro dospělé, kteří hledají lehký stroj na kratší přesuny. Výrobce sází na jednoduchou konstrukci, rychlé skládání s dvojitým jištěním a možnost výměny náhradních dílů. Zvláštností je šroubované provedení většiny dílů namísto jejich pevného spojení. Díky tomu lze jednotlivé součásti v případě opotřebení nebo poškození vyměnit samostatně, což usnadňuje opravy, omezuje nutnost měnit celou sestavu a pomáhá prodloužit životnost koloběžky.\n\nSpecifikace:\n\n- Hliníková konstrukce\n- Přední PU kolečko 120 mm, zadní 100 mm\n- Ložiska podle konkrétní varianty\n- Výškově nastavitelná řídítka (63–95 cm)\n- Nášlapná deska přibližně 35 × 10 cm\n- Skládací řídítka a skládací mechanismus s dvojitým jištěním\n- Zadní nášlapná brzda\n- Stojánek\n- Úchyt pro popruh na přenášení\n- Hmotnost 2,85 kg\n- Deklarovaná nosnost 100 kg",
+    "pros": [
+      "Pod 3 kg",
+      "Šroubované díly"
+    ],
+    "cons": [
+      "Malá kolečka"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 12,
+    "name": "SNĚHOBĚŽKA",
+    "cat": "special",
+    "catLabel": "SPECIÁLY",
+    "verdict": "Doporučuji",
+    "img": "./public/images/1000133058.jpg",
+    "blurb": "❄️ SNĚHOBĚŽKA – když koloběžková sezóna nekončí ani v zimě\n\nPopis:\n\nKdo říká, že s prvním sněhem musí koloběžka odpočívat v garáži? Sněhoběžka přináší zimní alternativu klasické koloběžky a otevírá nové možnosti, jak si užít sníh, pohyb a pořádnou dávku zábavy.\n\nMísto běžných koleček využívá lyžiny, které kloužou po zasněženém povrchu. Řídítka umožňují ovládání směru, zatímco nášlapná plocha slouží k postavení jezdce. Princip je jednoduchý: vezmeš si zimní oblečení, vyrazíš na vhodný zasněžený svah a užiješ si jízdu trochu jinak než na klasických lyžích nebo snowboardu.\n\nSněhoběžka může zaujmout nejen děti, ale také dospělé, kteří chtějí vyzkoušet něco nového. Je to zajímavý způsob, jak propojit svět koloběžek se zimními sporty. Na rozdíl od běžné koloběžky však potřebuje vhodný sněhový povrch a dostatek prostoru pro bezpečné zatáčení i zastavení.\n\nPři výběru je důležité rozlišovat mezi hotovou sněžnou koloběžkou a sadou lyžin, která se montuje na běžnou koloběžku. Nejde vždy o totožné výrobky a jejich kompatibilita se může lišit. Před nákupem je proto potřeba ověřit konstrukci, rozměry uchycení a doporučenou nosnost konkrétního modelu.\n\nA nezapomeň: na sněhu a ledu se podmínky rychle mění. Helma, rukavice, pevná zimní obuv a vhodně zvolený terén jsou základem bezpečné jízdy.\n\nSpecifikace:\n\n- Název: Sněhoběžka\n- Typ: zimní koloběžka určená pro jízdu na sněhu\n- Princip pohybu: klouzání po sněhu pomocí lyžin místo běžných koleček\n- Ovládání: řídítky\n- Nášlapná plocha: pro postavení jezdce\n- Povrch: vhodný zasněžený terén\n- Využití: zimní rekreační zábava a sjíždění vhodných svahů\n- Výbava: lyžiny, řídítka a nášlapná část podle konkrétní konstrukce\n- Nosnost, hmotnost a rozměry: nejsou z obrázku ověřitelné; závisí na konkrétním modelu\n- Kompatibilita: u přestavbových sad je nutné ověřit uchycení a vhodnost pro danou koloběžku\n- Bezpečnost: doporučena helma a ochranné vybavení; jezdit pouze na vhodném a bezpečném povrchu",
+    "pros": [
+      "Na sněhu super rychlá"
+    ],
+    "cons": [
+      "Nemá brzdu!"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 13,
+    "name": "MYHOOD TOUR",
+    "cat": "folding",
+    "catLabel": "SKLÁDACÍ",
+    "verdict": "Doporučuji",
+    "img": "./public/images/scooter-13.jpg",
+    "blurb": "Popis:\n\nMy Hood je dánská značka sportovního a volnočasového vybavení. Model Tour je mimořádně skladná městská koloběžka, jejíž hlavní předností je unikátní konstrukce s půleným nášlapem. Po složení zabírá pouhých přibližně 17 × 24 × 37 cm, takže ji lze snadno uložit do batohu a vzít s sebou do vlaku, autobusu nebo na dovolenou. Nabízí hliníkovou konstrukci, nastavitelná řídítka a zadní nášlapnou brzdu za dostupnou cenu. Moje zkušenost však ukázala slabinu v oblasti kloubu půlení nášlapné desky, kde se poměrně brzy objevil problém se skládacím mechanismem.\n\nSpecifikace:\n\n- Hliníková konstrukce\n- Přední PU kolečko 125 mm, zadní 100 mm\n- Ložiska ABEC 5\n- Výškově nastavitelná řídítka (70–97 cm)\n- Rozměry ve složeném stavu přibližně 17 × 24 × 37 cm\n- Půlený nášlap pro maximální skladnost\n- Zadní nášlapná brzda\n- Hmotnost přibližně 4,1 kg\n- Deklarovaná nosnost 100 kg",
+    "pros": [
+      "Skladná do kufru"
+    ],
+    "cons": [
+      "Problém s kloubem půlení"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 14,
+    "name": "JD BUG MS105",
+    "cat": "folding",
+    "catLabel": "SKLÁDACÍ",
+    "verdict": "Doporučuji",
+    "img": "./public/images/scooter-14.jpg",
+    "blurb": "Popis:\n\nJD Bug MS105 je lehká skládací koloběžka určená především dětem a na kratší jízdy po městě. Její hlavní předností je nízká hmotnost, jednoduchá konstrukce a kompaktní rozměry po složení. Díky hliníkovému rámu se snadno přenáší a patentovaný skládací mechanismus usnadňuje přepravu i skladování. Malá kolečka jsou praktická pro běžné městské použití, ale na nerovném povrchu neposkytují tolik pohodlí jako větší kola.\n\nSpecifikace:\n\n- Konstrukce: hliníkový rám, ocelová přední vidlice\n- Kolečka: PU, obvykle 120 mm vpředu a 100 mm vzadu\n- Ložiska: ABEC 5\n- Řídítka: výškově nastavitelná, přibližně 63–86 cm podle varianty\n- Brzda: zadní nášlapná\n- Skládání: patentovaný skládací mechanismus\n- Hmotnost: přibližně 2,5 kg\n- Nosnost: až 100 kg podle specifikace prodejce\n- Vhodné použití: děti, kratší městské jízdy a snadné přenášení",
+    "pros": [
+      "Ultralehká"
+    ],
+    "cons": [
+      "Malá kola"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 15,
+    "name": "SULOV CONDOR 26/20",
+    "cat": "sport",
+    "catLabel": "SPORTOVNÍ",
+    "verdict": "Doporučuji",
+    "img": "./public/images/scooter-15.jpg",
+    "blurb": "Popis:\n\nSULOV CONDOR 26/20 je sportovní koloběžka s velkými nafukovacími koly, určená dospělým a dospívajícím na delší vyjížďky, cyklostezky i jízdu po méně rovném povrchu. Velké přední kolo o průměru 26\" a zadní 20\" pomáhají překonávat nerovnosti a zajišťují stabilnější jízdu. Ocelový rám je robustní, ale zároveň znamená vyšší hmotnost. CONDOR je vhodný pro jezdce, kteří upřednostňují pohodlí a průchodnost terénem před snadným přenášením. Koloběžka není skládací.\n\nSpecifikace:\n\n- Rám: ocelový\n- Kola: nafukovací, přední 26\", zadní 20\"\n- Ráfky: hliníkové\n- Brzdy: přední a zadní V-brzda\n- Řídítka: výška přibližně 96–99 cm, podle varianty\n- Šířka řídítek: přibližně 55–59 cm, podle varianty\n- Stupátko: přibližně 35–40 × 12 cm\n- Celková délka: přibližně 170 cm\n- Hmotnost: přibližně 12–13 kg\n- Nosnost: až 120 kg\n- Výbava: stojánek, zadní blatník, odrazky ve výpletu kol; některé nabídky uvádějí také držák na láhev a rohy na řídítkách\n- Skládání: není skládací",
+    "pros": [
+      "Skvělá na nerovnosti"
+    ],
+    "cons": [
+      "Těžší"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 16,
+    "name": "QUICK SPORT TALA",
+    "cat": "sport",
+    "catLabel": "SPORTOVNÍ",
+    "verdict": "Doporučuji",
+    "img": "./public/images/scooter-16.jpg",
+    "blurb": "Popis:\n\nQUICK SPORT TALA je sportovní koloběžka pro dospělé, vhodná na rekreační vyjížďky, cyklostezky i zpevněné cesty. Kombinuje velké nafukovací pneumatiky s předním kolem o průměru 20\" a zadním kolem 16\". Díky nim lépe překonává drobné nerovnosti než koloběžky s malými plnými kolečky. Hliníkový rám a ráfky pomáhají udržet hmotnost relativně nízko. Výraznou předností je uváděná nosnost až 150 kg. Koloběžka je vhodná pro jezdce, kteří hledají pohodlnější jízdu a klasickou konstrukci bez skládacího mechanismu.\n\nSpecifikace:\n\n- Rám: hliníková slitina\n- Vidlice: hliníková slitina\n- Kola: nafukovací, přední 20\", zadní 16\"\n- Pláště: Schwalbe\n- Ráfky: hliníkové\n- Brzdy: přední a zadní V-brzda\n- Řídítka: hliníková, výškově nastavitelná\n- Hmotnost: přibližně 7,4 kg\n- Nosnost: až 150 kg\n- Vhodné použití: rekreační jízda, cyklostezky a zpevněné cesty",
+    "pros": [
+      "Nosnost 150 kg"
+    ],
+    "cons": [
+      "Ocelový rám"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 17,
+    "name": "YEDOO CITY",
+    "cat": "sport",
+    "catLabel": "SPORTOVNÍ",
+    "verdict": "Doporučuji",
+    "img": "./public/images/scooter-17.jpg",
+    "blurb": "Popis:\n\nYedoo City je univerzální městská koloběžka od české značky Yedoo, která se hodí na každodenní přesuny, cyklostezky i kratší výlety mimo město. Kombinuje přední nafukovací kolo o průměru 16\" a zadní kolo 12\", což jí poskytuje dobrý kompromis mezi obratností a jízdním komfortem. Menší rozměry kol usnadňují manévrování v ulicích, zatímco nafukovací pneumatiky pomáhají tlumit drobné nerovnosti. Ocelový rám je robustní, ale koloběžka kvůli němu váží přibližně 9,3 kg. Výhodou jsou výškově nastavitelná řídítka, ergonomická madla a dvě brzdy. Yedoo City je vhodná pro jezdce, kteří hledají praktickou a všestrannou koloběžku pro město i zpevněné cesty.\n\nSpecifikace:\n\n- Značka: Yedoo (česká značka)\n- Rám: Hi-ten ocel\n- Vidlice: Hi-ten ocel\n- Kola: nafukovací, přední 16\", zadní 12\"\n- Pláště: Kenda nebo Innova podle varianty\n- Ráfky: hliníkové\n- Brzdy: přední a zadní V-brzda Tektro\n- Řídítka: výškově nastavitelná\n- Výška řídítek: přibližně 93–105 cm\n- Šířka řídítek: přibližně 66 cm\n- Délka koloběžky: přibližně 133 cm\n- Délka stupátka: 36 cm\n- Světlá výška: přibližně 7 cm\n- Hmotnost: přibližně 9,3 kg\n- Nosnost: až 120 kg\n- Minimální doporučená výška jezdce: přibližně 145 cm\n- Výbava: ergonomická madla, boční stojánek, příprava pro držák láhve",
+    "pros": [
+      "Obratná",
+      "9.3 kg"
+    ],
+    "cons": [
+      "Méně do terénu"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 18,
+    "name": "NIPPER N12",
+    "cat": "sport",
+    "catLabel": "SPORTOVNÍ",
+    "verdict": "Doporučuji",
+    "img": "./public/images/scooter-18.jpg",
+    "blurb": "Popis:\n\nNIPPER N12 je kompaktní koloběžka s nafukovacími koly, určená především dětem a na kratší jízdy po městě nebo zpevněných cestách. Díky nafukovacím pneumatikám lépe tlumí drobné nerovnosti než koloběžky s malými plnými kolečky. Menší kola jí pomáhají zachovat obratnost, ale v náročnějším terénu a na větších nerovnostech mají své limity. Kratší stupátko může omezovat pohodlné postavení nohou, zejména u větších jezdců. Ocelový rám zajišťuje robustní konstrukci, ale přináší vyšší hmotnost než u lehkých hliníkových modelů.\n\nSpecifikace:\n\n- Rám: ocelový\n- Kola: nafukovací, 12\"\n- Ráfky: hliníkové\n- Brzdy: přední a zadní V-brzda u některých variant\n- Řídítka: výškově nastavitelná\n- Výška řídítek: přibližně 70–80 cm u varianty Sulov Niper Speed 12\n- Šířka řídítek: přibližně 54 cm u varianty Sulov Niper Speed 12\n- Celková délka: přibližně 120 cm\n- Délka stupátka: přibližně 32 cm\n- Hmotnost: přibližně 6 kg\n- Nosnost: až 65 kg u varianty Sulov Niper Speed 12\n- Výbava: stojánek",
+    "pros": [
+      "Nafukovací kola"
+    ],
+    "cons": [
+      "Kratší stupátko"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 19,
+    "name": "RAZOR A5 AIR",
+    "cat": "folding",
+    "catLabel": "SKLÁDACÍ",
+    "verdict": "Doporučuji",
+    "img": "./public/images/scooter-19.jpg",
+    "blurb": "Skladná s nízkotlakými pneu, nechrastí.",
+    "pros": [
+      "Foukací kola",
+      "Nezrchrastí"
+    ],
+    "cons": [
+      "Velmi nízká světlá výška (světlost)",
+      "Pomalejší"
+    ],
+    "specs": [
+      "Nízká světlá výška"
+    ]
+  },
+  {
+    "id": 20,
+    "name": "TOURSOR E5B 60V (2×2800W)",
+    "cat": "electric",
+    "catLabel": "ELEKTRO",
+    "verdict": "Bestie",
+    "img": "./public/images/scooter-20.jpg",
+    "blurb": "Bestie s výkonem 5600W a rychlostí 90 km/h.\n\nPopis:\n\nTOURSOR E5B 60V je výkonná elektrická koloběžka se dvěma motory, určená pro zkušenější jezdce, kteří hledají vysoký výkon a schopnosti mimo zpevněné cesty. Podle konkrétní varianty nabízí dva motory s celkovým uváděným výkonem až 5600–6000 W a maximální rychlost kolem 80–90 km/h. Jedenáctipalcové terénní pneumatiky, přední hydraulické odpružení a zadní pružinové tlumiče pomáhají zvládat nerovný povrch. Hydraulické brzdy zajišťují účinné brzdění a baterie s napětím 60 V poskytuje energii pro výkonný pohon. Robustní konstrukce má svou daň v podobě hmotnosti přibližně 50 kg, takže manipulace a přenášení nejsou snadné. Jde o velmi výkonný stroj, jehož rychlost a zrychlení vyžadují zkušenosti, kvalitní ochranné vybavení a důsledné dodržování platných pravidel provozu.\n\nSpecifikace:\n\n- Typ: výkonná elektrická koloběžka s pohonem dvou kol\n- Rám: hliníková slitina\n- Motory: 2 × 2800 W, celkem 5600 W podle zobrazené varianty\n- Napětí: 60 V\n- Baterie: lithium-iontová, kapacita se liší podle varianty\n- Maximální rychlost: výrobcem a prodejci uváděno přibližně 80–90 km/h\n- Dojezd: závisí na baterii, rychlosti, hmotnosti jezdce a terénu; prodejci uvádějí až přibližně 80 km\n- Pneumatiky: 11\" terénní\n- Brzdy: hydraulické kotoučové\n- Odpružení: přední dvojité hydraulické tlumiče, zadní pružinové odpružení\n- Displej: digitální\n- Skládání: ano\n- Rozměry v rozloženém stavu: přibližně 130 × 58 × 132 cm\n- Rozměry ve složeném stavu: přibližně 147 × 28 × 50 cm\n- Hmotnost: přibližně 50 kg\n- Maximální nosnost: až 200 kg podle údajů prodejce\n- Výbava: osvětlení, zadní světlo, možnost montáže sedátka",
+    "pros": [
+      "5600W výkon",
+      "Hydraulika"
+    ],
+    "cons": [
+      "Váha 50 kg"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 21,
+    "name": "SENCOR SCOOTER TWO LONG RANGE",
+    "cat": "electric",
+    "catLabel": "ELEKTRO",
+    "verdict": "Doporučuji",
+    "img": "./public/images/scooter-21.jpg",
+    "blurb": "Popis:\n\nSENCOR SCOOTER TWO LONG RANGE 2021 je městská elektrická koloběžka s výkonným 400W motorem a baterií s kapacitou 15 Ah. Její hlavní předností je dlouhý dojezd, desetipalcové bezdušové pneumatiky s perforací a zadní odpružení. A tohle není jen teorie z katalogu – na této koloběžce jsem osobně odjezdil dvě celé zimy, včetně mrazů a jízdy po solených silnicích. Z vlastní zkušenosti můžu potvrdit, že toho zvládne opravdu hodně. Při lehkém odrážení nohou dokáže bez větší námahy vyjet i na Dušnou. Ta leží v nadmořské výšce přibližně 662 m n. m. a výjezd ze Vsetína představuje asi 320 metrů převýšení na trase dlouhé 7 km. Koloběžka tak zvládá i kopcovitější trasy, pokud jí jezdec při stoupání trochu pomůže. Nevýhodou je absence předního odpružení, takže na rozbitých cestách není jízda tak pohodlná jako u modelů s odpružením obou kol. Pro každodenní dojíždění a běžné výlety je to ale praktický a odolný parťák.\n\nSpecifikace:\n\n- Motor: 400 W\n- Baterie: Li-ion, 37 V, 15 Ah (555 Wh)\n- Maximální rychlost: až 25 km/h\n- Dojezd: až 45 km při hmotnosti jezdce 55 kg; až 37 km při 90 kg podle výrobce\n- Kola: 10\" přední a zadní, perforované bezdušové pneumatiky\n- Odpružení: zadní\n- Brzdy: zadní kotoučová a elektronická brzda\n- Maximální stoupání: až 15° podle výrobce\n- Nosnost: až 120 kg\n- Hmotnost: přibližně 16 kg\n- Rozměry v rozloženém stavu: 112 × 44 × 118 cm\n- Rozměry ve složeném stavu: 112 × 44 × 51 cm\n- Doba nabíjení: až 9 hodin\n- Výbava: LED osvětlení, LED displej, tempomat, Bluetooth a mobilní aplikace Sencor Scooter\n- Osobní zkušenost: dvě odjeté zimy včetně mrazů a solených silnic; s lehkým odrážením zvládá i výjezd na Dušnou",
+    "pros": [
+      "Výdrž v zimě",
+      "10\" bezdefektová kola"
+    ],
+    "cons": [
+      "Bez odpružení"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 22,
+    "name": "VEGA VIRON 1000W",
+    "cat": "electric",
+    "catLabel": "ELEKTRO",
+    "verdict": "Doporučuji",
+    "img": "./public/images/scooter-22.jpg",
+    "blurb": "Popis:\n\nVeGA VIRON 1000W je robustní elektrická koloběžka se sedlem, která konstrukcí připomíná malý elektrický skútr. Je určená pro dospělé, kteří chtějí pohodlnější jízdu a dostatek výkonu i při jízdě do kopce. Vzduchem chlazený motor o výkonu 1000 W využívá řetězový pohon, který přenáší sílu motoru na kolo. Spolu s 36V baterií umožňuje dosáhnout rychlosti až 32 km/h a výrobcem uváděného dojezdu až 30 km. Velká nafukovací kola, odpružená přední vidlice a dvojité zadní tlumiče zvyšují komfort na nerovných cestách. Praktickou výhodou je odnímatelné, výškově nastavitelné sedlo, takže koloběžku lze používat i bez něj. Je však poměrně těžká – přibližně 38 kg – a přenášení proto není její silnou stránkou. Hodí se především na kratší každodenní cesty a rekreační jízdy.\n\nSpecifikace:\n\n- Motor: elektrický, 1000 W, vzduchem chlazený\n- Pohon: řetězový převod\n- Baterie: 36 V / 12 Ah (olověné akumulátory podle původního provedení)\n- Maximální rychlost: až 32 km/h\n- Dojezd: až 30 km podle terénu a zatížení\n- Doba nabíjení: přibližně 6–7 hodin\n- Kola: nafukovací, vnější průměr přibližně 14\" (36 cm)\n- Rozměr pneumatik: 2.50–10\n- Odpružení: přední odpružená vidlice, zadní dvojité tlumiče\n- Brzdy: přední a zadní kotoučová\n- Sedlo: odnímatelné, výškově nastavitelné přibližně 80–94 cm\n- Šířka řídítek: přibližně 63 cm\n- Rozměry: přibližně 132 × 25 × 114 cm\n- Hmotnost: přibližně 38 kg\n- Nosnost: až 120 kg\n- Výbava: stojánek, zámek zapalování s klíčem, dvoustupňový přepínač rychlosti, držák telefonu\n- Skládání: rychloupínací skládací mechanismus",
+    "pros": [
+      "Silný řetězový motor"
+    ],
+    "cons": [
+      "Velmi krátký dojezd",
+      "jen 30km"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 23,
+    "name": "NITRO SCOOTER X500 PREMIUM",
+    "cat": "electric",
+    "catLabel": "ELEKTRO",
+    "verdict": "Doporučuji",
+    "img": "./public/images/scooter-23.jpg",
+    "blurb": "Popis:\n\nNITRO SCOOTER X500 PREMIUM je česká elektrická koloběžka navržená především pro městské dojíždění a každodenní používání. Její velkou předností je schválení pro provoz na českých komunikacích v rámci příslušné homologace. Elektromotor s výkonem 500 W nabízí maximální rychlost 25 km/h a odnímatelná baterie umožňuje pohodlné nabíjení mimo koloběžku nebo výměnu za náhradní akumulátor. Desetipalcové nafukovací pneumatiky pomáhají tlumit nerovnosti a přední i zadní odpružení zvyšuje jízdní komfort. Koloběžka má hmotnost přibližně 17 kg, takže je stále možné ji přenést, ale nepatří mezi nejlehčí modely. Je vhodná pro jezdce, kteří hledají praktický dopravní prostředek s dostupným servisem a náhradními díly od české značky. Slabší stránkou je výkon při jízdě do prudších kopců, kde může motor ztrácet rychlost a jezdec si pomoci odrážením.\n\nSpecifikace:\n\n- Značka: Nitro Scooters (česká značka)\n- Motor: elektrický, 500 W\n- Baterie: odnímatelná Li-ion, 48 V / 13 Ah\n- Maximální rychlost: 25 km/h\n- Dojezd: až 40 km podle podmínek\n- Kola: 10\" nafukovací pneumatiky\n- Brzdy: přední bubnová s elektrickou brzdou, zadní nášlapná třecí brzda\n- Odpružení: přední a zadní\n- Hmotnost: přibližně 17 kg\n- Nosnost: až 120 kg\n- Homologace: podle nabídky výrobce určena pro provoz na českých komunikacích\n- Výbava: LED osvětlení pro denní i noční jízdu, zadní světlo dobíjené přes USB, odnímatelná baterie",
+    "pros": [
+      "Homologace pro ČR"
+    ],
+    "cons": [
+      "Slabší v kopcích"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 24,
+    "name": "TAJFUN 500W",
+    "cat": "electric",
+    "catLabel": "ELEKTRO",
+    "verdict": "Doporučuji",
+    "img": "./public/images/scooter-24.jpg",
+    "blurb": "Popis:\n\nTAJFUN 500W je cenově dostupná elektrická koloběžka s robustní konstrukcí, určená pro rekreační jízdy, každodenní dojíždění i méně náročné cesty mimo město. Elektromotor o výkonu 500 W nabízí slušný výkon pro běžný provoz a díky přednímu i zadnímu odpružení zvládá lépe nerovnosti než jednoduché městské modely bez tlumičů. Desetipalcová nafukovací kola a kotoučové brzdy přispívají ke komfortu a ovladatelnosti. Praktickou výbavou je bezpečnostní alarm s dálkovým ovladačem, který pomáhá chránit koloběžku při parkování. Výhodou je také poměrně solidní výrobcem uváděný dojezd. Nevýhodou může být vyšší hmotnost a dostupnost servisu či náhradních dílů, která závisí na konkrétním prodejci.\n\nSpecifikace:\n\n- Motor: elektrický, 500 W\n- Baterie: lithium-iontová; kapacita se podle provedení liší, uvádí se 36 V / 12 Ah nebo 48 V / 13 Ah\n- Maximální rychlost: přibližně 25–40 km/h podle verze a nastavení\n- Dojezd: výrobcem uváděno až 60 km; skutečný dojezd závisí na terénu, hmotnosti jezdce a stylu jízdy\n- Kola: 10\" nafukovací pneumatiky\n- Brzdy: přední a zadní kotoučové\n- Odpružení: přední i zadní\n- Maximální stoupání: u některých specifikací uváděno až 15°\n- Hmotnost: přibližně 20 kg\n- Nosnost: až 120 kg\n- Displej: LCD s údaji o rychlosti, stavu baterie a jízdním režimu\n- Zabezpečení: alarm a dálkový ovladač\n- Další výbava: osvětlení, stojánek, tempomat podle varianty",
+    "pros": [
+      "Alarm a dálkový ovladač"
+    ],
+    "cons": [
+      "Servis"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 25,
+    "name": "KAABO SKYWALKER 10H (CZ)",
+    "cat": "electric",
+    "catLabel": "ELEKTRO",
+    "verdict": "Doporučuji",
+    "img": "./public/images/scooter-25.jpg",
+    "blurb": "Popis:\n\nKAABO SKYWALKER 10H ECO800 CZ EDITION je elektrická koloběžka značky Kaabo, určená pro každodenní dojíždění, delší výlety i jízdu po kopcovitějších trasách. Její předností je motor o výkonu 800 W, baterie s kapacitou 15,6 Ah a výrobcem uváděný dojezd až 65 km za ideálních podmínek. Desetipalcové pneumatiky a přední i zadní pružinové odpružení zvyšují komfort na nerovném povrchu. Kotoučové brzdy doplněné elektronickým brzděním pomáhají bezpečně zpomalovat.\n\nVerze CZ EDITION má omezovač rychlosti nastavený na 25 km/h pro provoz podle příslušných pravidel. Mimo pozemní komunikace lze omezovač odblokovat a dosáhnout rychlosti až 50 km/h. Po odblokování však koloběžka nesmí být provozována na pozemních komunikacích, pokud nesplňuje podmínky pro takový provoz. Velkou výhodou značky Kaabo je kvalitní servisní zázemí v ČR a dostupnost originálních náhradních dílů. Oficiální distributor zajišťuje záruční i pozáruční opravy a většinu dílů drží skladem v České republice. Dalším významným benefitem je prémiová záruka, v jejímž rámci lze reklamaci řešit přímo u zákazníka doma, bez nutnosti koloběžku osobně převážet do servisu. Koloběžku lze rychle složit, takže se snadněji převáží nebo skladuje. Hmotnost přes 21 kg však znamená, že přenášení do schodů není úplně pohodlné.\n\nSpecifikace:\n\n- Značka: Kaabo\n- Model: Skywalker 10H ECO800 CZ EDITION\n- Motor: elektrický, 800 W\n- Baterie: Li-ion, 48 V / 15,6 Ah (749 Wh)\n- Maximální rychlost: 25 km/h v nastavení CZ Edition\n- Maximální rychlost po odblokování: až 50 km/h, pouze tam, kde je takový provoz legální\n- Dojezd: až 65 km v úsporném režimu za ideálních podmínek\n- Maximální stoupání: méně než 25° podle výrobce\n- Kola: 10\" pneumatiky\n- Brzdy: přední a zadní kotoučové, elektronická brzda E-ABS\n- Odpružení: přední a zadní pružinové\n- Doba nabíjení: přibližně 7–8 hodin\n- Hmotnost: přibližně 21,4 kg\n- Nosnost: až 120 kg\n- Minimální doporučená výška jezdce: 150 cm\n- Rozměry v rozloženém stavu: 118,6 × 56 × 120 cm\n- Rozměry ve složeném stavu: 117 × 24 × 36 cm\n- Osvětlení: přední světlomet, zadní LED světlo a boční LED osvětlení\n- Displej: LCD\n- Skládání: rychlý skládací mechanismus\n- Servis: české záruční i pozáruční zázemí oficiálního distributora\n- Prémiová záruka: možnost řešení reklamace u zákazníka doma podle podmínek služby\n- Náhradní díly: originální díly Kaabo, většina dostupná skladem v ČR",
+    "pros": [
+      "Servis u zákazníka doma"
+    ],
+    "cons": [
+      "20 kg"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 26,
+    "name": "GALAXY CALYPSO",
+    "cat": "sport",
+    "catLabel": "SPORTOVNÍ",
+    "verdict": "Doporučuji",
+    "img": "./public/images/scooter-26.jpg",
+    "blurb": "Popis:\n\nGALAXY CALYPSO je sportovní koloběžka českého distributora a značky Galaxy, určená především dětem a juniorům na rekreační jízdy, cyklostezky, asfalt i zpevněné polní cesty. Obě kola mají průměr 12\" a nafukovací pneumatiky, které lépe tlumí drobné nerovnosti než malá plná kolečka. Díky kompaktním rozměrům je koloběžka obratná a snadno ovladatelná. Zesílený ocelový rám Hi-Ten nabízí robustní konstrukci, jeho nevýhodou je však vyšší hmotnost v porovnání s hliníkovými modely. Přední i zadní V-brzda umožňují účinné brzdění a výškově nastavitelná řídítka pomáhají přizpůsobit koloběžku jezdci. Jde o dostupný model pro běžné rekreační použití, nikoli o koloběžku určenou do náročného terénu.\n\nSpecifikace:\n\n- Rám: zesílená ocel Hi-Ten\n- Vidlice: pevná ocelová Hi-Ten\n- Kola: nafukovací, přední 12\", zadní 12\"\n- Ráfky: hliníkové\n- Brzdy: přední a zadní čelisťové V-brzdy\n- Řídítka: výškově nastavitelná\n- Výška řídítek: přibližně 75–86 cm\n- Šířka řídítek: přibližně 56 cm\n- Délka stupátka: přibližně 29,7 cm\n- Celková délka: přibližně 121 cm\n- Světlá výška: přibližně 5,5 cm\n- Výška stupátka nad zemí: přibližně 8,5 cm\n- Hmotnost: přibližně 6,9 kg\n- Nosnost: až 90 kg\n- Doporučená minimální výška jezdce: přibližně 120 cm\n- Výbava: stojánek, možnost montáže držáku na láhev",
+    "pros": [
+      "Příznivá cena"
+    ],
+    "cons": [
+      "Základní díly"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 27,
+    "name": "BOYEDA S3-11",
+    "cat": "electric",
+    "catLabel": "ELEKTRO",
+    "verdict": "Bestie",
+    "img": "./public/images/scooter-27.jpg",
+    "blurb": "🛴 BOYUEDA S3-11 – šestikilowattová bestie, která si z kopců nic nedělá\n\nPopis:\n\nNěkteré elektrické koloběžky jsou určené na pohodové popojíždění po městě. A pak je tu BOYUEDA S3-11 – pořádná elektrická bestie, která se svými dvěma motory, obrovskou baterií a masivní konstrukcí míří do úplně jiné ligy. Tohle není žádné městské přibližovadlo, ale výkonný stroj pro jezdce, kteří chtějí sílu, dynamiku a schopnost poradit si i s náročnějším terénem.\n\nSrdcem koloběžky je dvojice bezkartáčových elektromotorů s celkovým deklarovaným výkonem 6 000 W, tedy 2 × 3 000 W. Výrobce uvádí maximální rychlost až 85 km/h. Takové hodnoty už vyžadují respekt, zkušenosti a zodpovědný přístup. Výkon se hodí nejen na svižnou jízdu, ale především při rozjezdech a ve stoupáních, kde slabší stroje začínají ztrácet dech.\n\nA právě kopce jsou disciplína, ve které tahle mašina umí předvést pořádné divadlo. S BOYUEDOU S3-11 dokážeš předjet i auto – a někdy dokonce i do kopce. Síla dvou motorů je znát především ve stoupáních, kde koloběžka dokáže nabídnout pořádnou dynamiku.\n\nEnergii dodává velká lithium-iontová baterie 60 V / 38 Ah s kapacitou 2 280 Wh. Výrobce uvádí dojezd přibližně 100–120 km na jedno nabití. A jak je to v reálném provozu? Moje vlastní zkušenost je, že jsem dojel z Dušné až do Zlína a baterie měla ještě rezervu. To je pro mě mnohem zajímavější údaj než samotné číslo v katalogu. Skutečný dojezd se samozřejmě mění podle hmotnosti jezdce, profilu trasy, teploty, tlaku v pneumatikách, zvoleného jízdního režimu a toho, jak často člověk využívá plný výkon.\n\nPodvozek tvoří jedenáctipalcové široké terénní pneumatiky bez duše a odpružení vpředu i vzadu. Díky tomu je S3-11 připravena i na horší povrch než hladký městský asfalt. O zastavení se starají hydraulické kotoučové brzdy; některé specifikace uvádějí také elektronický systém E-ABS. Při rychlostech, kterých je tento stroj schopný dosáhnout, je bezvadný stav brzd, pneumatik, řízení a všech spojů naprosto zásadní.\n\nVýbavu doplňuje barevný LCD displej, USB port pro nabíjení telefonu, dvojice předních světel U7, tři nastavitelné jízdní režimy a dva nabíjecí porty. V balení bývají podle konkrétní nabídky také dva nabíjecí adaptéry. Koloběžka má hliníkový rám a lze ji složit, ale s hmotností přes šedesát kilogramů je potřeba počítat s tím, že přenášení nebude žádná legrace.\n\nMoje zkušenost: Tohle je moje aktuální mašina a znám ji z reálného ježdění, ne jen z tabulky výrobce. Její síla se nejlépe projeví v kopcích, kde dokáže nabídnout opravdu výraznou dynamiku. Při jízdě jsem po dojezdu do Zlína naměřil na baterii přibližně 56,5–57 V. A co je podstatné, trasu z Dušné do Zlína jsem zvládl ještě s rezervou v baterii.\n\nNa BOYUEDĚ S3-11 navíc běžně jezdím i v dešti a v zimě. Není to pro mě jen stroj na slunečné dny a suchý asfalt, ale koloběžka, kterou používám i v náročnějších podmínkách. V dešti, chladu a na zimním povrchu je samozřejmě potřeba přizpůsobit rychlost a styl jízdy, protože mokro, listí, námraza nebo sníh výrazně zhoršují přilnavost a prodlužují brzdnou dráhu.\n\nSamotné napětí baterie se mění podle zatížení, teploty a ustálení baterie, takže ho nelze bez dalších údajů převést na přesné procento zbývající energie. V zimě navíc nízké teploty mohou dočasně snížit dostupný výkon i dojezd lithium-iontové baterie. Při nabíjení je důležité dodržovat teplotní limity výrobce a nenabíjet promrzlou baterii.\n\nBOYUEDA S3-11 není lehká ani nenápadná koloběžka. Je velká, těžká, výkonná a vyžaduje zkušeného jezdce. Kdo hledá hlavně snadné přenášení do bytu nebo do autobusu, měl by se poohlédnout jinde. Kdo ale ocení mohutný stroj, vysoký výkon a pořádnou rezervu pro stoupání, najde v S3-11 velmi výrazného parťáka.\n\nDůležité upozornění: Výrobcem uváděných 85 km/h neznamená, že je taková rychlost legální v běžném silničním provozu. Před jízdou na veřejných komunikacích je nutné ověřit, zda konkrétní provedení splňuje české právní podmínky pro daný způsob provozu. Plný výkon a vysoké rychlosti patří pouze tam, kde jsou legální a bezpečné, s odpovídajícím ochranným vybavením.\n\nSpecifikace:\n\n- Model: BOYUEDA S3-11\n- Typ: výkonná dvoumotorová elektrická koloběžka\n- Motory: 2 × 3 000 W\n- Celkový deklarovaný výkon: 6 000 W\n- Napětí baterie: 60 V\n- Kapacita baterie: 38 Ah\n- Energie baterie: 2 280 Wh\n- Typ baterie: lithium-iontová, články formátu 21700 dle výrobce\n- Maximální rychlost: až 85 km/h dle výrobce\n- Deklarovaný dojezd: přibližně 100–120 km; reálný dojezd závisí na podmínkách\n- Osobní zkušenost s dojezdem: z Dušné až do Zlína ještě s rezervou v baterii\n- Osobní zkušenost s provozem: běžné ježdění v dešti i v zimě\n- Pneumatiky: 11″ terénní bezdušové pneumatiky, šířka přibližně 100 mm\n- Odpružení: přední a zadní\n- Brzdy: hydraulické kotoučové; E-ABS uváděn v některých specifikacích\n- Jízdní režimy: 3\n- Displej: barevný LCD\n- Osvětlení: dvojice předních světel U7\n- USB port: ano\n- Nabíjení: dva nabíjecí porty, dva nabíjecí adaptéry dle dodávané výbavy\n- Specifikace nabíječek: 67,2 V / 5 A, 2 kusy dle výrobce\n- Rám: hliníková slitina\n- Skládací konstrukce: ano\n- Deklarovaný maximální sklon: až 45° dle výrobce; skutečná schopnost stoupání závisí na podmínkách a nelze ji považovat za univerzálně dosažitelnou\n- Světlá výška podvozku: přibližně 18,5 cm dle uváděné specifikace\n- Rozměry nášlapu: přibližně 55 × 28 cm\n- Rozměry rozložené koloběžky: přibližně 123 cm na délku; výška a šířka se mohou lišit podle nastavení\n- Rozměry ve složeném stavu: přibližně 130 × 28 × 58 cm dle uváděné specifikace\n- Hmotnost: výrobce uvádí přibližně 43,3 kg; některé nabídky mohou uvádět odlišnou hodnotu\n- Maximální zatížení: 200 kg dle výrobce\n- Krytí: IP54 uváděné v některých specifikacích; nejde o záruku vodotěsnosti při ponoření nebo mytí tlakovou vodou",
+    "pros": [
+      "6000W",
+      "85 km/h",
+      "38Ah baterie"
+    ],
+    "cons": [
+      "Váha 63 kg"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  },
+  {
+    "id": 1792359353170,
+    "name": "Koloběžka",
+    "cat": "sport",
+    "catLabel": "SPORTOVNÍ",
+    "verdict": "Doporučuji",
+    "img": "./public/images/1000133078.png",
+    "blurb": "No name koloběžka",
+    "pros": [
+      "Obratná",
+      "úzký nízký nášlap"
+    ],
+    "cons": [
+      "úzký nízký nášlap"
+    ],
+    "specs": [
+      "Zátěžový test"
+    ]
+  }
+];
 
     function getVerdictBadge(verdict) {
       if (verdict === 'Bestie') {
