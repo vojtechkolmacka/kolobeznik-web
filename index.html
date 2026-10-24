@@ -54,6 +54,7 @@
         <button onclick="navigateTo('testy')" class="nav-link hover:text-[#C6F135] transition" data-target="testy">Testy</button>
         <button onclick="navigateTo('tipy')" class="nav-link hover:text-[#C6F135] transition" data-target="tipy">Tipy & Výbava</button>
         <button onclick="navigateTo('odkazy')" class="nav-link hover:text-[#C6F135] transition" data-target="odkazy">Odkazy</button>
+        <button onclick="navigateTo('komentare')" class="nav-link hover:text-[#C6F135] transition" data-target="komentare">Komentáře</button>
         <button onclick="navigateTo('pribeh')" class="nav-link hover:text-[#C6F135] transition" data-target="pribeh">O mně</button>
         <button onclick="navigateTo('kontakt')" class="nav-link hover:text-[#C6F135] transition" data-target="kontakt">Kontakt</button>
       </nav>
@@ -72,6 +73,7 @@
       <button onclick="navigateTo('testy'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">Testy koloběžek</button>
       <button onclick="navigateTo('tipy'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">Zajímavosti a tipy</button>
       <button onclick="navigateTo('odkazy'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">Odkazy</button>
+      <button onclick="navigateTo('komentare'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">Komentáře</button>
       <button onclick="navigateTo('pribeh'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">O mně</button>
       <button onclick="navigateTo('kontakt'); toggleMenu();" class="block w-full text-left py-1 hover:text-[#C6F135]">Kontakt</button>
     </div>
@@ -179,6 +181,36 @@
         
         <div class="space-y-4" id="links-container">
           <!-- Dynamicky se vykreslí s bannery z linksData -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== KOMENTÁŘE ==================== -->
+    <div id="page-komentare" class="page-view py-14 px-5">
+      <div class="max-w-xl mx-auto space-y-6">
+        <div>
+          <span class="heading-font text-xs tracking-widest text-lime-700 font-bold block mb-1">DISKUSE NÁVŠTĚVNÍKŮ</span>
+          <h2 class="heading-font text-3xl sm:text-4xl font-bold text-stone-950 leading-tight">
+            NAPIŠTE NÁM KOMENTÁŘ
+          </h2>
+        </div>
+
+        <!-- Formulář pro přidání komentáře -->
+        <div class="bg-white rounded-3xl p-6 border border-stone-300 shadow-sm space-y-4">
+          <h3 class="heading-font text-lg font-bold text-stone-900">Přidat vzkaz</h3>
+          <div class="space-y-3 text-xs">
+             vaše jméno nebo přezdívka..." class="w-full bg-stone-100 border border-stone-300 rounded-xl p-3 text-stone-950 font-medium">
+            <textarea id="comment-text" rows="4" placeholder="Napište svůj názor, zkušenost nebo dotaz..." class="w-full bg-stone-100 border border-stone-300 rounded-xl p-3 text-stone-950 font-medium"></textarea>
+            <button onclick="addComment()" class="lime-btn w-full py-3 rounded-xl font-bold uppercase text-xs shadow">Odeslat komentář</button>
+          </div>
+        </div>
+
+        <!-- Seznam komentářů -->
+        <div class="space-y-4">
+          <h3 class="heading-font text-xl font-bold text-stone-950">Vzkazy od koloběžníků</h3>
+          <div id="comments-list" class="space-y-3">
+            <!-- Sem se dynamicky načtou komentáře -->
+          </div>
         </div>
       </div>
     </div>
@@ -293,11 +325,11 @@
 
         <div class="space-y-3">
           <div class="p-4 rounded-xl lime-bg/30 border border-lime-400/80">
-            <span class="heading-font text-sm font-bold text-emerald-950 block mb-2">VÝHODY</span>
+            <span class="heading-font text-sm font-bold text-emerald-950 block mb-2">Výhody</span>
             <ul id="modal-pros-list" class="space-y-1 text-xs text-stone-800"></ul>
           </div>
           <div class="p-4 rounded-xl bg-stone-200/90 border border-stone-300">
-            <span class="heading-font text-sm font-bold text-stone-900 block mb-2">NEVÝHODY</span>
+            <span class="heading-font text-sm font-bold text-stone-900 block mb-2">Nevýhody</span>
             <ul id="modal-cons-list" class="space-y-1 text-xs text-stone-700"></ul>
           </div>
         </div>
@@ -314,6 +346,50 @@
     }
     localStorage.setItem('kolobeznik_visits', visits);
     document.getElementById('visitor-count').innerText = visits;
+
+    // --- SPRÁVA KOMENTÁŘŮ ---
+    function loadComments() {
+      const list = document.getElementById('comments-list');
+      if (!list) return;
+      let comments = JSON.parse(localStorage.getItem('kol_comments')) || [
+        { name: "Pája", text: "Skvělé stránky, ať to jezdí!", date: "24. 10. 2026" }
+      ];
+      list.innerHTML = '';
+      comments.forEach(c => {
+        const div = document.createElement('div');
+        div.className = "bg-white p-4 rounded-2xl border border-stone-300 shadow-sm space-y-1";
+        div.innerHTML = `<div class="flex justify-between items-center"><strong class="text-stone-950 text-sm">${c.name}</strong><span class="text-[10px] text-stone-500">${c.date}</span></div><p class="text-xs text-stone-700 leading-relaxed">${c.text}</p>`;
+        list.appendChild(div);
+      });
+    }
+
+    function addComment() {
+      const nameInput = document.getElementById('comment-name');
+      const textInput = document.getElementById('comment-text');
+      const name = nameInput.value.trim();
+      const text = textInput.value.trim();
+
+      if (!name || !text) {
+        alert('Prosím vyplňte jméno i text komentáře.');
+        return;
+      }
+
+      let comments = JSON.parse(localStorage.getItem('kol_comments')) || [
+        { name: "Pája", text: "Skvělé stránky, ať to jezdí!", date: "24. 10. 2026" }
+      ];
+
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('cs-CZ');
+
+      comments.unshift({ name, text, date: dateStr });
+      localStorage.setItem('kol_comments', JSON.stringify(comments));
+
+      nameInput.value = '';
+      textInput.value = '';
+      loadComments();
+    }
+
+    loadComments();
 
     const categoriesData = [
   {
@@ -509,7 +585,7 @@
     "category": "Výbava",
     "img": "./public/images/1000133795.png",
     "perex": "Vyzkoušel jsem kdeco. Nakonec mě zachránily armádní rukavice za 79 Kč! 🪖🛴",
-    "text": "Studené prsty, promrzlé ruce a nekonečné hledání rukavic, které skutečně fungují. Zkoušel jsem pletené palčáky, několik vrstev i vyhřívané rukavice. Nakonec jsem řešení našel tam, kde bych ho možná nečekal – ve výprodeji armádního vybavení!\n\n🥶 Největší nepřítel zimního koloběžkáře? Promrzlé prsty!\n\nKdo jezdí na koloběžce i během podzimu a zimy, ten to určitě zná. Člověk se pořádně oblékne, nasadí bundu, čepici a teplé boty, ale po chvíli jízdy začne přicházet problém. Ruce mrznou a prsty ztrácejí cit.\n\nA právě tohle mě dlouho trápilo. Nechtěl jsem se vzdát jízd jen proto, že venku klesly teploty. Jenže najít rukavice, které udrží ruce v teple i při jízdě na koloběžce, nebývalo vůbec jednoduché.\n\n🧤 Zkoušel jsem snad všechno\n\nMoje cesta za teplýma rukama vedla přes několik řešení.\n\nNejdřív přišly na řadu obyčejné pletené palčáky. Když nestačily jedny, zkusil jsem dvoje na sobě. A dokonce i troje! Jenže přidávat další vrstvy ještě automaticky neznamená, že budou prsty v pohodlí.\n\nPak jsem vyzkoušel také vyhřívané rukavice. Člověk by čekal, že tím bude problém vyřešený. Jenže u těch mých jsem měl pocit, že se zahřívá především hřbet ruky, zatímco prsty, které jsem potřeboval udržet v teple, pořád trpěly.\n\nA tak jsem hledal dál.\n\n🪖 Pak jsem objevil Army-Surplus.cz\n\nNakonec jsem narazil na internetový obchod Army-Surplus.cz, který nabízí také armádní výprodejové vybavení.\n\nA právě tady se moje hledání zlomilo.\n\nMísto dalších drahých experimentů jsem objevil vojenské rukavice za ceny, které jsou až směšně nízké. Žádná složitá elektronika, žádné nabíjení a žádné další zbytečné komplikace. Prostě rukavice navržené pro použití v chladném počasí.\n\nPostupně jsem si vybral dva typy, které používám podle toho, jaká část roku zrovna přichází.\n\n🍂 Na podzim: kožené čtyřprsté rukavice s kožešinou\n\nPrvní volbou jsou černé kožené čtyřprsté zimní rukavice s kožešinovou podšívkou.\n\nNašel jsem je na Army-Surplus.cz za pouhých 160 Kč.\n\nJejich hlavní výhodou je hřejivá vnitřní kožešina a kožené provedení. Čtyři prsty jsou oddělené, zatímco palec má vlastní prostor. Pro chladnější podzimní dny je to moje volba, když už obyčejné rukavice přestávají stačit.\n\nPodle popisu prodejce jde o nepoužité zboží, které může mít kvůli dlouhodobému skladování drobné vzhledové vady.\n\nZa cenu 160 Kč mi to připadá jako zajímavá alternativa k drahým rukavicím, které nemusejí splnit očekávání.\n\n❄️ Na zima: švýcarské vojenské palčáky\n\nKdyž přijdou skutečné zimní teploty, nastupují švýcarské vojenské zimní palčáky s koženou dlaní a umělou kožešinou uvnitř.\n\nA jejich cena? V době mého výběru pouhých 79 Kč v akci, oproti původním 99 Kč!\n\nTyhle rukavice jsou zajímavé svým provedením. Prsty jsou společně v jedné hlavní části, ale palec má vlastní prostor. Jejich největší vychytávkou je však samostatný prostor pro ukazováček, díky kterému se dají používat také jako tříprsté rukavice.\n\n🎯 Z armády rovnou na páčku plynu!\n\nA teď přichází ta nejlepší část. Tahle konstrukce nevznikla jen tak pro parádu. Volný ukazováček má své opodstatnění v původním vojenském použití, kdy umožňoval ovládání spouště pušky.\n\nJenže co když místo pušky držíš řídítka elektrické koloběžky?\n\nPřesně tady se z vojenské vychytávky stává praktický pomocník pro koloběžkáře! Ukazováčkem totiž ovládám páčku přidávání plynu. Když ho mám oddělený od ostatních prstů, můžu páčku ovládat přirozeněji než v klasickém mohutném palčáku, ve kterém jsou všechny čtyři prsty pohromadě.\n\nNemusím kvůli ovládání plynu odhalovat prst mrazu ani sundávat celou rukavici. Ostatní prsty přitom zůstávají společně v hřejivé části rukavice.\n\nJednoduchý princip, který dává na koloběžce překvapivě velký smysl. Armáda myslela na ovládání zbraně, já jsem našel využití pro páčku plynu! 😁\n\nRukavice mají také koženou dlaň, hřejivou umělou kožešinu a stahování na zápěstí i na konci rukavice, aby lépe přiléhaly.\n\nPodle popisu prodejce jsou vyrobené z odolného materiálu a určené pro nepříznivé a velmi chladné počasí.\n\nZa 79 korun? To už je opravdu jiná cenová liga než u vyhřívaných rukavic.\n\nJe ale dobré počítat s tím, že jde o použité armádní výprodejové zboží. Jednotlivé kusy se mohou lišit stavem, odstínem nebo opotřebením materiálu.\n\n💰 Proč za rukavice utrácet majlant?\n\nPrávě na tomhle mě celé řešení baví nejvíc. Dlouho jsem zkoušel různé varianty a hledal něco, co mi bude při jízdách vyhovovat. Nakonec jsem našel dvojici rukavic, které si rozděluji podle počasí, a přitom mě nestály žádné velké peníze.\n\n- Podzim: kožené čtyřprsté rukavice s kožešinou za 160 Kč.\n- Zima: švýcarské vojenské palčáky za akčních 79 Kč.\n\nDohromady je to 239 Kč za oba páry podle cen, za které jsem je objevil.\n\nZa tuhle částku mám dvě různé varianty pro chladnější období. Jedny na podzim, druhé na zimu. A u zimních palčáků navíc získávám praktickou vychytávku v podobě samostatného ukazováčku pro ovládání plynu.\n\nSamozřejmě, každému vyhovuje něco jiného. Záleží na teplotě, větru, délce jízdy i na tom, jak kdo snáší chlad. Důležité je také vyzkoušet, zda rukavice umožňují jistý úchop řídítek a spolehlivé ovládání plynu i brzdy.\n\nU mě ale právě armádní rukavice změnily přístup k zimnímu ježdění.\n\n🛴 Koloběžková sezóna nemusí končit s prvním mrazem\n\nJá se nechci vzdávat koloběžky jen proto, že se ochladilo. Hledám způsoby, jak si jízdy užívat i v období, kdy většina lidí svoje koloběžky odkládá do sklepa.\n\nA jestli máte podobný problém se studenými prsty, možná stojí za to podívat se i na vojenské výprodeje. Někdy se totiž praktické řešení skrývá na místě, kde by ho člověk vůbec nehledal.\n\nMoje zkušenost? Nejdřív jsem zkoušel všechno možné. Nakonec mi pomohla armáda – a moje peněženka při tom skoro neutrpěla. 😁\n\nA co používáte v zimě vy?\n\nMáte svoje osvědčené rukavice na koloběžku? Vsázíte na vyhřívané modely, vrstvení, nebo jste také objevili nějaké nečekané řešení?\n\nA co vy, koloběžkáři – ocenili byste také rukavice s volným ukazováčkem, abyste mohli pohodlněji ovládat páčku plynu?\n\nPodělte se o zkušenosti v komentářích. Třeba společně najdeme další vychytávky, díky kterým si užijeme jízdy i v pořádné zimě!\n\nPoznámka: Uvedené ceny jsou ceny zachycené při výběru rukavic. Aktuální dostupnost, ceny a velikosti se mohou změnit."
+    "text": "Studené prsty, promrzlé ruce a nekonečné hledání rukavic, které skutečně fungují. Zkoušel jsem pletené palčáky, několik vrstev i vyhřívané rukavice. Nakonec jsem řešení našel tam, kde bych ho možná nečekal – ve výprodeji armádního vybavení!\n\n🥶 Největší nepřítel zimního koloběžkáře? Promrzlé prsty!\n\nKdo jezdí na koloběžce i během podzimu a zimy, ten to určitě zná. Člověk se pořádně oblékne, nasadí bundu, čepici a teplé boty, ale po chvíli jízdy začne přicházet problém. Ruce mrznou a prsty ztrácejí cit.\n\nA právě tohle mě dlouho trápilo. Nechtěl jsem se vzdát jízd jen proto, že venku klesly teploty. Jenže najít rukavice, které udrží ruce v teple i při jízdě na koloběžce, nebývalo vůbec jednoduché.\n\n🧤 Zkoušel jsem snad všechno\n\nMoje cesta za teplýma rukama vedla přes několik řešení.\n\nNejdřív přišly na řadu obyčejné pletené palčáky. Když nestačily jedny, zkusil jsem dvoje na sobě. A dokonce i troje! Jenže přidávat další vrstvy ještě automaticky neznamená, že budou prsty v pohodlí.\n\nPak jsem vyzkoušel také vyhřívané rukavice. Člověk by čekal, že tím bude problém vyřešený. Jenže u těch mých jsem měl pocit, že se zahřívá především hřbet ruky, zatímco prsty, které jsem potřeboval udržet v teple, pořád trpěly.\n\nA tak jsem hledal dál.\n\n🪖 Pak jsem objevil Army-Surplus.cz\n\nNakonec jsem narazil na internetový obchod Army-Surplus.cz, který nabízí také armádní výprodejové vybavení.\n\nA právě tady se moje hledání zlomilo.\n\nMísto dalších drahých experimentů jsem objevil vojenské rukavice za ceny, které jsou až směšně nízké. Žádná složitá elektronika, žádné nabíjení a žádné další zbytečné komplikace. Prostě rukavice navržené pro použití v chladném počasí.\n\nPostupně jsem si vybral dva typy, které používám podle toho, jaká část roku zrovna přichází.\n\n🍂 Na podzim: kožené čtyřprsté rukavice s kožešinou\n\nPrvní volbou jsou černé kožené čtyřprsté zimní rukavice s kožešinovou podšívkou.\n\nNašel jsem je na Army-Surplus.cz za pouhých 160 Kč.\n\nJejich hlavní výhodou je hřejivá vnitřní kožešina a kožené provedení. Čtyři prsty jsou oddělené, zatímco palec má vlastní prostor. Pro chladnější podzimní dny je to moje volba, když už obyčejné rukavice přestávají stačit.\n\nPodle popisu prodejce jde o nepoužité zboží, které může mít kvůli dlouhodobému skladování drobné vzhledové vady.\n\nZa cenu 160 Kč mi to připadá jako zajímavá alternativa k drahým rukavicím, které nemusejí splnit očekávání.\n\n❄️ Na zima: švýcarské vojenské palčáky\n\nKdyž přijdou skutečné zimní teploty, nastupují švýcarské vojenské zimní palčáky s koženou dlaní a umělou kožešinou uvnitř.\n\nA jejich cena? V době mého výběru pouhých 79 Kč v akci, oproti původním 99 Kč!\n\nTyhle rukavice jsou zajímavé svým provedením. Prsty jsou společně v jedné hlavní části, ale palec má vlastní prostor. Jejich největší vychytávkou je však samostatný prostor pro ukazováček, díky kterému se dají používat také jako tříprsté rukavice.\n\n🎯 Z armády rovnou na páčku plynu!\n\nA teď přichází ta nejlepší část. Tahle konstrukce nevznikla jen tak pro parádu. Volný ukazováček má své opodstatnění v původním vojenském použití, kdy umožňoval ovládání spouště pušky.\n\nJenže co když místo pušky držíš řídítka elektrické koloběžky?\n\nPřesně tady se z vojenské vychytávky stává praktický pomocník pro koloběžkáře! Ukazováčkem totiž ovládám páčku přidávání plynu. Když ho mám oddělený od ostatních prstů, můžu páčku ovládat přirozeněji než v klasickém mohutném palčáku, ve kterém jsou všechny čtyři prsty pohromadě.\n\nNemusím kvůli ovládání plynu odhalovat prst mrazu ani sundávat celou rukavici. Ostatní prsty přitom zůstávají společně v hřejivé části rukavice.\n\nJednoduchý princip, který dává na koloběžce překvapivě velký smysl. Armáda myslela na ovládání zbraně, já jsem našel využití pro páčku plynu! 😁\n\nRukavice mají také koženou dlaň, hřejivou umělou kožešinu a stahování na zápěstí i na konci rukavice, aby lépe přiléhaly.\n\nPodle popisu prodejce jsou vyrobené z odolného materiálu a určené pro nepříznivé a velmi chladné počasí.\n\nZa 79 korun? To už je opravdu jiná cenová liga než u vyhřívaných rukavic.\n\nJe ale dobré počítat s tím, že jde o použité armádní výprodejové zboží. Jednotlivé kusy se mohou lišit stavem, odstínem nebo opotřebením materiálu.\n\n💰 Proč za rukavice utrácet majlant?\n\nPrávě na tomhle mě celé řešení baví nejvíc. Dlouho jsem zkoušel různé varianty a hledal něco, co mi bude při jízdách vyhovovat. Nakonec jsem našel dvojici rukavic, které si rozděluji podle počasí, a přitom mě nestály žádné velké peníze.\n\n- Podzim: kožené čtyřprsté rukavice s kožešinou za 160 Kč.\n- Zima: švýcarské vojenské palčáky za akčních 79 Kč.\n\nDohromady je to 239 Kč za oba páry podle cen, za které jsem je objevil.\n\nZa tuhle částku mám dvě různé varianty pro chladnější období. Jedny na podzim, druhé na zimu. A u zimních palčáků navíc získávám praktickou vychytávku v podobě samostatného ukazováčku pro ukazování plynu.\n\nSamozřejmě, každému vyhovuje něco jiného. Záleží na teplotě, větru, délce jízdy i na tom, jak kdo snáší chlad. Důležité je také vyzkoušet, zda rukavice umožňují jistý úchop řídítek a spolehlivé ovládání plynu i brzdy.\n\nU mě ale právě armádní rukavice změnily přístup k zimnímu ježdění.\n\n🛴 Koloběžková sezóna nemusí končit s prvním mrazem\n\nJá se nechci vzdávat koloběžky jen proto, že se ochladilo. Hledám způsoby, jak si jízdy užívat i v období, kdy většina lidí svoje koloběžky odkládá do sklepa.\n\nA jestli máte podobný problém se studenými prsty, možná stojí za to podívat se i na vojenské výprodeje. Někdy se totiž praktické řešení skrývá na místě, kde by ho člověk vůbec nehledal.\n\nMoje zkušenost? Nejdřív jsem zkoušel všechno možné. Nakonec mi pomohla armáda – a moje peněženka při tom skoro neutrpěla. 😁\n\nA co používáte v zimě vy?\n\nMáte svoje osvědčené rukavice na koloběžku? Vsázíte na vyhřívané modely, vrstvení, nebo jste také objevili nějaké nečekané řešení?\n\nA co vy, koloběžkáři – ocenili byste také rukavice s volným ukazováčkem, abyste mohli pohodlněji ovládat páčku plynu?\n\nPodělte se o zkušenosti v komentářích. Třeba společně najdeme další vychytávky, díky kterým si užijeme jízdy i v pořádné zimě!\n\nPoznámka: Uvedené ceny jsou ceny zachycené při výběru rukavic. Aktuální dostupnost, ceny a velikosti se mohou změnit."
   },
   {
     "id": 1792657835310,
@@ -541,7 +617,7 @@
     "category": "Aplikace",
     "img": "./public/images/1000133729.png",
     "perex": "Chytrá navigace pro cyklisty, která pomůže objevit nové trasy",
-    "text": "Plánování výletů na dvou kolech může být jednodušší. Aplikace Cyclers nabízí cyklistickou navigaci, výběr tras podle vlastních preferencí i zajímavou novinku v podobě plánování pomocí umělé inteligence.\n\nKam vyrazit, když nechcete jet pořád po stejné cestě? Právě s tím může pomoct aplikace Cyclers, která je navržena speciálně pro cyklisty. Neslouží pouze k navigaci z bodu A do bodu B. Umí navrhovat okružní výlety, porovnávat alternativní trasy a zohledňovat například převýšení, povrch cest nebo intenzitu provozu.\n\nPro každého, kdo rád objevuje nová místa, může být zajímavým pomocníkem při plánování dalšího dobrodružství.\n\nNavigace, která myslí na cyklisty\n\nBěžná navigace se často snaží najít především rychlou cestu do cíle. Jenže při výletě na kole nemusí být nejrychlejší trasa automaticky tou nejlepší. Někdo chce klidnější cesty, jiný dává přednost kvalitnímu povrchu a další se snaží vyhnout prudkým kopcům.\n\nCyclers umožňuje plánovat trasy podle různých preferencí a následně porovnávat navržené varianty. U jednotlivých tras lze sledovat například vzdálenost, očekávaný čas, převýšení, povrch nebo dopravní zátěž. Aplikace také nabízí hodnocení shody trasy s nastavenými požadavky, označované jako Match. <sup>\"1\" (https://cyclers.app/)</sup>\n\nCo všechno aplikace umí?\n\n- Plánování tras od bodu A do bodu B – zadáte, odkud a kam chcete jet.\n- Okružní výlety – aplikace navrhne trasu, která vás vrátí zpět na výchozí místo.\n- Porovnávání alternativ – můžete si vybrat mezi různými variantami podle svých priorit.\n- Cyklistická hlasová navigace – upozorní vás na změny směru a pomůže s orientací.\n- Záznam jízd – ukládá absolvované výlety a jejich statistiky.\n- Sledování povrchu a převýšení – předem získáte lepší představu o tom, co vás na trase čeká.\n- Ukládání a sdílení zážitků – své jízdy můžete uchovávat a sdílet s ostatními.\n\nAplikace nabízí také různé výzvy, odznaky a žebříčky. Výlet tak nemusí být jen cestou do cíle, ale i příležitostí sledovat vlastní pokroky. <sup>\"1\" (https://cyclers.app/)</sup>\n\nBaiker: když trasu naplánuješ obyčejnou větou\n\nZajímavou funkcí je Baiker, konverzační plánovač tras využívající umělou inteligenci. Místo složitého nastavování můžete jednoduše napsat, jaký výlet si představujete.\n\nChcete například přibližně čtyřicetikilometrový okruh, méně kopců a zastávku u zajímavé památky? Baiker dokáže na základě podobného zadání navrhnout až tři varianty, které následně můžete upravit podle svých představ.\n\nUmí pracovat také s požadavky na typ terénu, dopravní provoz nebo místa podél trasy. Podle oficiální nápovědy je tato funkce aktuálně v beta verzi a její dostupnost se liší podle platformy a typu účtu. V říjnu 2026 je Baiker dostupný na Androidu v Evropě a USA, zatímco podpora iOS se připravuje. <sup>\"2\" (https://support.cyclers.app/en/articles/16780948-what-is-the-baiker-beta-feature-and-how-does-it-work)</sup>\n\nTohle je přesně ten typ funkce, který může být užitečný, když chcete vyrazit ven, ale zatím nemáte konkrétní představu, kam se vydat.\n\nFunguje Cyclers i bez internetu?\n\nAno, ale s určitými omezeními.\n\nPředem připravenou trasu lze navigovat i bez aktivního internetového připojení a GPS umožňuje zaznamenávat jízdu také offline. Oblasti mapy, které jste si předtím zobrazili při připojení k internetu, mohou zůstat dostupné i bez signálu.\n\nNaopak plánování nových tras a automatický přepočet při odbočení mimo naplánovanou cestu internetové připojení vyžadují. Před výletem do míst se slabým signálem se proto vyplatí trasu připravit předem. <sup>\"3\" (https://support.cyclers.app/en/articles/14315301-can-i-use-cyclers-offline)</sup>\n\nKolik Cyclers stojí?\n\nZákladní verze je dostupná zdarma. Placené předplatné Cyclers Plus přidává například satelitní mapy, pokročilé plánování a export naplánovaných tras do souborů GPX. Součástí nabídky je také osobní mapa absolvovaných jízd.\n\nVýrobce nabízí týdenní zkušební přístup k funkcím Plus. Aktuální cenu pro české uživatele je vhodné ověřit přímo v aplikaci nebo v obchodě Google Play či App Store, protože se může lišit podle platformy a nabídky. <sup>\"4\" (https://support.cyclers.app/en/articles/14315398-differences-between-free-and-plus-versions)</sup>\n\nA co když jezdíte na koloběžce?\n\nTady je potřeba trochu rozlišovat.\n\nCyclers je primárně cyklistická aplikace, nikoliv specializovaná navigace pro skládací nebo elektrické koloběžky. Její plánování tras ale může být zajímavé i pro koloběžkáře, kteří hledají inspiraci na výlety a chtějí si předem prohlédnout povrch nebo převýšení.\n\nU elektrické koloběžky bych však nespoléhal na to, že každá navržená cyklistická trasa bude automaticky vhodná. Stejně tak nelze předpokládat, že aplikace zohledňuje všechna omezení konkrétního modelu koloběžky. Před jízdou je potřeba ověřit průjezdnost i vhodnost vybraných cest.\n\nVerdikt Koloběžníka\n\nCyclers stojí za pozornost především pro ty, kteří chtějí víc než obyčejnou navigaci. Lákavé je zejména plánování okružních výletů, možnost porovnat více variant a nově také konverzační plánovač Baiker.\n\nPro cyklisty jde o zajímavý nástroj, který může ušetřit čas při přípravě výletu. Koloběžkáři jej mohou využít jako zdroj inspirace, musí však počítat s tím, že aplikace není vytvořena výhradně pro jejich potřeby.\n\nA co vy? Plánujete své výlety pomocí navigace, nebo raději vyrazíte naslepo a necháte se překvapit, kam vás cesta zavede? Napište nám svůj názor!\n\n---\n\nUžitečné odkazy\n\n- Oficiální web: https://cyclers.app/\n- Android: https://play.google.com/store/apps/details?id=com.umotional.bikeapp\n- iPhone: https://apps.apple.com/cz/app/cyclers-bike-navigation-map/id1213867271\n\nČlánek připravil Koloběžník. Informace o funkcích vycházejí z oficiálních materiálů výrobce a jeho nápovědy; jde o osobní test aplikace."
+    "text": "Plánování výletů na dvou kolech může být jednodušší. Aplikace Cyclers nabízí cyklistickou navigaci, výběr tras podle vlastních preferencí i zajímavou novinku v podobě plánování pomocí umělé inteligence.\n\nKam vyrazit, když nechcete jet pořád po stejné cestě? Právě s tím může pomoct aplikace Cyclers, která je navržena speciálně pro cyklisty. Neslouží pouze k navigaci z bodu A do bodu B. Umí navrhovat okružní výlety, porovnávat alternativní trasy a zohledňovat například převýšení, povrch cest nebo intenzitu provozu.\n\nPro každého, kdo rád objevuje nová místa, může být zajímavým pomocníkem při plánování dalšího dobrodružství.\n\nNavigace, která myslí na cyklisty\n\nBěžná navigace se často snaží najít především rychlou cestu do cíle. Jenže při výletě na kole nemusí být nejrychlejší trasa automaticky tou nejlepší. Někdo chce klidnější cesty, jiný dává přednost kvalitnímu povrchu a další se snaží vyhnout prudkým kopcům.\n\nCyclers umožňuje plánovat trasy podle různých preferencí a následně porovnávat navržené varianty. U jednotlivých tras lze sledovat například vzdálenost, očekávaný čas, převýšení, povrch nebo dopravní zátěž. Aplikace také nabízí hodnocení shody trasy s nastavenými požadavky, označované jako Match. <sup>\"1\" (https://cyclers.app/)</sup>\n\nCo všechno aplikace umí?\n\n- Plánování tras od bodu A do bodu B – zadáte, odkud a kam chcete jet.\n- Okružní výlety – aplikace navrhne trasu, která vás vrátí zpět na výchozí místo.\n- Porovnávání alternativ – můžete si vybrat mezi různými variantami podle svých priorit.\n- Cyklistická hlasová navigace – upozorní vás na změny směru a pomůže s orientací.\n- Záznam jízd – ukládá absolvované výlety a jejich statistiky.\n- Sledování povrchu a převýšení – předem získáte lepší představu o tom, co vás na trase čeká.\n- Ukládání a sdílení zážitků – své jízdy můžete uchovávat a sdílet s ostatními.\n\nAplikace nabízí také různé výzvy, odznaky a žebříčky. Výlet tak nemusí být jen cestou do cíle, ale i příležitostí sledovat vlastní pokroky. <sup>\"1\" (https://cyclers.app/)</sup>\n\nBaiker: když trasu naplánuješ obyčejnou větou\n\nZajímavou funkcí je Baiker, konverzační plánovač tras využívající umělou inteligenci. Místo složitého nastavování můžete jednoduše napsat, jaký výlet si představujete.\n\nChcete například přibližně čtyřicetikilometrový okruh, méně kopců a zastávku u zajímavé památky? Baiker dokáže na základě podobného zadání navrhnout až tři varianty, které následně můžete upravit podle svých představ.\n\nUmí pracovat také s požadavky na typ terénu, dopravní provoz nebo místa podél trasy. Podle oficiální nápovědy je tato funkce aktuálně v beta verzi a její dostupnost se liší podle platformy a typu účtu. V říjnu 2026 je Baiker dostupný na Androidu v Evropě a USA, zatímco podpora iOS se připravuje. <sup>\"2\" (https://support.cyclers.app/en/articles/16780948-what-is-the-baiker-beta-feature-and-how-does-it-work)</sup>\n\nTohle je přesně ten typ funkce, který může být užitečný, když chcete vyrazit ven, ale zatím nemáte konkrétní představu, kam se vydat.\n\nFunguje Cyclers i bez internetu?\n\nAno, ale s určitými omezeními.\n\nPředem připravenou trasu lze navigovat i bez aktivního internetového připojení a GPS umožňuje zaznamenávat jízdu také offline. Oblasti mapy, které jste si předtím zobrazili při připojení k internetu, mohou zůstat dostupné i bez signálu.\n\nNaopak plánování nových tras a automatický přepočet při odbočení mimo naplánovanou cestu internetové připojení vyžadují. Před výletem do míst se slabým signálem se proto vyplatí trasu připravit předem. <sup>\"3\" (https://support.cyclers.app/en/articles/14315301-can-i-use-cyclers-offline)</sup>\n\nKolik Cyclers stojí?\n\nZákladní verze je dostupná zdarma. Placené předplatné Cyclers Plus přidává například satelitní mapy, pokročilé plánování a export naplánovaných tras do souborů GPX. Součástí nabídky je také osobní mapa absolvovaných jízd.\n\nVýrobce nabízí týdenní zkušební přístup k funkcím Plus. Aktuální cenu pro české uživatele je vhodné ověřit přímo v aplikaci nebo v obchodě Google Play či App Store, protože se může lišit podle platformy a nabídky. <sup>\"4\" (https://support.cyclers.app/en/articles/14315398-differences-between-free-and-plus-versions)</sup>\n\nA co když jezdíte na koloběžce?\n\nTady je potřeba trochu rozlišovat.\n\nCyclers je primárně cyklistická aplikace, nikoliv specializovaná navigace pro skládací nebo elektrické koloběžky. Její plánování tras ale může být zajímavé i pro koloběžkáře, kteří hledají inspiraci na výlety a chtějí si předem prohlédnout povrch nebo převýšení.\n\nU elektrické koloběžky bych však nespoléhal na to, že každá navržená cyklistická trasa bude automaticky vhodná. Stejně tak nelze předpokládat, že aplikace zohledňuje všechna omezení konkrétního modelu koloběžky. Před jízdou je potřeba ověřit průjezdnost i vhodnost vybraných cest.\n\nVerdikt Koloběžníka\n\nCyclers stojí za pozornost především pro ty, kteří chtějí víc než obyčejnou navigaci. Lákavé je zejména plánování okružních výletů, možnost porovnat více variant a nově také konverzační plánovač Baiker.\n\nPro cyklisty jde o zajímavý nástroj, který může ušetřit čas při přípravě výletu. Koloběžkáři jej mohou využít jako zdroj inspirace, musí však počítat s tím, že aplikace není vytvořena výhradně pro jejich potřeby.\n\nA co vy? Plánujete své výlety pomocí navigace, nebo raději vyrazíte naslepo a necháte se překvapit, kam vás cesta zavede? Napište nám svůj názor!\n\n---\n\nUžitečné odkazy\n\n- Oficiální web: https://cyclers.app/\n- Android: https://play.google.com/store/apps/details?id=com.umotional.bikeapp\n- iPhone: https://apps.apple.com/cz/app/cyclers-bike-navigation-map/id1213867271\n\nČlánek připravil Koloběžník. Informace o funkcích vycházejí z oficiálních materiálů výrobce a jeho nápovědy; nejde o osobní test aplikace."
   },
   {
     "id": 1792578879749,
@@ -557,7 +633,7 @@
     "category": "Last-mile mobilita",
     "img": "./public/images/1000133585.png",
     "perex": "Elektrická koloběžka, kterou složíš do batohu. Malý stroj s neobvyklou konstrukcí",
-    "text": "Velká elektrokoloběžka s masivním rámem a širokými pneumatikami není jedinou cestou k elektrické mobilitě. Čínský model HX X6 jde opačným směrem: sází na minimální rozměry po složení, nízkou hmotnost a konstrukci, která umožňuje vzít koloběžku s sebou téměř kamkoliv.\n\nPředstav si, že přijedeš na nádraží, koloběžku složíš, hodíš si ji přes rameno v přepravním batohu a pokračuješ vlakem. Právě takový způsob používání je hlavní myšlenkou modelu HX X6.\n\nNeobvyklý stroj od čínského výrobce\n\nZa modelem HX X6 stojí společnost Shenzhen Kixin Electronics Co., Ltd., která se věnuje výrobě elektrických dopravních prostředků. Koloběžka se prodává pod značkou HX a na různých internetových tržištích se objevuje také pod jinými obchodními názvy.\n\nNa některých nabídkách najdeme například označení HUANCI X6 nebo HX X6 Backpack Electric Scooter. Samotná podobnost názvů a fotografií však ještě nezaručuje, že jde ve všech případech o totožnou variantu.\n\nHX X6 je zajímavá především tím, že se nesnaží konkurovat běžným elektrokoloběžkám velikostí ani výkonem. Jejím hlavním trumfem je skladnost.\n\nSkládací mechanismus: hlavní důvod, proč zaujme\n\nU běžné elektrické koloběžky se zpravidla sklopí řídicí tyč směrem k nášlapné desce. Výsledkem je dlouhý, relativně plochý celek, který se stále obtížněji vejde do menšího zavazadla.\n\nHX X6 používá odlišně řešenou konstrukci. Po uvolnění skládacího mechanismu se řídicí část sklopí a jednotlivé části se přiblíží k sobě. Také řídítka lze upravit do kompaktní polohy.\n\nVýsledkem je výrazně menší balík, který lze uložit do dodávaného nebo kompatibilního přepravního batohu.\n\nVýrobce u modelu HX X6 uvádí rozměry po složení přibližně 62 × 12 × 25,6 cm. Koloběžka tak může být zajímavá pro cestující, kteří potřebují kombinovat jízdu na vlastní koloběžce s vlakem, autobusem nebo jiným způsobem dopravy.\n\nDůležitá poznámka: konkrétní rozměry se mohou lišit podle verze výrobku a způsobu složení.\n\nTechnické parametry HX X6\n\nParametr| Údaj výrobce\nTyp pohonu| Elektrický\nMotor| 350 W\nBaterie| 36 V / 7,5 Ah\nMaximální rychlost| 25 km/h\nDeklarovaný dojezd| Přibližně 8–15 km\nRozměr kol| 5,5 palce\nHmotnost| Přibližně 10–10,5 kg\nRozměry po složení| Přibližně 62 × 12 × 25,6 cm\nRám| Hliníková slitina\nBrzdění| Elektronická přední brzda a zadní nášlapná brzda\nDoba nabíjení| Přibližně 3 hodiny\n\nJde o publikované specifikace HX X6, nikoliv o výsledky nezávislého testu. Jednotlivé produktové verze mohou mít odlišnou výbavu, baterii nebo další parametry.\n\nMotor o výkonu 350 W: městský pomocník, nikoliv závodník\n\nPohon zajišťuje bezkartáčový elektromotor o deklarovaném výkonu 350 W. Pro lehký městský dopravní prostředek je to zajímavý základ, ale od HX X6 nelze očekávat stejné jízdní vlastnosti jako od robustní elektrokoloběžky s velkými koly.\n\nVýrobce uvádí maximální rychlost 25 km/h. Skutečný dojezd závisí na hmotnosti jezdce, teplotě, povrchu, převýšení a stavu baterie.\n\nDeklarovaný dojezd přibližně 8–15 km naznačuje, že se hodí především pro kratší přesuny. Může posloužit například při cestě z nádraží do práce, na nákup nebo při pohybu po městě.\n\nNa dlouhé výlety do kopců bych si však vybrala jiný typ stroje.\n Malá kola mají své výhody i nevýhody\n\nKola o průměru 5,5 palce pomáhají udržet konstrukci kompaktní. Právě díky nim může mít koloběžka tak malé rozměry po složení.\n\nZa skladnost se ale platí určitým kompromisem.\n\nMalá kola jsou citlivější na nerovnosti, výmoly a hrany obrubníků. Na rozbitém asfaltu proto nelze očekávat komfort, jaký nabídne klasická koloběžka s většími koly.\n\nHX X6 je koncipovaná především pro hladší městské povrchy. Při jízdě je potřeba počítat s menšími koly a přizpůsobit jim rychlost.\n\nPro koho může být HX X6 zajímavá?\n\nTento model má poměrně specifické zaměření. Největší smysl dává lidem, kteří potřebují dopravní prostředek nejen používat, ale také často přenášet.\n\nZajímavá může být zejména pro:\n\n- Cestující vlakem a autobusem, kteří chtějí zkrátit poslední část cesty.\n- Obyvatele měst, kteří potřebují malý dopravní prostředek do bytu nebo kanceláře.\n- Lidi s omezeným úložným prostorem, pro které je běžná elektrokoloběžka příliš rozměrná.\n- Technické nadšence, které baví netradiční konstrukce a skládací mechanismus.\n\nNaopak pro každodenní jízdu po rozbitých cestách, delší výlety nebo náročné stoupání bych doporučila robustnější model s většími koly.\n\nCo bych před koupí důkladně prověřila?\n\nNež bych za HX X6 utratila peníze, zaměřila bych se na několik věcí:\n\n1. Nosnost konkrétní verze. V různých produktových materiálech se objevují odlišné hodnoty. Je potřeba ověřit údaj přímo u prodejce konkrétního kusu.\n2. Kapacitu baterie a její vyjímatelnost. Některé varianty nabízejí výměnnou baterii, ale výbava se může lišit.\n3. Náhradní díly. U takto specifického modelu je důležité zjistit dostupnost baterie, brzdových dílů a skládacího mechanismu.\n4. Zajištění rámu v jízdní poloze. Skládací zámek musí být při jízdě spolehlivě zajištěný.\n5. Podmínky používání v dopravě. Před přepravou vlakem či autobusem je vhodné ověřit pravidla konkrétního dopravce pro elektrické koloběžky a lithium-iontové baterie.\n\nVerdikt Koloběžníka\n\nHX X6 je zajímavým příkladem toho, že elektrická koloběžka nemusí být velká a těžká, aby měla své místo na trhu.\n\nJejí největší předností není maximální rychlost ani dlouhý dojezd. Je to schopnost změnit se z pojízdného dopravního prostředku na kompaktní zavazadlo.\n\nPrávě to z ní dělá technicky zajímavý stroj. Místo honby za stále vyšším výkonem se konstrukce soustředí na přenositelnost a kombinování různých způsobů dopravy.\n\nJe HX X6 koloběžka pro každého? Rozhodně ne. Je ale zajímavou alternativou pro ty, kteří dávají přednost skladnosti před komfortem velkých kol a dlouhým dojezdem.\n\nA pro fanouška koloběžek, kterého baví neobvyklé konstrukce, je to rozhodně model, který stojí za pozornost.\n\nOficiální a další zdroje\n\n- \"HX X6 – oficiální produktová stránka evropského prodejce\" (https://eu.hxebike.com/products/x6-electric-scooter)\n- \"HX X6 – produktová stránka výrobce\" (https://hxebike.com/products/x6-electric-scooter)\n- \"Historie společnosti Kixin\" (https://www.szkixin.com/about.html)\n\nKoloběžník.cz – koloběžky, technické zajímavosti a svět osobní mobility."
+    "text": "Velká elektrokoloběžka s masivním rámem a širokými pneumatikami není jedinou cestou k elektrické mobilitě. Čínský model HX X6 jde opačným směrem: sází na minimální rozměry po složení, nízkou hmotnost a konstrukci, která umožňuje vzít koloběžku s sebou téměř kamkoliv.\n\nPředstav si, že přijedeš na nádraží, koloběžku složíš, hodíš si ji přes rameno v přepravním batohu a pokračuješ vlakem. Právě takový způsob používání je hlavní myšlenkou modelu HX X6.\n\nNeobvyklý stroj od čínského výrobce\n\nZa modelem HX X6 stojí společnost Shenzhen Kixin Electronics Co., Ltd., která se věnuje výrobě elektrických dopravních prostředků. Koloběžka se prodává pod značkou HX a na různých internetových tržištích se objevuje také pod jinými obchodními názvy.\n\nNa některých nabídkách najdeme například označení HUANCI X6 nebo HX X6 Backpack Electric Scooter. Samotná podobnost názvů a fotografií však ještě nezaručuje, že jde ve všech případech o totožnou variantu.\n\nHX X6 je zajímavá především tím, že se nesnaží konkurovat běžným elektrokoloběžkám velikostí ani výkonem. Jejím hlavním trumfem je skladnost.\n\nSkládací mechanismus: hlavní důvod, proč zaujme\n\nU běžné elektrické koloběžky se zpravidla sklopí řídicí tyč směrem k nášlapné desce. Výsledkem je dlouhý, relativně plochý celek, který se stále obtížněji vejde do menšího zavazadla.\n\nHX X6 používá odlišně řešenou konstrukci. Po uvolnění skládacího mechanismu se řídicí část sklopí a jednotlivé části se přiblíží k sobě. Také řídítka lze upravit do kompaktní polohy.\n\nVýsledkem je výrazně menší balík, který lze uložit do dodávaného nebo kompatibilního přepravního batohu.\n\nVýrobce u modelu HX X6 uvádí rozměry po složení přibližně 62 × 12 × 25,6 cm. Koloběžka tak může být zajímavá pro cestující, kteří potřebují kombinovat jízdu na vlastní koloběžce s vlakem, autobusem nebo jiným způsobem dopravy.\n\nDůležitá poznámka: konkrétní rozměry se mohou lišit podle verze výrobku a způsobu složení.\n\nTechnické parametry HX X6\n\nParametr| Údaj výrobce\nTyp pohonu| Elektrický\nMotor| 350 W\nBaterie| 36 V / 7,5 Ah\nMaximální rychlost| 25 km/h\nDeklarovaný dojezd| Přibližně 8–15 km\nRozměr kol| 5,5 palce\nHmotnost| Přibližně 10–10,5 kg\nRozměry po složení| Přibližně 62 × 12 × 25,6 cm\nRám| Hliníková slitina\nBrzdění| Elektronická přední brzda a zadní nášlapná brzda\nDoba nabíjení| Přibližně 3 hodiny\n\nJde o publikované specifikace HX X6, nikoliv o výsledky nezávislého testu. Jednotlivé produktové verze mohou mít odlišnou výbavu, baterii nebo další parametry.\n\nMotor o výkonu 350 W: městský pomocník, nikoliv závodník\n\nPohon zajišťuje bezkartáčový elektromotor o deklarovaném výkonu 350 W. Pro lehký městský dopravní prostředek je to zajímavý základ, ale od HX X6 nelze očekávat stejné jízdní vlastnosti jako od robustní elektrokoloběžky s velkými koly.\n\nVýrobce uvádí maximální rychlost 25 km/h. Skutečný dojezd závisí na hmotnosti jezdce, teplotě, povrchu, převýšení a stavu baterie.\n\nDeklarovaný dojezd přibližně 8–15 km naznačuje, že se hodí především pro kratší přesuny. Může posloužit například při cestě z nádraží do práce, na nákup nebo při pohybu po městě.\n\nNa dlouhé výlety do kopců bych si však vybrala jiný typ stroje.\n\nMalá kola mají své výhody i nevýhody\n\nKola o průměru 5,5 palce pomáhají udržet konstrukci kompaktní. Právě díky nim může mít koloběžka tak malé rozměry po složení.\n\nZa skladnost se ale platí určitým kompromisem.\n\nMalá kola jsou citlivější na nerovnosti, výmoly a hrany obrubníků. Na rozbitém asfaltu proto nelze očekávat komfort, jaký nabídne klasická koloběžka s většími koly.\n\nHX X6 je koncipovaná především pro hladší městské povrchy. Při jízdě je potřeba počítat s menšími koly a přizpůsobit jim rychlost.\n\nPro koho může být HX X6 zajímavá?\n\nTento model má poměrně specifické zaměření. Největší smysl dává lidem, kteří potřebují dopravní prostředek nejen používat, ale také často přenášet.\n\nZajímavá může být zejména pro:\n\n- Cestující vlakem a autobusem, kteří chtějí zkrátit poslední část cesty.\n- Obyvatele měst, kteří potřebují malý dopravní prostředek do bytu nebo kanceláře.\n- Lidi s omezeným úložným prostorem, pro které je běžná elektrokoloběžka příliš rozměrná.\n- Technologičtí nadšenci, které baví netradiční konstrukce a skládací mechanismy.\n\nNaopak pro každodenní jízdu po rozbitých cestách, delší výlety nebo náročné stoupání bych doporučila robustnější model s většími koly.\n\nCo bych před koupí důkladně prověřila?\n\nNež bych za HX X6 utratila peníze, zaměřila bych se na několik věcí:\n\n1. Nosnost konkrétní verze. V různých produktových materiálech se objevují odlišné hodnoty. Je potřeba ověřit údaj přímo u prodejce konkrétního kusu.\n2. Kapacitu baterie a její vyjímatelnost. Některé varianty nabízejí výměnnou baterii, ale výbava se může lišit.\n3. Náhradní díly. U takto specifického modelu je důležité zjistit dostupnost baterie, brzdových dílů a skládacího mechanismu.\n4. Zajištění rámu v jízdní poloze. Skládací zámek musí být při jízdě spolehlivě zajištěný.\n5. Podmínky používání v dopravě. Před přepravou vlakem či autobusem je vhodné ověřit pravidla konkrétního dopravce pro elektrické koloběžky a lithium-iontové baterie.\n\nVerdikt Koloběžníka\n\nHX X6 je zajímavým příkladem toho, že elektrická koloběžka nemusí být velká a těžká, aby měla své místo na trhu.\n\nJejí největší předností není maximální rychlost ani dlouhý dojezd. Je to schopnost změnit se z pojízdného dopravního prostředku na kompaktní zavazadlo.\n\nPrávě to z ní dělá technicky zajímavý stroj. Místo honby za stále vyšším výkonem se konstrukce soustředí na přenositelnost a kombinování různých způsobů dopravy.\n\nJe HX X6 koloběžka pro každého? Rozhodně ne. Je ale zajímavou alternativou pro ty, kteří dávají přednost skladnosti před komfortem velkých kol a dlouhým dojezdem.\n\nA pro fanouška koloběžek, kterého baví neobvyklé konstrukce, je to rozhodně model, který stojí za pozornost.\n\nOficiální a další zdroje\n\n- \"HX X6 – oficiální produktová stránka evropského prodejce\" (https://eu.hxebike.com/products/x6-electric-scooter)\n- \"HX X6 – produktová stránka výrobce\" (https://hxebike.com/products/x6-electric-scooter)\n- \"Historie společnosti Kixin\" (https://www.szkixin.com/about.html)\n\nKoloběžník.cz – koloběžek, technické zajímavosti a svět osobní mobility."
   },
   {
     "id": 1792521858723,
@@ -589,7 +665,7 @@
     "category": "Mikromobilita",
     "img": "./public/images/1000133440.png",
     "perex": "Koloběžka, kterou jsem měsíce hledal po celém světě, je konečně na cestě!",
-    "text": "Příběh jednoho velkého koloběžkového pátrání. Německé inzeráty, falešná naděje, nefunkční e-shop a nakonec skutečný nákup, který může odstartovat další cestovatelská dobrodružství.\n\nNěkteré koloběžky si člověk koupí během pár minut. Jiné se ale promění v několikatýdenní pátrání, při kterém prohledává internet, porovnává různé modely a názvy, sleduje zahraniční inzeráty a začíná přemýšlet, jestli se mu vůbec někdy podaří vytoužený kousek získat.\n\nPřesně takový je můj příběh s HUDORA Tour 200.\n\nJe to skládací koloběžka, kterou jsem si přál získat už dlouho. Nehledal jsem jen další model do sbírky. Hledal jsem konkrétní konstrukci, která mě zaujala svou skladností a možnostmi využití při cestování.\n\nA teď, 19. října 2026, mám konečně důvod k obrovské radosti. Nákup je zaplacený, prodávající ho potvrdil a další na řadě je odeslání z Německa do České republiky.\n\nJeště ji nemám doma. Ale tentokrát už nejde jen o sen nebo nadějný inzerát. Mám potvrzenou transakci a těším se na okamžik, kdy konečně rozbalím svůj vysněný úlovek.\n\nPátrání po malé koloběžce s velkým příběhem\n\nKdyž se člověk začne zajímat o kompaktní skládací koloběžky, brzy zjistí, že se podobné konstrukce mohou prodávat pod různými názvy a značkami.\n\nPři pátrání jsem narazil na modely a varianty spojované se jmény HUDORA, RAYSEN nebo My Hood. Bylo potřeba porovnávat jejich provedení a zjišťovat, které modely jsou si skutečně blízké.\n\nPrávě HUDORA Tour 200 mě ale nepřestávala lákat.\n\nChtěl jsem koloběžku, kterou bych mohl využívat nejen na běžné projížďky, ale především při cestování. Model, který by mi umožnil spojit jízdu na koloběžce s veřejnou dopravou a objevováním nových míst.\n\nJenže najít ji v nabídce, která by dala smysl, se ukázalo jako mnohem větší problém, než jsem čekal.\n\nPrvní naděje: německý inzerát za 20 eur\n\nJedním z prvních zajímavých nálezů byl inzerát na německém Kleinanzeigen. Prodávající nabízel koloběžku HUDORA za pouhých 20 eur.\n\nTaková cena samozřejmě přitahovala pozornost. Napsal jsem prodávajícímu a doufal, že se podaří domluvit nákup.\n\nJenže odpověď nepřicházela.\n\nA tak jsem měl před očima nabídku, která vypadala velmi slibně, ale nemohl jsem se posunout dál. Čekání nikam nevedlo a hledání pokračovalo.\n\nTopFunAlive: nabídka, která vypadala až příliš dobře\n\nPotom jsem narazil na internetový obchod TopFunAlive. Nabízel HUDORU Tour 200 za velmi lákavou cenu. Včetně dopravy vycházela objednávka na 19,77 eura.\n\nDne 11. září 2026 jsem objednávku zaplatil kartou. V tu chvíli jsem věřil, že jsem konečně našel cestu, jak se ke své vysněné koloběžce dostat.\n\nJenže zboží nepřicházelo.\n\nPokusil jsem se obchod kontaktovat e-mailem, ale zpráva se vrátila jako nedoručitelná. Po dalších dnech jsem stále neměl koloběžku ani uspokojivé vysvětlení.\n\nMísto radosti z nákupu přišly obavy. Začal jsem řešit reklamaci platby u Air Bank, protože zaplacené zboží nedorazilo.\n\nByla to nepříjemná zkušenost. Nešlo jen o peníze, ale také o ztracený čas a další zklamání při hledání modelu, který jsem chtěl získat.\n\nTahle zkušenost mi zároveň připomněla, jak důležité je při nákupu od neznámého prodejce myslet na bezpečnost platby a ochranu kupujícího.\n\nAle ani tohle mě od dalšího pátrání neodradilo.\n\nKirchhain: tentokrát to začalo vypadat nadějně\n\nDalší zajímavý inzerát se objevil v německém městě Kirchhain.\n\nTentokrát šlo o HUDORA Tour Scooter BIG Wheel Step za 40 eur. Právě tento název používal prodávající v inzerátu; hledaným modelem byla HUDORA Tour 200.\n\nRozhodl jsem se mu napsat. Vysvětlil jsem, že žiju v České republice, že koloběžku hledám už dlouho a že bych ji opravdu rád koupil. Osobní převzetí pro mě bohužel nebylo možné, a tak jsem se zeptal, jestli by byl ochotný ji poslat přes hranice.\n\nNabídl jsem mu 50 eur za koloběžku a k tomu úhradu dopravy. Chtěl jsem mu tím poděkovat za čas a práci, kterou by měl se zabalením a odesláním.\n\nA tentokrát přišla odpověď!\n\nProdávající mi napsal, že zásilku do České republiky poslat může. Potřeboval najít vhodné balení, koloběžku zvážit a potvrdit cenu dopravy. Poslal mi také informace o ceně balíku.\n\nNajednou se z dlouhého pátrání stal skutečný obchod.\n\nBezpečnější cesta k nákupu přes Kleinanzeigen\n\nProdávající následně upravil cenu inzerátu a nabídl mi možnost koupit koloběžku přímo prostřednictvím platební funkce Kleinanzeigen.\n\nRozhodl jsem se této možnosti využít.\n\nDne 19. října 2026 jsem dokončil nákup prostřednictvím funkce „Direkt kaufen“. Celková částka činila 73,62 eura.\n\nRozpis platby:\n\n- Cena koloběžky: 65,00 €\n- Doprava: 5,19 €\n- Ochrana kupujícího: 3,43 €\n- Celkem: 73,62 €\n\nPo zaplacení se zobrazilo potvrzení o úspěšné platbě. A krátce nato přišel další e-mail: prodávající nákup potvrdil.\n\nTohle byl okamžik, na který jsem čekal.\n\nPodle potvrzení Kleinanzeigen je nyní na řadě odeslání. Platba je zajištěna prostřednictvím platebního systému a prodávajícímu má být vyplacena až poté, co koloběžka dorazí a já potvrdím, že je vše v pořádku.\n\nOproti předchozí zkušenosti s podezřelým e-shopem je pro mě možnost využít ochranu kupujícího důležitým rozdílem.\n\nSamozřejmě ještě nemám úplně vyhráno. Koloběžka musí být skutečně odeslána a bezpečně dorazit. Ale tentokrát už mám potvrzený nákup, komunikaci s prodávajícím a jasně stanovený další krok.\n\nProč mi na HUDORA Tour 200 tolik záleží?\n\nPro někoho je to možná jen starší skládací koloběžka. Pro mě je to ale mnohem víc.\n\nMám rád koloběžky, které nejsou pouze dopravním prostředkem, ale otevírají nové možnosti cestování. Když se dá koloběžka dobře složit a pohodlně přepravovat, nemusím se při plánování výletů omezovat jen na místa, kam se dostanu pěšky.\n\nPrávě proto mě HUDORA Tour 200 tak zaujala. Její kompaktní koncepce odpovídá tomu, co od cestovního modelu očekávám.\n\nNechci ji mít jen vystavenou doma. Chci ji používat, poznávat s ní nová místa a postupně zjistit, jak se osvědčí v reálném cestování.\n\nA už teď vím, že pokud vše dobře dopadne, čeká ji pořádná zkouška.\n\nLéto 2027: Janov, Nice a Monako!\n\nNa léto 2027 plánuji cestu, na kterou se opravdu těším. Chci se vydat FlixBusem do Itálie, navštívit Janov a pokračovat směrem k francouzské Riviéře a Monaku.\n\nS dálkovým autobusem už mám zkušenost. Z Brna jsem cestoval až do rakouského Feldkirchu, takže představa, že se podobným způsobem vydám ještě dál, pro mě není jen vzdálený sen.\n\nA právě na této cestě bych chtěl svou HUDORU využít.\n\nPředstavuji si objevování přímořských měst, procházky podél Středozemního moře a možnost mít po ruce vlastní skládací koloběžku. Itálie, Nice a Monako představují přesně ten druh dobrodružství, kvůli kterému mě cestování na koloběžce tolik láká.\n\nSamozřejmě bude potřeba před cestou ověřit aktuální přepravní podmínky FlixBusu a možnosti využití koloběžky v jednotlivých lokalitách. Ale to přijde na řadu při přípravě expedice.\n\nTeď je hlavní dostat koloběžku bezpečně domů.\n\nZávěr: hledání ještě neskončilo, ale už máme důvod slavit\n\nTohle pátrání mi ukázalo, že ne každá lákavá nabídka vede ke šťastnému konci. A také že jeden neúspěch nemusí znamenat konec hledání.\n\nBerlín nevyšel. První internetový obchod skončil zklamáním. Ale další inzerát přinesl kontakt s prodávajícím, který byl ochotný najít řešení a poslat zboží přes hranice.\n\nDnes mám nákup potvrzený a čekám na odeslání.\n\nAž HUDORA Tour 200 dorazí, přijde na řadu rozbalování, kontrola stavu, první vyzkoušení a samozřejmě fotografie pro Koloběžník.cz. Pak se s vámi podělím o další dojmy a ukážu, jak se tahle dlouho hledaná koloběžka osvědčí v praxi.\n\nPříběh ještě není u konce. Ale tentokrát už má opravdu nadějné pokračování.\n\nA kdo ví? Možná se za pár měsíců podíváme na fotografie z Janova, Nice a Monaka a vzpomeneme si, že to všechno začalo jedním německým inzerátem.\n\nKoloběžník.cz – příběhy ze světa koloběžek, které nekončí pouhým nákupem."
+    "text": "Příběh jednoho velkého koloběžkového pátrání. Německé inzeráty, falešná naděje, nefunkční e-shop a nakonec skutečný nákup, který může odstartovat další cestovatelská dobrodružství.\n\nNěkteré koloběžky si člověk koupí během pár minut. Jiné se ale promění v několikatýdenní pátrání, při kterém prohledává internet, porovnává různé modely a názvy, sleduje zahraniční inzeráty a začíná přemýšlet, jestli se mu vůbec někdy podaří vytoužený kousek získat.\n\nPřesně takový je můj příběh s HUDORA Tour 200.\n\nJe to skládací koloběžka, kterou jsem si přál získat už dlouho. Nehledal jsem jen další model do sbírky. Hledal jsem konkrétní konstrukci, která mě zaujala svou skladností a možnostmi využití při cestování.\n\nA teď, 19. října 2026, mám konečně důvod k obrovské radosti. Nákup je zaplacený, prodávající ho potvrdil a další na řadě je odeslání z Německa do České republiky.\n\nJeště ji nemám doma. Ale tentokrát už nejde jen o sen nebo nadějný inzerát. Mám potvrzenou transakci a těším se na okamžik, kdy konečně rozbalím svůj vysněný úlovek.\n\nPátrání po malé koloběžce s velkým příběhem\n\nKdyž se člověk začne zajímat o kompaktní skládací koloběžky, brzy zjistí, že se podobné konstrukce mohou prodávat pod různými názvy a značkami.\n\nPři pátrání jsem narazil na modely a varianty spojované se jmény HUDORA, RAYSEN nebo My Hood. Bylo potřeba porovnávat jejich provedení a zjišťovat, které modely jsou si skutečně blízké.\n\nPrávě HUDORA Tour 200 mě ale nepřestávala lákat.\n\nChtěl jsem koloběžku, kterou bych mohl využívat nejen na běžné projížďky, ale především při cestování. Model, který by mi umožnil spojit jízdu na koloběžce s veřejnou dopravou a objevováním nových míst.\n\nJenže najít ji v nabídce, která by dala smysl, se ukázalo jako mnohem větší problém, než jsem čekal.\n\nPrvní naděje: německý inzerát za 20 eur\n\nJedním z prvních zajímavých nálezů byl inzerát na německém Kleinanzeigen. Prodávající nabízel koloběžku HUDORA za pouhých 20 eur.\n\nTaková cena samozřejmě přitahovala pozornost. Napsal jsem prodávajícímu a doufal, že se podaří domluvit nákup.\n\nJenže odpověď nepřicházela.\n\nA tak jsem měl před očima nabídku, která vypadala velmi slibně, ale nemohl jsem se posunout dál. Čekání nikam nevedlo a hledání pokračovalo.\n\nTopFunAlive: nabídka, která vypadala až příliš dobře\n\nPotom jsem narazil na internetový obchod TopFunAlive. Nabízel HUDORU Tour 200 za velmi lákavou cenu. Včetně dopravy vycházela objednávka na 19,77 eura.\n\nDne 11. září 2026 jsem objednávku zaplatil kartou. V tu chvíli jsem věřil, že jsem konečně našel cestu, jak se ke své vysněné koloběžce dostat.\n\nJenže zboží nepřicházelo.\n\nPokusil jsem se obchod kontaktovat e-mailem, ale zpráva se vrátila jako nedoručitelná. Po dalších dnech jsem stále neměl koloběžku ani uspokojivé vysvětlení.\n\nMísto radosti z nákupu přišly obavy. Začal jsem řešit reklamaci platby u Air Bank, protože zaplacené zboží nedorazilo.\n\nByla to nepříjemná zkušenost. Nešlo jen o peníze, ale také o ztracený čas a další zklamání při hledání modelu, který jsem chtěl získat.\n\nTahle zkušenost mi zároveň připomněla, jak důležité je při nákupu od neznámého prodejce myslet na bezpečnost platby a ochranu kupujícího.\n\nAle ani tohle mě od dalšího pátrání neodradilo.\n\nKirchhain: tentokrát to začalo vypadat nadějně\n\nDalší zajímavý inzerát se objevil v německém městě Kirchhain.\n\nTentokrát šlo o HUDORA Tour Scooter BIG Wheel Step za 40 eur. Právě tento název používal prodávající v inzerátu; hledaným modelem byla HUDORA Tour 200.\n\nRozhodl jsem se mu napsat. Vysvětlil jsem, že žiju v České republice, že koloběžku hledám už dlouho a že bych ji opravdu rád koupil. Osobní převzetí pro mě bohužel nebylo možné, a tak jsem se zeptal, jestli by byl ochotný ji poslat přes hranice.\n\nNabídl jsem mu 50 eur za koloběžku a k tomu úhradu dopravy. Chtěl jsem mu tím poděkovat za čas a práci, kterou by měl se zabalením a odesláním.\n\nA tentokrát přišla odpověď!\n\nProdávající mi napsal, že zásilku do České republiky poslat může. Potřeboval najít vhodné balení, koloběžku zvážit a potvrdit cenu dopravy. Poslal mi také informace o ceně balíku.\n\nNajednou se z dlouhého pátrání stal skutečný obchod.\n\nBezpečnější cesta k nákupu přes Kleinanzeigen\n\nProdávající následně upravil cenu inzerátu a nabídl mi možnost koupit koloběžku přímo prostřednictvím platební funkce Kleinanzeigen.\n\nRozhodl jsem se této možnosti využít.\n\nDne 19. října 2026 jsem dokončil nákup prostřednictvím funkce „Direkt kaufen“. Celková částka činila 73,62 eura.\n\nRozpis platby:\n\n- Cena koloběžky: 65,00 €\n- Doprava: 5,19 €\n- Ochrana kupujícího: 3,43 €\n- Celkem: 73,62 €\n\nPo zaplacení se zobrazilo potvrzení o úspěšné platbě. A krátce nato přišel další e-mail: prodávající nákup potvrdil.\n\nTohle byl okamžik, na který jsem čekal.\n\nPodle potvrzení Kleinanzeigen je nyní na řadě odeslání. Platba je zajištěna prostřednictvím platebního systému a prodávajícímu má být vyplacena až poté, co koloběžka dorazí a já potvrdím, že je vše v pořádku.\n\nOproti předchozí zkušenosti s podezřelým e-shopem je pro mě možnost využít ochranu kupujícího důležitým rozdílem.\n\nSamozřejmě ještě nemám úplně vyhráno. Koloběžka musí být skutečně odeslána a bezpečně dorazit. Ale tentokrát už mám potvrzený nákup, komunikaci s prodávajícím a jasně stanovený další krok.\n\nProč mi na HUDORA Tour 200 tolik záleží?\n\nPro někoho je to možná jen starší skládací koloběžka. Pro mě je to ale mnohem víc.\n\nMám rád koloběžky, které nejsou pouze dopravním prostředkem, ale otevírají nové možnosti cestování. Když se dá koloběžka dobře složit a pohodlně přepravovat, nemusím se při plánování výletů omezovat jen na místa, kam se dostanu pěšky.\n\nPrávě proto mě HUDORA Tour 200 tak zaujala. Její kompaktní koncepce odpovídá tomu, co od cestovního modelu očekávám.\n\nNechci ji mít jen vystavenou doma. Chci ji používat, poznávat s ní nová místa a postupně zjistit, jak se osvědčí v reálném cestování.\n\nA už teď vím, že pokud vše dobře dopadne, čeká ji pořádná zkouška.\n\nLéto 2027: Janov, Nice a Monako!\n\nNa léto 2027 plánuji cestu, na kterou se opravdu těším. Chci se vydat FlixBusem do Itálie, navštívit Janov a pokračovat směrem k francouzské Riviéře a Monaku.\n\nS dálkovým autobusem už mám zkušenost. Z Brna jsem cestoval až do rakouského Feldkirchu, takže představa, že se podobným způsobem vydám ještě dál, pro mě není jen vzdálený sen.\n\nA právě na této cestě bych chtěl svou HUDORU využít.\n\nPředstavuji si objevování přímořských měst, procházky podél Středozemního moře a možnost mít po ruce vlastní skládací koloběžku. Itálie, Nice a Monako představují přesně ten druh dobrodružství, kvůli kterému mě cestování na koloběžce tolik láká.\n\nSamozřejmě bude potřeba před cestou ověřit aktuální přepravní podmínky FlixBusu a možnosti využití koloběžky v jednotlivých lokalitách. Ale to přijde na řadu při přípravě expedice.\n\nTeď je hlavní dostat koloběžku bezpečně domů.\n\nZávěr: hledání ještě neskončilo, ale už máme důvod slavit\n\nTohle pátrání mi ukázalo, že ne každá lákavá nabídka vede ke šťastnému konci. A také že jeden neúspěch nemusí znamenat konec hledání.\n\nBerlín nevyšel. první internetový obchod skončil zklamáním. Ale další inzerát přinesl kontakt s prodávajícím, který byl ochotný najít řešení a poslat zboží přes hranice.\n\nDnes mám nákup potvrzený a čekám na odeslání.\n\nAž HUDORA Tour 200 dorazí, přijde na řadu rozbalování, kontrola stavu, první vyzkoušení a samozřejmě fotografie pro Koloběžník.cz. Pak se s vámi podělím o další dojmy a ukážu, jak se tahle dlouho hledaná koloběžka osvědčí v praxi.\n\nPříběh ještě není u konce. Ale tentokrát už má opravdu nadějné pokračování.\n\nA kdo ví? Možná se za pár měsíců podíváme na fotografie z Janova, Nice a Monaka a vzpomeneme si, že to všechno začalo jedním německým inzerátem.\n\nKoloběžník.cz – příběhy ze světa koloběžek, které nekončí pouhým nákupem."
   },
   {
     "id": 1792436915514,
@@ -597,7 +673,7 @@
     "category": "Last-mile mobilita",
     "img": "./public/images/1000133411.png",
     "perex": "Poslední kilometr v balíčku do batohu",
-    "text": "Co když vystoupíš z vlaku nebo autobusu a do cíle ti zbývá ještě několik kilometrů? Původní Blizwheel E‑Scooter přišel s neobvyklým řešením: malou elektrickou koloběžkou, kterou po jízdě složíš a vezmeš s sebou.\n\nMalá rozměry, velká myšlenkou\n\nPůvodní Blizwheel byl představen v roce 2021. Jeho největší předností je skládací konstrukce. Ve složeném stavu má podle dobových údajů přibližně 39,6 × 16,3 × 9,9 cm. Standardní verze váží zhruba 3,9 kg, varianta Pro přibližně 5,4 kg.\n\nStandardní provedení mělo dva motory po 200 W, deklarovanou maximální rychlost přibližně 19 km/h a dojezd až 13 km. Verze Pro nabízela dva motory po 300 W, rychlost kolem 24 km/h a uváděný dojezd až 24 km. Jde o historické údaje výrobce, nikoli o nezávisle ověřené výsledky měření.\n\nKoloběžka měla také digitální displej, motorové i mechanické brzdění a přední a zadní osvětlení se směrovkami.\n\nProč se hodí pro last-mile?\n\nPředstav si cestu z nádraží do kanceláře, na univerzitu nebo na schůzku. Blizwheel může posloužit k překonání posledního úseku, načež ho složíš a pokračuješ veřejnou dopravou nebo pěšky. Nemusíš řešit běžné parkování koloběžky ani hledat místo, kam uložit rozměrný stroj.\n\nDrobná kola a nízká světlá výška ale znamenají, že je vhodnější pro kratší jízdy po kvalitním povrchu než pro rozbité cesty nebo dlouhé výlety.\n\nZajímavý koncept, ale s důležitým háčkem\n\nCrowdfundingová kampaň na Kickstarteru získala 156 036 USD od 369 podporovatelů. Výrobu však provázela výrazná zpoždění a výrobce v roce 2023 oznámil problém s praskáním zadních rámů u části prvních kusů.\n\nPři nákupu použitého exempláře proto stojí za to pečlivě prověřit stav rámu, baterie, dostupnost náhradních dílů a doklady pro provoz. Aktuální běžnou dostupnost původního modelu v Česku se nepodařilo spolehlivě potvrdit.\n\nVerdikt Koloběžníka: Blizwheel E‑Scooter ukazuje, že budoucnost městské mobility nemusí znamenat stále větší a těžší koloběžky. Jeho nejzajímavější vlastností je schopnost proměnit se po jízdě v malý balíček. Kvůli historii výroby a hlášeným problémům s rámem je však namístě obezřetnost.\n\nZdroje: \"New Atlas – představení modelu\" (https://newatlas.com/urban-transport/blizwheel-e-scooter-folding-kickstarter/), \"oficiální kampaň na Kickstarteru\" (https://www.kickstarter.com/projects/1541803670/blizwheel-e-scooter-the-ev-in-your-backpack)."
+    "text": "Co když vystoupíš z vlaku nebo autobusu a do cíle ti zbývá ještě několik kilometrů? Původní Blizwheel E‑Scooter přišel s neobvyklým řešením: malou elektrickou koloběžkou, kterou po jízdě složíš a vezmeš s sebou.\n\nMalá rozměry, velká myšlenkou\n\nPůvodní Blizwheel byl představen v roce 2021. Jeho největší předností je skládací konstrukce. Ve složeném stavu má podle dobových údajů přibližně 39,6 × 16,3 × 9,9 cm. Standardní verze váží zhruba 3,9 kg, varianta Pro přibližně 5,4 kg.\n\nStandardní provedení mělo dva motory po 200 W, deklarovanou maximální rychlost přibližně 19 km/h a dojezd až 13 km. Verze Pro nabízela dva motory po 300 W, rychlost kolem 24 km/h a uváděný dojezd až 24 km. Jde o historické údaje výrobce, nikoli o nezávisle ověřené výsledky měření.\n\nKoloběžka měla také digitální displej, motorové i mechanické brzdění a přední a zadní osvětlení se směrovkami.\n\nProč se hodí pro last-mile?\n\nPředstav si cestu z nádraží do kanceláře, na univerzitu nebo na schůzku. Blizwheel může posloužit k překonání posledního úseku, načež ho složíš a pokračuješ veřejnou dopravou nebo pěšky. Nemusíš řešit běžné parkování koloběžky ani hledat místo, kam uložit rozměrný stroj.\n\nDrobná kola a nízká světlá výška ale znamenají, že je vhodnější pro kratší jízdy po kvalitním povrchu než pro rozbité cesty nebo dlouhé výlety.\n\nZajímavý koncept, ale s důležitým háčkem\n\nCrowdfundingová kampaň na Kickstarteru získala 156 036 USD od 369 podporovatelů. Výrobu však provázela výrazná zpoždění a výrobce v roce 2023 oznámil problém s praskáním zadních rámů u části prvních kusů.\n\nPři nákupu použitého exempláře proto stojí za to pečlivě prověřit stav rámu, baterie, dostupnost náhradních dílů a doklady pro provoz. Aktuální běžnou dostupnost původního modelu v Česku se nepodařilo spolehlivě potvrdit.\n\nVerdikt Koloběžníka: Blizwheel E‑Scooter ukazuje, že budoucnost městské mobility nemusí znamenat stále větší a těžší koloběžky. Jeho nejzajímavější vlastností je schopnost proměnit se po jízdě v malý balíček. Kvůli historii výroby a hlášeným problémům s rámem je však namístě obezřetnost.\n\nZdroje: \"New Atlas – představení modelu\" (https://newatlas.com/urban-transport/blizwheel-e-scooter-folding-kickstarter/), \"oficiální kampaň na Kickstarteru\" (https://www.kickstarter.com/projects/1541803670/bluzwheel-e-scooter-the-ev-in-your-backpack)."
   },
   {
     "id": 1792359931246,
@@ -621,7 +697,7 @@
     "category": "VÝBAVA",
     "img": "./public/images/1000133386.png",
     "perex": "Dirtlej Dirtsuit Core Edition: Víc než jen kombinéza, to je tvoje zbraň na bláto!",
-    "text": "Už žádné kompromisy! S kombinézou Dirtlej Dirtsuit Core Edition můžeš zapomenout na špínu, bláto a déšť. Je to tvoje spolehlivá parťačka, která tě udrží v suchu a pohodlí i v těch nejhorších podmínkách, ať už to na koloběžce rveš kdekoliv.\n\nProč zrovna Dirtsuit Core Edition?\nNaprostá nepromokavost: Díky vodnímu sloupci 15 000 mm se nemusíš bát ani průtrže mračen. Voda prostě nemá šanci.\nŠpičková prodyšnost: Ačkoliv tě nepustí k vodě zvenčí, propustí pot ven! Prodyšnost 10 000 g/m² zajistí, že se nezapaříš, ani když do toho šlapeš naplno.\nOdolnost, která tě podrží: Robustní a odolný materiál vydrží i ty nejnáročnější pády a otěry. Užij si divokou jízdu bez obav.\nFunkčnost a pohodlí: Díky chytře umístěným větracím otvorům a volnějšímu střihu ti kombinéza dopřeje maximální volnost pohybu. Je to jako druhá kůže, která tě chrání.\nSnadné oblékání a svlékání: Nemusíš se s ní prát! Díky dlouhým zipům a promyšlenému designu ji máš na sobě raz dva.\nS Dirtlej Dirtsuit Core Edition jsi připraven na jakékoliv počasí a jakýkoliv terén. Nahoď ji a jdi si pro ten pocit svobody a adrenalinu, který tak miluješ!\n\n\n\n\n\n\n\nDirtlej Dirtsuit Core Edition je kombinéza určená pro cyklisty, kteří nechtějí nechat počasí ovlivnit své plány. Kombinéza je vyrobena z **vysokokvalitních materiálů**, které jsou **voděodolné** a **větruodolné**. Díky tomu vás udrží v suchu a teple i v těch nejnepříznivějších podmínkách. \n\n\nKombinéza je **lehká** a **pohodlná** na nošení. Je vybavena kapucí, která chrání hlavu před deštěm a větrem a snadno si ji nasadíte i přes helmu.\n\nKombinéza Dirtlej Dirtsuit Core Edition má několik výhod i nevýhod.\n\n\n Mezi výhody patří:\n\n- Vysoká kvalita materiálů\n- Voděodolnost ( vodní sloupec 18.000 )\n- Větruodolnost\n- Lehkost\n- Pohodlnost\n- Odnímatelné nohavice\n- v pohodě pod ní nasadíte i chrániče\n\n- mnoho větracích otvorů uzavíratelné.  nepromokavým voděodolným zipem\n\n- reflexní prvky \n\n\nMezi nevýhody patří:\n- Vyšší cena\n- Menší prodyšnost \n\n\nZdroje:\n¹ [Topontrail.cz](https://www.topontrail.cz/p/dirtlej-dirtsuit-core-edition-steel-blue)\n² [Bikeporn.cz](https://www.bikeporn.cz/clanek/35/test-dirtsuit-core-edition/)\n³ [MTBS.cz](https://mtbs.cz/clanek/test-dirtlej-dirtsuit-core-kdyz-pocasi-nepreje)\n⁴ [DoleKOP.COM](https://dolekop.com/clanek/8400-test-kombineza-dirtlej-dirtsuit-core-edition-a-neresis-spatne-pocasi)\n\n(1) Dirtlej Dirtsuit Core Edition Steel Blue - Topontrail. https://www.topontrail.cz/p/dirtlej-dirtsuit-core-edition-steel-blue.\n(2) Test Dirtsuit Core Edition - Bikeporn.cz. https://www.bikeporn.cz/clanek/35/test-dirtsuit-core-edition/.\n(3) TEST: Dirtlej Dirtsuit Core - když počasí nepřeje - Bike Technika. https://mtbs.cz/clanek/test-dirtlej-dirtsuit-core-kdyz-pocasi-nepreje.\n(4) Test: kombinéza Dirtlej Dirtsuit core edition - DoleKOP.COM. https://dolekop.com/clanek/8400-test-kombineza-dirtlej-dirtsuit-core-edition-a-neresis-spatne-pocasi."
+    "text": "Už žádné kompromisy! S kombinézou Dirtlej Dirtsuit Core Edition můžeš zapomenout na špínu, bláto a déšť. Je to tvoje spolehlivá parťačka, která tě udrží v suchu a pohodlí i v těch nejhorších podmínkách, ať už to na koloběžce rveš kdekoliv.\n\nProč zrovna Dirtsuit Core Edition?\nNaprostá nepromokavost: Díky vodnímu sloupci 15 000 mm se nemusíš bát ani průtrže mračen. Voda prostě nemá šanci.\nŠpičková prodyšnost: Ačkoliv tě nepustí k vodě zvenčí, propustí pot ven! Prodyšnost 10 000 g/m² zajistí, že se nezapaříš, ani když do toho šlapeš naplno.\nOdolnost, která tě podrží: Robustní a odolný materiál vydrží i ty nejnáročnější pády a otěry. Užij si divokou jízdu bez obav.\nFunkčnost a pohodlí: Díky chytře umístěným větracím otvorům a volnějšímu střihu ti kombinéza dopřeje maximální volnost pohybu. Je to jako druhá kůže, která tě chrání.\nSnadné oblékání a svlékání: Nemusíš se s ní prát! Díky dlouhým zipům a promyšlenému designu ji máš na sobě raz dva.\nS Dirtlej Dirtsuit Core Edition jsi připraven na jakékoliv počasí a jakýkoliv terén. Nahoď ji a jdi si pro ten pocit svobody a adrenalinu, který tak miluješ!\n\n\n\n\n\n\n\nDirtlej Dirtsuit Core Edition je kombinéza určená pro cyklisty, kteří nechtějí nechat počasí ovlivnit své plány. Kombinéza je vyrobena z **vysokokvalitních materiálů**, které jsou **voděodolné** a **větruodolné**. Díky tomu vás udrží v suchu a teple i v těch nejnepříznivějších podmínkách. \n\n\nKombinéza je **lehká** a **pohodlná** na nošení. Je vybavena kapucí, která chrání hlavu před deštěm a větrem a snadno si ji nasadíte i přes helmu.\n\nKombinéza Dirtlej Dirtsuit Core Edition má několik výhod i nevýhod.\n\n\n Mezi výhody patří:\n\n- Vysoká kvalita materiálů\n- Voděodolnost ( vodní sloupec 18.000 )\n- Větruodolnost\n- Lehkost\n- Pohodlnost\n- Odnímatelné nohavice\n- v pohodě pod ní nasadíte i chrániče\n\n- mnoho větracích otvorů uzavíratelné.  nepromokavým voděodolným zipem\n\n- reflexní prvky \n\n\nMezi nevýhody patří:\n- Vyšší cena\n- Menší prodyšnost \n\n\nZdroje:\n¹ [Topontrail.cz](https://www.topontrail.cz/p/dirtlej-dirtsuit-core-edition-steel-blue)\n² [Bikeporn.cz](https://www.bikeporn.cz/clanek/35/test-dirtsuit-core-edition/)\n³ [MTBS.cz](https://mtbs.cz/clanek/test-dirtlej-dirtsuit-core-kdyz-pocasi-nepreje)\n⁴ [DoleKOP.COM](https://dolekop.com/clanek/8400-test-kombineza-dirtlej-dirtsuit-core-edition-a-neresis-spatne-pocasi)\n\n(1) Dirtlej Dirtsuit Core Edition Steel Blue - Topontrail. https://www.topontrail.cz/p/dirtlej-dirtsuit-core-edition-steel-blue.\n(2) Test Dirtsuit Core Edition - Bikeporn.cz. https://www.bikeporn.cz/clanek/35/test-dirtsuit-core-edition/.\n(3) Test: kombinéza Dirtlej Dirtsuit core edition - DoleKOP.COM. https://dolekop.com/clanek/8400-test-kombineza-dirtlej-dirtsuit-core-edition-a-neresis-spatne-pocasi."
   },
   {
     "id": 4,
@@ -635,7 +711,7 @@
     "id": 3,
     "title": "Chytrá přilba SafeTec",
     "category": "BEZPEČNOST",
-    "img": "./public/images/1000133382.png",
+    "img": "./public/images/100013382.png",
     "perex": "Chytrá přilba s integrovaným osvětlením, blinkry, reproduktory  a handsfree",
     "text": "Tato elegantní bílá helma W-TEC SafeTech je ideální pro bezpečnou jízdu na koloběžce. \n\nMá moderní design s praktickým kšiltem a větracími otvory pro pohodlí.\n\n Helma je lehká, odolná a splňuje bezpečnostní normy. \n\nNavíc je vybavena předním a zadním osvětlením pro lepší viditelnost a integrovanými reproduktory s mikrofonem pro hands-free telefonování, nebo poslech hudby."
   },
@@ -647,687 +723,7 @@
     "perex": "Kam s telefonem, klíči a nářadím na skládací koloběžce? Test pevných skořepinových brašen Wildman.",
     "text": "Tato brašna na kolo WILD MAN V30 je ideální pro cyklisty a koloběžkáře, kteří chtějí mít své věci v bezpečí a po ruce. \n\nS objemem 7 litrů a voděodolným materiálem ochrání vaše cennosti i v nepříznivém počasí. Průhledná horní kapsa je skvělá pro telefon nebo mapu, takže se nemusíte bát, že se ztratíte. \n\nA co je nejlepší? Díky snadnému upevnění na řídítka ji namontujete během chvilky! \n\nBrašna je odolná proti nárazům, má spoustu kapes pro maximální praktičnost a dokonce ji lze použít i jako brašnu přes rameno.\n\n..."
   }
-];;;;
-
-    const scooters = [
-  {
-    "id": 1,
-    "name": "SPARTAN JUMBO",
-    "cat": "folding",
-    "catLabel": "SKLÁDACÍ",
-    "verdict": "Doporučuji",
-    "img": "./public/images/1000133010.jpg",
-    "blurb": "SPARTAN JUMBO\n\nPopis:\nSpartan je značka sportovního vybavení, která nabízí také koloběžky pro každodenní přesuny a volnočasové ježdění. Model Jumbo sází na lehkou hliníkovou konstrukci, velká 200mm kolečka a skládací provedení. Je určený především na pevné povrchy, například asfalt a beton.\n\n\n\nSpecifikace:\n\n- Hliníkový rám\n- PU kolečka 200 mm\n- Zadní nášlapná brzda\n- Nastavitelná řídítka\n- Nosnost až 100 kg\n- Hmotnost přibližně 3,5–4 kg podle varianty",
-    "pros": [
-      "✓ Nízká hmotnost"
-    ],
-    "cons": [
-      "— Složitější systém skládání"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 2,
-    "name": "JD BUG MS132",
-    "cat": "folding",
-    "catLabel": "SKLÁDACÍ",
-    "verdict": "Doporučuji",
-    "img": "./public/images/scooter-02.jpg",
-    "blurb": "JD BUG MS132\n\nPopis:\n\nJD Bug MS132 je lehká skládací koloběžka s hliníkovou konstrukcí, u které mě nejvíc překvapila kvalita zpracování. Zatím jde o nejkvalitněji zpracovanou skládačku, kterou jsem vlastnil. A není to jen dojem z prvních jízd. Odjezdila se mnou dokonce tři zimy!\n\nKonstrukce je lehká, skladná a přitom působí pevně. Praktická je také mezipoloha, ve které lze koloběžku odstavit bez klasického stojánku. V běžném provozu je to příjemná drobnost, kterou člověk ocení.\n\nZajímavostí je, že výrobce u tohoto modelu připouští i lehký freestyle. To je u skládací koloběžky poměrně neobvyklé. Neznamená to ovšem, že je určená na tvrdé triky a velké skoky jako klasické freestyle modely.\n\nJejí slabinou jsou malá kolečka. Při jízdě se člověk víc nadře, zvlášť na horším povrchu nebo při delších trasách. MS132 tak nejlépe poslouží tam, kde oceníš nízkou hmotnost, skladnost a kvalitní konstrukci.\n\n\nSPECIFIKACE\n\nHliníková konstrukce\n- Malá kolečka přibližně 145–150 mm podle varianty\n- Ložiska ABEC 5 podle provedení\n- Nastavitelná řídítka\n- Nízká hmotnost\n- Skládací konstrukce\n- Mezipoloha pro odstavení koloběžky bez stojánku",
-    "pros": [
-      "Vydržela 3 zimy",
-      "Lehká a tuhá"
-    ],
-    "cons": [
-      "Malá kolečka"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 3,
-    "name": "KRUZZEL HYPERION",
-    "cat": "folding",
-    "catLabel": "SKLÁDACÍ",
-    "verdict": "Nedoporučuji",
-    "img": "./public/images/scooter-03.jpg",
-    "blurb": "KRUZZEL HYPERION\n\nPopis:\n\nKruzzel je značka spotřebního zboží z nabídky polské společnosti Iso Trade. Model Hyperion zaujme hlavně výbavou vzhledem k ceně. Má velká 200mm kola, odpružení a dvě brzdy. Díky tomu působí jako zajímavá volba pro někoho, kdo hledá levnou městskou koloběžku.\n\nMoje zkušenost ale ukázala zásadní problém. Koloběžka je rychlá a výbava za nízkou cenu vypadá lákavě, jenže konstrukce v oblasti předního skládacího kloubu mi selhala už po necelém měsíci používání. Koloběžka se tam téměř rozlomila vejpůl. Taková závada je u koloběžky vážný bezpečnostní problém, a proto ji na základě vlastní zkušenosti nemohu doporučit.\n\nSPECIFIKACE:\n\n- Skládací městská koloběžka\n- Hliníková konstrukce\n- Gumová kola o průměru 200 mm\n- Ložiska ABEC-9\n- Ruční kotoučová a zadní nášlapná brzda\n- Odpružení\n- Výškově nastavitelná řídítka ve čtyřech polohách\n- Hmotnost přibližně 4,9 kg podle údajů prodejce\n- Deklarovaná nosnost až 100 kg",
-    "pros": [
-      "Bohatá výbava za nízkou cenu",
-      "Velká kola",
-      "Rychlá"
-    ],
-    "cons": [
-      "Rozlomila se téměř vejpůl po měsíci!"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 4,
-    "name": "TEMPISH TECNIQUE TOP",
-    "cat": "folding",
-    "catLabel": "SKLÁDACÍ",
-    "verdict": "Doporučuji",
-    "img": "./public/images/scooter-04.jpg",
-    "blurb": "TEMPISH TECNIQUE TOP\n\nPopis:\n\nTEMPISH je česká značka sportovního vybavení známá především bruslemi a koloběžkami. Model TECNIQUE TOP je skládací koloběžka s bohatou výbavou, předním i zadním odpružením a zadní kotoučovou brzdou. Zajímavostí je skládací mechanismus ovládaný sešlápnutím nohou a možnost zaparkovat koloběžku v mezipoloze i bez použití stojánku. Široký, snížený nášlap a velká kola přispívají k pohodlné jízdě.\n\nZ vlastní zkušenosti můžu ocenit především rychlost, pohodlný úchop řídítek a praktickou výbavu. Po delší době používání se ale začalo ozývat chrastění a třecí brzda se postupně opotřebovala. Její brzdná plocha z kombinace plastu a kovu je časem poznamenaná používáním.\n\nSPECIFIKACE:\n\n- Hliníková nášlapná deska\n- Velká kola: přední 230 mm, zadní 200 mm\n- Odpružení předního i zadního kola s nastavitelným tlumením\n- Zadní kotoučová brzda ovládaná ruční páčkou\n- Doplňková nášlapná brzda na zadním blatníku\n- Ložiska ABEC 7\n- Výškově nastavitelná řídítka\n- Skládací mechanismus ovládaný sešlápnutím\n- Držák na láhev\n- Stojánek\n- Mezipoloha umožňující parkování bez stojánku\n- Hmotnost podle vlastní zkušenosti přibližně 6,5 kg; údaje se mohou podle zdroje lišit\n- Deklarovaná nosnost 100 kg",
-    "pros": [
-      "Velká kola a rychlá jízda",
-      "Držák na láhev a stojánek",
-      "Zadní kotoučová brzda",
-      "Široký a snížený nášlap",
-      "Skládání sešlápnutím nohou",
-      "Tvarovaný představec pro pohodlný úchop",
-      "Odpružení předního i zadního kola",
-      "Mezipoloha pro parkování bez stojánku",
-      "Nízká hmotnost kolem 6",
-      "5 kg"
-    ],
-    "cons": [
-      "Po delší době používání se ozývá chrastění",
-      "Třecí brzda se postupně opotřebovává"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 5,
-    "name": "SPARTAN JUMBO II",
-    "cat": "folding",
-    "catLabel": "SKLÁDACÍ",
-    "verdict": "Nedoporučuji",
-    "img": "./public/images/scooter-05.jpg",
-    "blurb": "SPARTAN JUMBO II\n\nPopis:\n\nSPARTAN je značka sportovního vybavení, která nabízí také skládací koloběžky pro každodenní přesuny a volný čas. Model Jumbo II je skládací koloběžka s listovými tlumiči zadního kola, které mají zlepšovat pohodlí při jízdě. Z vlastní zkušenosti můžu potvrdit, že je poměrně rychlá a navzdory robustní konstrukci překvapivě lehká. Má ale také slabiny, které se projeví při delším používání.\n\nPo čase se u ní objevuje podobný problém jako u modelu Kruzzel Hyperion. Třecí brzda navíc nemá dostatečnou účinnost a skládací mechanismus není příliš praktický.\n\nSPECIFIKACE:\n\n- Skládací konstrukce\n- Zadní odpružení pomocí listových tlumičů\n- Třecí brzda\n- Robustní konstrukce při zachování nízké hmotnosti",
-    "pros": [
-      "Rychlá jízda",
-      "Zadní odpružení pomocí listových tlumičů",
-      "Překvapivě nízká hmotnost vzhledem k robustní konstrukci",
-      "Třecí brzda s dobrým odvodem tepla"
-    ],
-    "cons": [
-      "Po deProblém s konstrukcí podobně jako u Kruzzel Hyperion",
-      "Třecí brzda má nízkou účinnost",
-      "Méně praktický skládací mechanismus"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 6,
-    "name": "SIX DEGREES ALUMINIUM LW 205",
-    "cat": "folding",
-    "catLabel": "SKLÁDACÍ",
-    "verdict": "Doporučuji",
-    "img": "./public/images/scooter-06.jpg",
-    "blurb": "SIX DEGREES ALUMINIUM LW 205\n\n\nPopis:\n\nSix Degrees je značka zaměřená na skládací koloběžky. Model Aluminium LW 205 má velká 205mm kolečka, široká BMX řídítka a prostornou nášlapnou desku. Hodí se pro každodenní přesuny po městě i svižnější jízdu po zpevněných cestách.\n\nMě osobně zaujala především kvalita zpracování a konstrukce z hliníku. Při jízdě mě překvapila také její rychlost. Koloběžka je lehká, dobře se ovládá a zadní třecí brzda má podle mé zkušenosti velmi dobrý odvod tepla. Jedinou drobností, kterou bych změnil, je umístění stojánku – je poměrně hluboko pod nášlapnou deskou.\n\nSPECIFIKACE:\n\n- Hliníková konstrukce\n- PU kolečka o průměru 205 mm\n- Široká BMX řídítka s ergonomickými rukojeťmi\n- Výškově nastavitelná řídítka (77–102 cm)\n- Prostorná nášlapná deska přibližně 57,5 × 15 cm s obvodovým zesílením\n- Ložiska ABEC 7\n- Zesílená objímka řídítek\n- Rychloupínání rukojetí\n- Skládací mechanismus Easy Fold s bezpečnostní pojistkou\n- Zadní nášlapná brzda\n- Stojánek\n- Deklarovaná nosnost 100 kg\n- Hmotnost přibližně 5,5 kg podle specifikace varianty",
-    "pros": [
-      "Kvalitní zpracování a konstrukce z leteckého hliníku",
-      "Velmi nízká hmotnost",
-      "Rychlá jízda",
-      "Velká 205mm kola",
-      "Stojánek",
-      "Kvalitní zadní třecí brzda s výborným odvodem tepla"
-    ],
-    "cons": [
-      "Utopený stojánek"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 7,
-    "name": "SPOKEY TARANIS PLUS",
-    "cat": "folding",
-    "catLabel": "SKLÁDACÍ",
-    "verdict": "Doporučuji",
-    "img": "./public/images/scooter-07.jpg",
-    "blurb": "SPOKEY TARANIS PLUS\n\nPopis:\n\nSpokey je značka sportovního vybavení, která nabízí také skládací koloběžky pro městskou jízdu. Model Taranis Plus zaujme odpružením, širokou nášlapnou deskou a konstrukcí, která po složení umožňuje koloběžku táhnout za sebou jako cestovní kufr. Praktickými doplňky jsou držák na smartphone a úchyt na láhev.\n\nZ vlastní zkušenosti oceňuji hlavně možnost přepravy v režimu trolley, široký nášlap a odpružení předního kola. Koloběžka má ale poměrně vysoký nášlap, takže při odrážení musí jezdec více pokrčovat nohu. Problémem může být také uchycení předního kola, které se podle mé zkušenosti poměrně rychle vychodí a kolo pak začne házet do osmičky.\n\nSPECIFIKACE:\n\n- Eloxovaná hliníková konstrukce\n- PU kolečka o průměru 200 mm, tvrdost 85 A\n- Ložiska ABEC 11\n- Přední a zadní odpružení\n- Široká protiskluzová pogumovaná nášlapná deska\n- Rozměry desky 48 × 16 cm, využitelná plocha 33 × 16 cm\n- Šířka řídítek 38 cm\n- Výškově nastavitelná řídítka (92–102 cm podle varianty)\n- Ruční a zadní nášlapná brzda\n- Skládací konstrukce s možností tažení jako kufr\n- Držák na smartphone a úchyt na láhev\n- Hmotnost přibližně 6 kg\n- Deklarovaná nosnost 100 kg",
-    "pros": [
-      "Konstrukce umožňující přepravu v režimu trolley",
-      "Velká 200mm kola",
-      "Držák na láhev",
-      "Široký nášlap",
-      "Skládací mechanismus ovládaný sešlápnutím",
-      "Tvarovaný představec pro pohodlný úchop",
-      "Odpružení předního kola",
-      "Zadní kotoučová brzda"
-    ],
-    "cons": [
-      "Vysoký nášlap",
-      "který při odrážení nutí jezdce více pokrčovat nohu",
-      "Uchycení předního kola se poměrně rychle vychodí a kolo může začít házet do osmičky"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 8,
-    "name": "HUDORA BIGWHEEL 205",
-    "cat": "folding",
-    "catLabel": "SKLÁDACÍ",
-    "verdict": "Doporučuji",
-    "img": "./public/images/scooter-08.jpg",
-    "blurb": "HUDORA BIGWHEEL 205\n\nPopis:\n\nHUDORA je německá značka sportovního vybavení a model BigWheel 205 patří mezi její známé skládací koloběžky. Nabízí lehkou hliníkovou konstrukci, velká 205mm kolečka a nízko položenou nášlapnou desku, která usnadňuje odrážení. Je určená především pro městské přesuny a jízdu po zpevněných cestách.\n\nZ vlastní zkušenosti oceňuji hlavně rychlou jízdu a jednoduché skládání. Koloběžku lze složit rychle, což se hodí při přenášení i přepravě. Slabinou je absence pojistky proti samovolnému složení, která by při používání poskytovala další úroveň zabezpečení skládacího mechanismu.\n\nSpecifikace:\n\n- Hliníková konstrukce\n- PU kolečka o průměru 205 mm\n- Ložiska ABEC 5\n- Výškově nastavitelná řídítka (přibližně 79–104 cm podle varianty)\n- Nízko položená nášlapná deska\n- Rozměry nášlapné plochy přibližně 33 × 11,5 cm\n- Zadní nášlapná třecí brzda\n- Rychlý skládací mechanismus\n- Stojánek\n- Ochranné blatníky\n- Odrazky na řídítkách a nášlapné desce\n- Deklarovaná nosnost 100 kg\n- Hmotnost přibližně 4,1–4,8 kg podle varianty",
-    "pros": [
-      "Rychlá koloběžka",
-      "Německá výroba",
-      "Rychlý skládací mechanismus",
-      "patentovaný mechanismus pro jednoduché a rychlé složení"
-    ],
-    "cons": [
-      "Chybí pojistka skládacího mechanismu!"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 9,
-    "name": "XOOTR STREET",
-    "cat": "folding",
-    "catLabel": "SKLÁDACÍ",
-    "verdict": "Doporučuji",
-    "img": "./public/images/scooter-09.jpg",
-    "blurb": "XOOTR STREET\n\nAmerická konstrukce a deklarovaná nosnost až 363 kg.\n\nPopis:\n\nXOOTR je značka skládacích koloběžek pro dospělé, zaměřená na odolnost, nízkou hmotnost a kvalitní zpracování. Model Street zaujme především širokou nášlapnou deskou vyrobenou CNC frézováním z jednoho bloku hliníkové slitiny 6061. Díky této konstrukci nemá samotná deska svařované spoje. Velká nášlapná plocha umožňuje pohodlně postavit obě nohy vedle sebe a skládací mechanismus QuickClick usnadňuje složení i rozložení.\n\nZ vlastní zkušenosti hodnotím XOOTR Street jako mimořádně kvalitně zpracovanou koloběžku. Její velkou předností je deklarovaná nosnost až 363 kg, což je výrazně více než u většiny běžných skládacích modelů. Za robustní konstrukci se ale platí vyšší cenou, která se pohybuje kolem 10 000 Kč. Nízkoprofilová kola mají při jízdě po hladkém asfaltu dobré vlastnosti, na nerovnostech však člověk cítí prakticky každý kámen.\n\nAni tahle koloběžka není nezničitelná. Po roce používání se u mého kusu objevil problém v oblasti přední vidlice a při vyšších rychlostech začalo přední kolo házet do osmičky. Přesto ji doporučuji – celkovou kvalitou zpracování patří k tomu nejlepšímu, co jsem mezi skládacími koloběžkami poznal.\n\nSpecifikace:\n\n- Hliníková nášlapná deska z jednoho bloku slitiny 6061, CNC frézovaná\n- Polyuretanová kolečka o průměru 180 mm\n- Široká nášlapná deska o rozměrech přibližně 61 × 20 cm\n- Protiskluzová povrchová úprava nášlapu\n- Výškově nastavitelná řídítka (přibližně 63,5–96,5 cm od nášlapu)\n- Skládací mechanismus QuickClick\n- Zadní blatník sloužící jako brzda\n- Hmotnost přibližně 5,2 kg\n- Deklarovaná nosnost až 363 kg podle některých specifikací prodejců; ověřit pro konkrétní verzi\n- Orientační cena kolem 9 990 Kč; aktuální dostupnost se může lišit",
-    "pros": [
-      "Rychlá jízda",
-      "Jednoduché složení a rozložení",
-      "Nízká hmotnost",
-      "Mimořádně vysoká deklarovaná nosnost",
-      "Velmi kvalitní konstrukce a zpracování"
-    ],
-    "cons": [
-      "Vyšší cena",
-      "přibližně 10 000 Kč",
-      "Nízkoprofilová kola přenášejí nerovnosti a kamínky do jízdy",
-      "Po roce používání se u mého kusu objevil problém v oblasti přední vidlice; při vyšších rychlostech začalo kolo házet do osmičky"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 10,
-    "name": "JD BUG DELUXE B",
-    "cat": "folding",
-    "catLabel": "SKLÁDACÍ",
-    "verdict": "Doporučuji",
-    "img": "./public/images/scooter-10.jpg",
-    "blurb": "JD BUG DELUXE B\n\nPopis:\n\nJD Bug je značka zaměřená na skládací koloběžky, u kterých klade důraz na praktičnost, nízkou hmotnost a snadnou přepravu. Model Deluxe B je skládací koloběžka s extra širokými koly a výškově nastavitelnými řídítky, takže se dá přizpůsobit různým jezdcům.\n\nPři prvním pohledu jsem čekal, že široká kola budou mít větší valivý odpor a koloběžka kvůli nim pojede pomaleji. Moje zkušenost byla přesně opačná. Koloběžka mě překvapila rychlostí a pohodlím při jízdě. Slabší stránkou je zadní nášlapná brzda, jejíž účinnost mi připadá nedostatečná.\n\nSpecifikace:\n\n- Hliníková konstrukce\n- Kolečka o průměru 200 mm\n- Extra široké pneumatiky\n- Ložiska ABEC 5\n- Výškově nastavitelná řídítka (přibližně 77–101 cm podle varianty)\n- Nášlapná deska dlouhá přibližně 34 cm u jedné z verzí\n- Zadní nášlapná brzda\n- Skládací mechanismus\n- Hmotnost přibližně 4,3 kg podle varianty\n- Deklarovaná nosnost 100 kg",
-    "pros": [
-      "Rychlá jízda",
-      "Pohodlná jízda díky extra širokým pneumatikám"
-    ],
-    "cons": [
-      "Slabší účinnost zadní nášlapné brzdy"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 11,
-    "name": "MICRO SPRITE",
-    "cat": "folding",
-    "catLabel": "SKLÁDACÍ",
-    "verdict": "Doporučuji",
-    "img": "./public/images/scooter-11.jpg",
-    "blurb": "MICRO SPRITE\n\nPopis:\n\nMicro je švýcarská značka koloběžek známá důrazem na nízkou hmotnost, praktičnost a kvalitní zpracování. Model Sprite patří mezi její klasické skládací koloběžky. Váží pouhých 2,85 kg, takže se snadno přenáší a hodí se pro děti i dospělé, kteří hledají lehký stroj na kratší přesuny.\n\nZ vlastní zkušenosti mě překvapilo, jak rychle dokáže tak malá koloběžka jet. Oceňuji také patentovaný skládací mechanismus, skládací rukojeti, stojánek a nízko položený nášlap. Praktickou výhodou je šroubované provedení řady dílů, které lze při opotřebení nebo poškození samostatně vyměnit. Hlavní nevýhodou jsou velmi malá kolečka, která jsou citlivější na nerovnosti povrchu.\n\nSpecifikace:\n\n- Hliníková konstrukce\n- Přední PU kolečko 120 mm, zadní 100 mm\n- Ložiska podle konkrétní varianty\n- Výškově nastavitelná řídítka (63–95 cm)\n- Nášlapná deska přibližně 35 × 10 cm\n- Skládací řídítka a patentovaný skládací mechanismus s dvojitým jištěním\n- Zadní nášlapná brzda\n- Stojánek\n- Úchyt pro popruh na přenášení\n- Hmotnost 2,85 kg\n- Deklarovaná nosnost 100 kg",
-    "pros": [
-      "Švýcarská značka a kvalitní zpracování",
-      "Velmi skladná konstrukce",
-      "Patentovaný skládací mechanismus",
-      "Stojánek",
-      "Nízko položený nášlap",
-      "Na tak malou koloběžku překvapivě rychlá",
-      "Většina dílů je přišroubovaná",
-      "takže se dají snadno vyměnit",
-      "váha pod 3kg"
-    ],
-    "cons": [
-      "Velmi malá kolečka",
-      "která hůře zvládají nerovnosti"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 12,
-    "name": "SNĚHOBĚŽKA",
-    "cat": "special",
-    "catLabel": "SPECIÁLY",
-    "verdict": "Doporučuji",
-    "img": "./public/images/1000133058.jpg",
-    "blurb": "❄️ SNĚHOBĚŽKA – když koloběžková sezóna nekončí ani v zimě\n\nPopis:\n\nKdo říká, že s prvním sněhem musí koloběžka odpočívat? Sněhoběžka nabízí zimní alternativu klasické koloběžky. Místo koleček má lyžiny, které kloužou po sněhu, a řídítka umožňující ovládání směru. Jezdec stojí na nášlapné ploše a užívá si jízdu po vhodném zasněženém svahu.\n\nZ vlastní zkušenosti můžu potvrdit, že sněhoběžka umí být pořádně rychlá. Na sněhu dokáže vyvinout rychlost, která člověka překvapí. Má to ale jeden zásadní háček: nemá brzdu! Proto je důležité dobře vybírat terén a před jízdou si rozmyslet, kde a jak bezpečně zastavit.\n\nSněhoběžka může bavit děti i dospělé, kteří chtějí v zimě vyzkoušet něco jiného než lyže nebo snowboard. Při výběru je potřeba rozlišovat mezi hotovou sněžnou koloběžkou a sadou lyžin pro přestavbu běžné koloběžky. Kompatibilita, konstrukce i nosnost se liší podle konkrétního výrobku.\n\nVzhledem k rychlosti doporučuji helmu, chrániče a pevnou zimní obuv. A protože brzda chybí, hodí se mít s sebou i náhradní trenky. 😂\n\nSpecifikace:\n\n- Název: Sněhoběžka\n- Typ: zimní koloběžka pro jízdu na sněhu\n- Princip pohybu: klouzání po sněhu pomocí lyžin místo běžných koleček\n- Ovládání: řídítky\n- Nášlapná plocha: pro postavení jezdce\n- Povrch: vhodný zasněžený terén\n- Využití: zimní rekreační jízda a sjíždění vhodných svahů\n- Výbava: lyžiny, řídítka a nášlapná část podle konkrétní konstrukce\n- Brzda: u popisovaného provedení chybí\n- Nosnost, hmotnost a rozměry: závisí na konkrétním modelu\n- Kompatibilita: u přestavbových sad je nutné ověřit vhodnost pro danou koloběžku\n- Bezpečnost: doporučena helma a chrániče; jezdit pouze v terénu, kde lze bezpečně zpomalit a zastavit\n\n\nMoje doporučení: Helma a chrániče jsou základ. A náhradní trenky? Ty se vzhledem k absenci brzdy můžou taky hodit. 😂",
-    "pros": [
-      "Na sněhu super rychlá"
-    ],
-    "cons": [
-      "Nemá brzdu!"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 13,
-    "name": "MYHOOD TOUR",
-    "cat": "folding",
-    "catLabel": "SKLÁDACÍ",
-    "verdict": "Doporučuji",
-    "img": "./public/images/scooter-13.jpg",
-    "blurb": "MY HOOD TOUR\n\nPopis:\n\nMy Hood je dánská značka sportovního a volnočasového vybavení. Model Tour je mimořádně skladná městská koloběžka s neobvyklým řešením v podobě půlené nášlapné desky. Po složení zabírá přibližně 17 × 24 × 37 cm, takže se vejde i do většího batohu nebo kufru a snadno se převáží vlakem či autobusem. Navíc je cenově dostupná – koupit ji lze přibližně za 1 500 Kč.\n\nV roce 2026 mi tahle koloběžka skvěle posloužila na dovolené. Projel jsem s ní kus Rakouska, Lichtenštejnska, Německa i Švýcarska. Díky její skladnosti jsem mohl koloběžku snadno převážet a během výletů toho vidět mnohem víc, než kdybych se pohyboval pouze pěšky. Je to praktický společník na cesty, který nezruinuje peněženku.\n\nMá však i slabinu: poměrně brzy se objevil problém se skládacím mechanismem v kloubu půlené nášlapné desky. Naštěstí se mi ho podařilo vyřešit pomocí dvou šroubováků, kterými stačilo odtlačit dvě protilehlé západky. Je to nepříjemnost, ale podle mé zkušenosti řešitelná.\n\nSpecifikace:\n\n- Hliníková konstrukce\n- Přední PU kolečko 125 mm, zadní 100 mm\n- Ložiska ABEC 5\n- Výškově nastavitelná řídítka (70–97 cm)\n- Rozměry ve složeném stavu přibližně 17 × 24 × 37 cm\n- Půlený nášlap pro maximální skladnost\n- Zadní nášlapná brzda\n- Hmotnost přibližně 4,1 kg\n- Deklarovaná nosnost 100 kg",
-    "pros": [
-      "Dostupná cena; přibližně od 1 500 Kč",
-      "Mimořádná skladnost",
-      "Praktická na výlety kombinující veřejnou dopravu a jízdu na koloběžce"
-    ],
-    "cons": [
-      "Poměrně brzy se objevil problém se skládacím mechanismem v kloubu půlené nášlapné desky; Oprava vyžaduje odtlačení dvou protilehlých západek pomocí dvou šroubováků"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 14,
-    "name": "JD BUG MS105",
-    "cat": "folding",
-    "catLabel": "SKLÁDACÍ",
-    "verdict": "Doporučuji",
-    "img": "./public/images/1000134138.png",
-    "blurb": "JD BUG MS105\n\nPopis:\n\nJD Bug MS105 je lehká skládací koloběžka určená především dětem a na kratší jízdy po městě. Její hlavní předností je nízká hmotnost, kompaktní rozměry a jednoduchá konstrukce. Díky patentovanému skládacímu mechanismu se snadno přenáší i skladuje.\n\nZ vlastní zkušenosti ji hodnotím jako lehoučkou, skladnou a překvapivě rychlou koloběžku. Oceňuji kvalitní konstrukci a zpracování. Slabinou jsou malá kolečka, která hůře zvládají nerovnosti, a menší manévrovatelnost, která omezuje obratnost při jízdě.\n\nSpecifikace:\n\n- Konstrukce: hliníkový rám, ocelová přední vidlice\n- Kolečka: PU, obvykle 120 mm vpředu a 100 mm vzadu\n- Ložiska: ABEC 5\n- Řídítka: výškově nastavitelná, přibližně 63–86 cm podle varianty\n- Brzda: zadní nášlapná\n- Skládání: patentovaný skládací mechanismus\n- Hmotnost: přibližně 2,5 kg\n- Nosnost: až 100 kg podle specifikace prodejce\n- Vhodné použití: děti, kratší městské jízdy a snadné přenášení",
-    "pros": [
-      "Velmi skladná",
-      "Kvalitní konstrukce a zpracování",
-      "Velmi nízká hmotnost",
-      "Překvapivě rychlá"
-    ],
-    "cons": [
-      "Malá kola"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 15,
-    "name": "SULOV CONDOR 26/20",
-    "cat": "sport",
-    "catLabel": "SPORTOVNÍ",
-    "verdict": "Doporučuji",
-    "img": "./public/images/scooter-15.jpg",
-    "blurb": "SULOV CONDOR 26/20\n\nPopis:\n\nSULOV CONDOR 26/20 je sportovní koloběžka s velkými nafukovacími koly, určená pro dospělé a dospívající, kteří chtějí jezdit na delší výlety, po cyklostezkách i po méně rovném povrchu. Přední kolo o průměru 26 palců a zadní dvacetipalcové kolo pomáhají překonávat nerovnosti a přispívají ke stabilní jízdě. Nafukovací pneumatiky zároveň lépe tlumí vibrace než malá plná kolečka běžných městských koloběžek.\n\nOcelový rám působí robustně, ale jeho nevýhodou je vyšší hmotnost. S přibližně 13 kg nejde o koloběžku, kterou by člověk chtěl často nosit v ruce nebo převážet v MHD. Je určená především pro jízdu, při které může využít výhody velkých kol. Přední i zadní V-brzda umožňují brzdit oběma koly a praktická výbava může zahrnovat stojánek, zadní blatník, držák na láhev a rohy na řídítkách.\n\nCONDOR není skládací model. Při výběru je proto dobré počítat s tím, že potřebuje více místa pro uskladnění i přepravu. Je vhodnou volbou pro jezdce, kteří upřednostňují velká kola, stabilitu a pohodlnější jízdu před nízkou hmotností a skladností.\n\nSpecifikace:\n\n- Rám: ocelový\n- Kola: nafukovací, přední 26\", zadní 20\"\n- Ráfky: hliníkové\n- Brzdy: přední a zadní V-brzda\n- Výška řídítek: přibližně 96–99 cm podle varianty\n- Šířka řídítek: přibližně 55–59 cm podle varianty\n- Stupátko: přibližně 35–40 × 12 cm\n- Celková délka: přibližně 170 cm\n- Hmotnost: přibližně 12–13 kg; u jedné specifikace se uvádí 12,9 kg\n- Nosnost: až 120 kg podle specifikace\n- Výbava: sklopný stojánek, zadní blatník a odrazky ve výpletu kol; podle konkrétní verze také držák na láhev a rohy na řídítkách\n- Skládání: koloběžka není skládací",
-    "pros": [
-      "Velká nafukovací kola dobře překonávají nerovnosti",
-      "Pohodlnější jízda na horším povrchu",
-      "Stabilita při jízdě",
-      "Přední a zadní V-brzda",
-      "Robustní ocelový rám",
-      "Praktická výbava včetně stojánku a blatníku",
-      "Dobrý poměr ceny a výbavy"
-    ],
-    "cons": [
-      "Hmotnost kolem 13 Ocelový rám (13 kg) je těžší než hliníkový",
-      "Kvůli velkým kolům je méně obratná v ostrých zatáčkách než menší městské koloběžky"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 16,
-    "name": "QUICK SPORT TALA",
-    "cat": "sport",
-    "catLabel": "SPORTOVNÍ",
-    "verdict": "Doporučuji",
-    "img": "./public/images/scooter-16.jpg",
-    "blurb": "QUICK SPORT TALA\n\nPopis:\n\nQUICK SPORT TALA je sportovní koloběžka určená pro dospívající i dospělé, kteří hledají stabilní stroj na rekreační vyjížďky, cyklostezky a zpevněné cesty. Kombinace nafukovacích kol o průměru 20 palců vpředu a 16 palců vzadu nabízí pohodlnější jízdu než malá plná kolečka běžných městských koloběžek. Nafukovací pneumatiky lépe tlumí drobné nerovnosti a větší přední kolo usnadňuje jejich překonávání.\n\nZajímavým parametrem je deklarovaná nosnost až 150 kg, která je u koloběžek tohoto typu poměrně vysoká. Výškově nastavitelná řídítka umožňují přizpůsobit posed různým jezdcům a koloběžka může vyhovovat i dospívajícím od přibližně 140 cm výšky. Přední a zadní V-brzdy mají jednoduchou konstrukci a jejich údržba bývá snadná.\n\nJe však potřeba počítat s tím, že TALA není určená do náročného terénu. Nejlépe se uplatní na asfaltu, cyklostezkách a dalších zpevněných cestách. Před nákupem doporučuji ověřit materiál rámu podle konkrétní verze – v dostupných podkladech se objevují rozdílné údaje o ocelovém a hliníkovém provedení.\n\nSpecifikace:\n\n- Rám: podle varianty ocelový nebo hliníkový; ověřit u konkrétního prodejce\n- Vidlice: podle varianty ocelová nebo hliníková\n- Kola: nafukovací, přední 20\", zadní 16\"\n- Pláště: Schwalbe podle dodaných údajů\n- Ráfky: hliníkové podle dodaných údajů\n- Brzdy: přední a zadní V-brzda\n- Řídítka: hliníková, výškově nastavitelná\n- Minimální výška jezdce: přibližně 140 cm podle dodaných údajů\n- Hmotnost: přibližně 7,4 kg\n- Deklarovaná nosnost: až 150 kg\n- Vhodné použití: rekreační jízda, cyklostezky, město a zpevněné cesty\n- Skládání: klasická konstrukce bez skládacího mechanismu",
-    "pros": [
-      "Stabilní jízda díky kombinaci kol 20\"/16\"",
-      "Nafukovací pneumatiky pro lepší tlumení drobných nerovností",
-      "Vysoká deklarovaná nosnost až 150 kg",
-      "Výškově nastavitelná řídítka",
-      "Přední a zadní V-brzda s jednoduchou údržbou",
-      "Hmotnost přibližně 7",
-      "4 kg"
-    ],
-    "cons": [
-      "Není určená do náročného terénu",
-      "V-brzdy mohou mít za mokra nižší účinnost než za sucha",
-      "Není tak lehká jako některé modely s hliníkovým rámem"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 17,
-    "name": "YEDOO CITY",
-    "cat": "sport",
-    "catLabel": "SPORTOVNÍ",
-    "verdict": "Doporučuji",
-    "img": "./public/images/scooter-17.jpg",
-    "blurb": "YEDOO CITY\n\n\nPopis:\n\nYedoo City je městská koloběžka od české značky Yedoo, určená především pro každodenní přesuny, cyklostezky a kratší výlety. Kombinace nafukovacích kol o průměru 16 palců vpředu a 12 palců vzadu jí dává dobrou obratnost v městském provozu. Oproti modelům s velkými koly, jako je Sulov Condor 26/20, se s ní lépe manévruje v užších prostorech a při vyhýbání překážkám.\n\nOcelový rám je robustní a celková hmotnost přibližně 9,3 kg je na sportovní koloběžku této konstrukce poměrně příznivá. Nafukovací pneumatiky tlumí drobné nerovnosti a dvě V-brzdy umožňují brzdit předním i zadním kolem. Nastavitelná řídítka pomáhají přizpůsobit posed výšce jezdce.\n\nYedoo City je doma především na asfaltu a zpevněných cestách. Menší kola ale nejsou tak pohodlná na rozbitém povrchu, dlažebních kostkách nebo šotolině jako větší kola u turisticky zaměřených modelů. Také při udržování vyšší rychlosti je potřeba počítat s větší námahou než u koloběžek s většími koly.\n\nSpecifikace:\n\n- Značka: Yedoo, česká značka\n- Rám: Hi-ten ocel\n- Vidlice: Hi-ten ocel\n- Kola: nafukovací, přední 16\", zadní 12\"\n- Pláště: Kenda nebo Innova podle varianty\n- Ráfky: hliníkové\n- Brzdy: přední a zadní V-brzda; osazení se může lišit podle verze (Tektro nebo Alhonga)\n- Řídítka: výškově nastavitelná\n- Výška řídítek: přibližně 93–105 cm\n- Šířka řídítek: přibližně 66 cm\n- Délka koloběžky: přibližně 133 cm\n- Délka stupátka: přibližně 36 cm\n- Světlá výška: přibližně 7 cm\n- Hmotnost: přibližně 9,3 kg\n- Nosnost: až 120 kg\n- Minimální doporučená výška jezdce: přibližně 145 cm\n- Výbava: ergonomická madla, příprava pro držák láhve a blatníky; stojánek může být podle verze součástí výbavy nebo se dokupuje",
-    "pros": [
-      "Výborná manévrovatelnost v městském provozu",
-      "Hmotnost přibližně 9",
-      "3 kg",
-      "Nafukovací kola pro pohodlnější jízdu po asfaltu",
-      "Přední a zadní V-brzda",
-      "Výškově nastavitelná řídítka",
-      "Robustní ocelový rám",
-      "Vhodná na městské přesuny a cyklostezky"
-    ],
-    "cons": [
-      "Menší kola hůře zvládají výraznější nerovnosti",
-      "Na udržení vyšší rychlosti je potřeba více úsilí než u modelů s většími koly",
-      "Stojánek a blatníky nemusí být součástí každé varianty"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 18,
-    "name": "NIPPER N12",
-    "cat": "sport",
-    "catLabel": "SPORTOVNÍ",
-    "verdict": "Doporučuji",
-    "img": "./public/images/scooter-18.jpg",
-    "blurb": "Popis:\n\nNIPPER N12 je kompaktní koloběžka s nafukovacími koly, určená především dětem a na kratší jízdy po městě nebo zpevněných cestách. Díky nafukovacím pneumatikám lépe tlumí drobné nerovnosti než koloběžky s malými plnými kolečky. Menší kola jí pomáhají zachovat obratnost, ale v náročnějším terénu a na větších nerovnostech mají své limity. Kratší stupátko může omezovat pohodlné postavení nohou, zejména u větších jezdců. Ocelový rám zajišťuje robustní konstrukci, ale přináší vyšší hmotnost než u lehkých hliníkových modelů.\n\nSpecifikace:\n\n- Rám: ocelový\n- Kola: nafukovací, 12\"\n- Ráfky: hliníkové\n- Brzdy: přední a zadní V-brzda u některých variant\n- Řídítka: výškově nastavitelná\n- Výška řídítek: přibližně 70–80 cm u varianty Sulov Niper Speed 12\n- Šířka řídítek: přibližně 54 cm u varianty Sulov Niper Speed 12\n- Celková délka: přibližně 120 cm\n- Délka stupátka: přibližně 32 cm\n- Hmotnost: přibližně 6 kg\n- Nosnost: až 65 kg u varianty Sulov Niper Speed 12\n- Výbava: stojánek",
-    "pros": [
-      "Nafukovací kola"
-    ],
-    "cons": [
-      "Kratší stupátko"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 19,
-    "name": "RAZOR A5 AIR",
-    "cat": "folding",
-    "catLabel": "SKLÁDACÍ",
-    "verdict": "Doporučuji",
-    "img": "./public/images/scooter-19.jpg",
-    "blurb": "RAZOR A5 AIR\n\nPopis:\n\nRazor je americká značka koloběžek a model A5 Air je skládací koloběžka určená pro každodenní jízdu po městě. Od běžných modelů s plnými kolečky se liší především velkými 200mm foukanými pneumatikami, které lépe tlumí vibrace a zpříjemňují jízdu po nerovnějším povrchu.\n\nZ vlastní zkušenosti oceňuji především pohodlnou jízdu, nízkou hmotnost a kvalitní zpracování. Koloběžka je velmi skladná a díky patentované konstrukci skládacího mechanismu ani po delší době používání nezačala chrastit. To je příjemný rozdíl oproti některým skládacím modelům, u kterých se časem objeví vůle a nepříjemné zvuky.\n\nFoukaná kola mají ale také svou nevýhodu. Ve srovnání s plnými kolečky jsou pomalejší, takže pokud je pro tebe hlavní prioritou maximální rychlost, nemusí být A5 Air ideální volbou. Dalším nedostatkem je velmi nízká světlá výška – na výraznějších nerovnostech může nášlapná deska škrtat o zem. Nejlépe proto poslouží na běžných městských cestách a chodnících.\n\nSpecifikace:\n\n- Hliníková nášlapná deska a konstrukce řídítek\n- Ocelová přední vidlice\n- Foukané pneumatiky o průměru 200 mm\n- Doporučený tlak v pneumatikách přibližně 60 PSI\n- Výškově nastavitelná řídítka\n- Šířka řídítek přibližně 42,5 cm\n- Dlouhý nášlap o délce přibližně 55 cm\n- Patentovaný skládací mechanismus s technologií proti chrastění\n- Měkké gumové rukojeti\n- Zadní brzda na blatníku\n- Sklopný stojánek\n- Hmotnost přibližně 5,07 kg\n- Deklarovaná nosnost 100 kg",
-    "pros": [
-      "Pohodlná jízda díky nafukovacím kolečkům",
-      "Patentovaná konstrukce -Ani po delší době provozování nechrastí",
-      "Nízká hmotnost"
-    ],
-    "cons": [
-      "Velmi nízká světlá výška (světlost)",
-      "Pomalejší"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 20,
-    "name": "TOURSOR E5B 60V (2×2800W)",
-    "cat": "electric",
-    "catLabel": "ELEKTRO",
-    "verdict": "Bestie",
-    "img": "./public/images/scooter-20.jpg",
-    "blurb": "TOURSOR E5B 60V 35Ah (2×2800 W)\n\nBestie s výkonem 5600 W a rychlostí kolem 90 km/h!\n\nPopis:\n\nTOURSOR E5B je výkonná elektrická koloběžka se dvěma motory, určená pro zkušené jezdce, kteří hledají vysoký výkon a chtějí jezdit také mimo zpevněné cesty. U této varianty se uvádějí dva motory o výkonu 2800 W, tedy celkem 5600 W. Maximální rychlost se podle konkrétního provedení a údajů prodejců pohybuje přibližně kolem 85–90 km/h.\n\nO pohon se stará 60V lithium-iontová baterie. V popisované konfiguraci má kapacitu 35 Ah, což odpovídá energii přibližně 2100 Wh. Skutečný dojezd závisí na rychlosti, hmotnosti jezdce, terénu, teplotě a stavu baterie. Údaj o dojezdu 100 km a více proto ber jako optimistický odhad, nikoli jako zaručenou vzdálenost.\n\nTOURSOR E5B má 11palcové terénní pneumatiky, přední dvojité hydraulické tlumiče a zadní pružinové odpružení. Hydraulické kotoučové brzdy pomáhají zvládat brzdění, ale při rychlostech, kterých tento stroj dosahuje, je potřeba počítat s dlouhou brzdnou dráhou a mít dostatečný prostor. S hmotností kolem 45–50 kg nejde o koloběžku, kterou by člověk snadno přenášel.\n\nZ vlastní zkušenosti můžu říct, že TOURSOR E5B zvládl celou zimu – jezdil jsem na něm den za dnem. Vyjel jsem s ním do terénu, do lesa i na místa, kam by se běžná městská koloběžka příliš nehodila. Je to stroj, který vyžaduje pevný úchop řídítek a respekt k výkonu. Jeho schopnosti ale mají zásadní omezení: můj kus nemá homologaci pro provoz na českých veřejných komunikacích. Je proto určen pro vhodné soukromé pozemky se souhlasem vlastníka, nikoli automaticky pro silnice a cyklostezky.\n\nSpecifikace:\n\n- Model: TOURSOR E5B\n- Typ: výkonná elektrická koloběžka s pohonem obou kol\n- Rám: hliníková slitina podle údajů prodejce\n- Motory: 2 × 2800 W, celkem 5600 W u popisované varianty\n- Napětí baterie: 60 V\n- Baterie: lithium-iontová, 35 Ah u popisované varianty (2100 Wh)\n- Maximální rychlost: přibližně 85–90 km/h podle varianty a údajů prodejců\n- Dojezd: závisí na podmínkách; uváděných 100 km a více není zaručený reálný dojezd\n- Pneumatiky: 11\" nafukovací terénní\n- Brzdy: hydraulické kotoučové\n- Odpružení: přední dvojité hydraulické tlumiče, zadní pružinový tlumič\n- Displej: digitální\n- Skládání: ano\n- Rozměry v rozloženém stavu: přibližně 130 × 58 × 132 cm\n- Rozměry ve složeném stavu: přibližně 147 × 28 × 50 cm\n- Hmotnost: přibližně 45–50 kg podle varianty\n- Nosnost: ověřit pro konkrétní provedení; v podkladech se uvádí 150 kg, zatímco některé prodejní nabídky uvádějí vyšší hodnoty\n- Homologace: podle zkušenosti s popisovaným kusem není homologován pro provoz na českých veřejných komunikacích",
-    "pros": [
-      "5600W výkon",
-      "Nízká pořizovací cena",
-      "Brutální výkon dvou motorů",
-      "Velmi vysoká rychlost",
-      "Dlouhý potenciální dojezd díky velké baterii",
-      "11\" terénní pneumatiky",
-      "Hydraulické odpružení vpředu a pružinové vzadu",
-      "Hydraulické kotoučové brzdy",
-      "Zvládá jízdu v terénu a v zimních podmínkách"
-    ],
-    "cons": [
-      "Hmotnost kolem 50 kg výrazně komplikuje přenášení a manipulaci",
-      "Chybějící homologace pro veřejné komunikace je zásadním omezením",
-      "Vysoký výkon může překvapit i zkušeného jezdce",
-      "Vyšší rychlost vyžaduje dostatečný prostor pro brzdění a kvalitní ochranné vybavení",
-      "Není vhodná pro začátečníky"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 21,
-    "name": "SENCOR SCOOTER TWO LONG RANGE",
-    "cat": "electric",
-    "catLabel": "ELEKTRO",
-    "verdict": "Doporučuji",
-    "img": "./public/images/scooter-21.jpg",
-    "blurb": "SENCOR SCOOTER TWO LONG RANGE (2021)\n\nPopis:\n\nSENCOR SCOOTER TWO LONG RANGE z roku 2021 je městská elektrická koloběžka s motorem o výkonu 400 W a desetipalcovými pneumatikami. V době svého prodeje zaujala především poměrem ceny a výkonu, slušným dojezdem a kvalitním zpracováním. Zadní odpružení a profilované pneumatiky přispívají k pohodlí při běžné jízdě, zatímco kombinace kotoučové a elektronické brzdy pomáhá při zpomalování.\n\nTohle není jen hodnocení podle katalogových údajů. Na této koloběžce jsem osobně odjezdil dvě celé zimy, a to včetně mrazů a jízdy po solených silnicích. Vydržela toho opravdu hodně. Jednou z věcí, které mě na ní nejvíc překvapily, je schopnost zvládat kopce. Při lehkém odrážení nohou dokáže vyjet i na Dušnou, která leží přibližně 662 metrů nad mořem. Ze Vsetína jde o výjezd s převýšením zhruba 320 metrů na trase dlouhé kolem 7 km. Samozřejmě záleží na podmínkách, stavu baterie a pomoci jezdce, ale na čtyřsetwattový motor je to slušný výsledek.\n\nVelkým plusem je také dostupnost náhradních dílů. I u staršího modelu se dají sehnat za rozumné ceny, takže oprava nemusí znamenat velkou investici. Nevýhodou je absence předního odpružení – na rozbitých cestách jsou nerovnosti znát. Přesto tuhle koloběžku hodnotím velmi kladně. Pokud Sencor někdy udělal opravdu povedený model, podle mě je to právě tento.\n\nSpecifikace:\n\n- Motor: 400 W\n- Baterie: Li-ion, 37 V, 15 Ah (555 Wh) podle jedné specifikace; v jiných podkladech se objevuje 36 V / 10 Ah, proto ověřit konkrétní verzi\n- Maximální rychlost: až 25 km/h; některé podklady uvádějí sportovní režim až 30 km/h\n- Dojezd: výrobce uvádí až 45 km při hmotnosti jezdce 55 kg a přibližně 37 km při 90 kg; reálný dojezd závisí na podmínkách\n- Kola: 10\" profilované pneumatiky; provedení se může lišit podle varianty\n- Odpružení: zadní\n- Brzdy: zadní kotoučová a elektronická\n- Maximální stoupání: až 15° podle výrobce\n- Nosnost: až 120 kg\n- Hmotnost: přibližně 16 kg\n- Rozměry v rozloženém stavu: přibližně 112 × 44 × 118 cm\n- Rozměry ve složeném stavu: přibližně 112 × 44 × 51 cm\n- Doba nabíjení: až 9 hodin\n- Výbava: LED osvětlení, LED displej, tempomat, Bluetooth a mobilní aplikace Sencor Scooter\n\nZa mě velmi povedený model, který si zaslouží pochvalu i po letech.",
-    "pros": [
-      "Výdrž v zimě",
-      "10\" bezdefektová kola",
-      "Dostupnost dílů a jejich rozumné ceny",
-      "Osobně ověřená odolnost – dvě celé odježděné zimy ✓ Dobré schopnosti v kopcích při dopomoci odrazem ✓ Desetipalcové profilované pneumatiky pro pohodlnější jízdu ✓ Dostupné a cenově přijatelné náhradní díly",
-      "Rozumná hmotnost kolem 16 kg",
-      "Kvalitní zpracování",
-      "Pozitivní dlouhodobá zkušenost z každodenního používání",
-      "Velmi dobrý poměr ceny a výkonu v době prodeje"
-    ],
-    "cons": [
-      "Chybí přední odpružení",
-      "což je znát na rozbitých cestách",
-      "Starší model z roku 2021",
-      "který už technologicky zaostává za novějšími koloběžkami",
-      "Skutečný dojezd se výrazně mění podle hmotnosti jezdce",
-      "počasí",
-      "terénu a stylu jízdy"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 22,
-    "name": "VEGA VIRON 1000W",
-    "cat": "electric",
-    "catLabel": "ELEKTRO",
-    "verdict": "Nedoporučuji",
-    "img": "./public/images/scooter-22.jpg",
-    "blurb": "VEGA VIRON 1000W\n\nPopis:\n\nVeGA VIRON 1000W je robustní elektrická koloběžka se sedlem, která připomíná spíše malý elektrický skútr než klasickou koloběžku. Její hlavní předností je motor o výkonu 1000 W s řetězovým převodem. Na rozdíl od běžných koloběžek s motorem přímo v náboji kola se výkon přenáší na kolo pomocí řetězu. Takové řešení umožňuje přenášet značnou sílu, ale vyžaduje také pravidelnou údržbu.\n\nO napájení se stará 36V baterie složená ze tří 12V olověných akumulátorů. Výrobce uvádí maximální rychlost až 32 km/h a dojezd až 30 km, skutečná vzdálenost ale závisí na zatížení, terénu a stavu baterie. Zajímavostí je možnost omezit rychlost přepínačem, včetně pomalého režimu kolem 6 km/h.\n\nKomfort při jízdě zajišťuje přední odpružená vidlice, dvojice zadních tlumičů a nafukovací pneumatiky. Sedlo je výškově nastavitelné a dá se demontovat, takže si můžeš vybrat, zda chceš jezdit vsedě, nebo klasicky ve stoje. Dvojice kotoučových brzd odpovídá potřebám těžšího a výkonnějšího stroje.\n\nNejvětší nevýhodou je hmotnost kolem 38 kg. Tohle není koloběžka, kterou pohodlně vyneseš do schodů nebo vezmeš do autobusu. Dalším kompromisem jsou olověné baterie, které jsou těžší a mají kratší životnost než moderní lithium-iontové akumulátory. Řetězový pohon navíc vyžaduje mazání a kontrolu napnutí.\n\nSpecifikace:\n\n- Motor: elektrický, 1000 W, vzduchem chlazený\n- Pohon: řetězový převod\n- Baterie: 36 V / 12 Ah, tři 12V olověné akumulátory\n- Maximální rychlost: až 32 km/h\n- Omezení rychlosti: pomalý režim přibližně 6 km/h podle provedení\n- Dojezd: výrobcem uváděno až 30 km; skutečný dojezd závisí na podmínkách\n- Doba nabíjení: přibližně 6–7 hodin\n- Kola: nafukovací, pneumatiky 2.50–10\n- Odpružení: přední odpružená vidlice, zadní dvojice tlumičů\n- Brzdy: přední a zadní kotoučová\n- Sedlo: odnímatelné, výškově nastavitelné přibližně 80–94 cm\n- Šířka řídítek: přibližně 63 cm\n- Rozměry: přibližně 132 × 25 × 114 cm\n- Hmotnost: přibližně 38 kg\n- Nosnost: až 120 kg\n- Výbava: stojánek, zámek zapalování s klíčem, dvoustupňový přepínač rychlosti, držák telefonu\n- Skládání: rychloupínací skládací mechanismus\n\nMoje hodnocení: VeGA VIRON 1000W je těžký a robustní stroj, který sází na výkon, řetězový pohon a pohodlí díky odpružení a sedlu. Největší smysl dává tam, kde můžeš využít jeho sílu a nemusíš ho často přenášet. Je však potřeba počítat s vyšší hmotností, údržbou řetězu a omezeními olověné baterie.",
-    "pros": [
-      "Výkonný 1000W motor",
-      "Řetězový převod vhodný pro přenos vysokého výkonu",
-      "Přední a zadní kotoučová brzda",
-      "Plné odpružení pro pohodlnější jízdu",
-      "Možnost jízdy se sedlem i bez něj",
-      "Přepínač pro omezení rychlosti",
-      "Zámek zapalování a držák telefonu"
-    ],
-    "cons": [
-      "Velmi krátký dojezd- jen 30km",
-      "Hmotnost přibližně 38 kg výrazně komplikuje přenášení",
-      "Řetěz vyžaduje pravidelné mazání a kontrolu napnutí",
-      "Olověné baterie jsou těžší a mají nižší energetickou hustotu než lithium-iontové",
-      "Podle dodaných údajů nemá homologaci pro provoz na českých veřejných komunikacích; před jízdou je nutné ověřit právní režim konkrétního kusu ."
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 23,
-    "name": "NITRO SCOOTER X500 PREMIUM",
-    "cat": "electric",
-    "catLabel": "ELEKTRO",
-    "verdict": "Nedoporučuji",
-    "img": "./public/images/scooter-23.jpg",
-    "blurb": "NITRO SCOOTER X500 PREMIUM\n\nPopis:\n\nNITRO SCOOTER X500 PREMIUM je elektrická koloběžka české značky Nitro Scooters, určená především pro městské dojíždění. Nabízí motor o výkonu 500 W, odnímatelnou baterii 48 V / 13 Ah, desetipalcové nafukovací pneumatiky a odpružení předního i zadního kola. Maximální rychlost činí 25 km/h a výrobcem uváděný dojezd dosahuje až 40 km. Odnímatelná baterie je praktická, protože ji lze nabíjet mimo koloběžku a případně mít připravenou náhradní.\n\nKoloběžka je homologovaná pro provoz na českých komunikacích, což mám doloženo příslušnými dokumenty.\n\nNa papíře působí X500 Premium jako dobře vybavený dopravní prostředek pro každodenní používání. Moje zkušenost však byla výrazně horší. Koloběžka měla problémy s brzděním i skládacím mechanismem, tedy se součástmi, na jejichž správné funkci závisí bezpečnost jezdce.\n\nPři prudším brzdění se mi opakovaně stávalo, že se koloběžka vypnula, a tím přestala fungovat i elektronická brzda. Zadní nášlapná brzda tak nebyla jen doplňkem, ale v těchto situacích představovala důležitou zálohu. Přibližně po dvou měsících se navíc zasekly brzdové čelisti a kolo zůstalo zablokované. Koloběžku jsem musel odnést domů.\n\nDalším problémem byl skládací mechanismus. Už od začátku se mi stávalo, že se koloběžka během jízdy samovolně skládala, zejména když jsem si při výjezdu do kopce pomáhal odrážením nohou. Několikrát to bylo velmi nebezpečné a jen těsně jsem se vyhnul pádu.\n\nAni výkon motoru mě příliš nepřesvědčil. Při prudších stoupáních rychle ztrácel sílu a bylo potřeba výrazněji pomáhat odrazem. V tomto ohledu jsem měl lepší zkušenost i se Sencorem Scooter Two Long Range 2021, přestože má papírově slabší motor o výkonu 400 W.\n\nSpecifikace:\n\n- Značka: Nitro Scooters\n- Motor: elektrický, 500 W\n- Baterie: odnímatelná Li-ion, 48 V / 13 Ah\n- Maximální rychlost: 25 km/h podle dodaných údajů\n- Dojezd: až 40 km podle výrobce; skutečný dojezd závisí na podmínkách\n- Kola: 10\" nafukovací pneumatiky\n- Brzdy: přední bubnová brzda s elektronickou brzdou, zadní nášlapná třecí brzda\n- Odpružení: přední a zadní\n- Hmotnost: přibližně 17 kg\n- Nosnost: až 120 kg\n- Baterie: odnímatelná, možnost nabíjení mimo koloběžku\n- Výbava: LED osvětlení, přední světla pro denní a noční jízdu, zadní světlo dobíjené přes USB\n- Homologace: ano, pro provoz na českých komunikacích; doloženo příslušnými dokumenty\n\nMoje hodnocení:\n\nOd koloběžky s označením Premium a výbavou pro každodenní provoz bych očekával především spolehlivost. U mého kusu se však opakovaně objevily problémy, které přímo ohrožovaly bezpečnost při jízdě. Samovolné skládání za jízdy a vypínání při prudkém brzdění považuji za zásadní nedostatky, nikoli za drobné mouchy.\n\nPokud už byl tento stroj schválen pro provoz na českých komunikacích, po těchto zkušenostech opravdu nevím, co si o tom myslet. 🙂\n\nNa základě své zkušenosti tento model nedoporučuji.",
-    "pros": [
-      "Homologace pro ČR",
-      "Odnímatelná baterie pro pohodlné nabíjení",
-      "Možnost pořízení náhradní baterie pro delší používání",
-      "Kombinace přední brzdy a zadní nášlapné brzdy",
-      "LED osvětlení",
-      "Česká značka a možnost řešit dostupnost servisu a náhradních dílů"
-    ],
-    "cons": [
-      "Motor při prudších výjezdech ztrácí výkon a je potřeba vehementně pomáhat odrazem",
-      "Při prudkém brzdění se mi koloběžka opakovaně vypínala",
-      "čímž přestala fungovat i elektronická brzda",
-      "Přibližně po dvou měsících se zasekly brzdové čelisti a zablokovaly kolo",
-      "Skládací mechanismus se mi během jízdy samovolně skládal",
-      "zejména při dopomoci odrazem do kopce",
-      "Opakované závady brzd a skládání představovaly vážné bezpečnostní riziko"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 24,
-    "name": "TAJFUN 500W",
-    "cat": "electric",
-    "catLabel": "ELEKTRO",
-    "verdict": "Nedoporučuji",
-    "img": "./public/images/scooter-24.jpg",
-    "blurb": "TAJFUN 500W\n\nPopis\n\nTAJFUN 500W je cenově dostupná elektrická koloběžka prodávaná mimo jiné prostřednictvím RCskladem. Nabízí elektromotor o výkonu 500 W, lithium-iontovou baterii 48 V / 13 Ah, desetipalcové nafukovací pneumatiky a odpružení předního i zadního kola. Výbavu doplňují kotoučové brzdy, LCD displej, osvětlení a bezpečnostní alarm s dálkovým ovladačem.\n\nVýrobce uvádí dojezd až 60 km, v běžném provozu je však rozumnější počítat s nižší hodnotou. Skutečný dojezd ovlivňuje zejména hmotnost jezdce, profil trasy, teplota, tlak v pneumatikách a způsob jízdy. Uváděná maximální rychlost se může lišit podle provedení a nastavení koloběžky.\n\nPřední a zadní odpružení spolu s nafukovacími pneumatikami mají přispívat k pohodlnější jízdě po nerovnostech. Zajímavou výbavou je zabezpečovací systém s alarmem a dálkovým ovladačem, který může upozornit na pokus o neoprávněnou manipulaci s koloběžkou. Nechybí ani podsvícení nášlapné desky.\n\nTAJFUN 500W působí jako prakticky vybavený model pro městské dojíždění a rekreační vyjížďky. Před nákupem bych ale doporučil ověřit konkrétní technické parametry, dostupnost náhradních dílů a možnosti servisu u prodejce.\n\nSpecifikace\n\n- Model: TAJFUN 500W\n- Prodejce: RCskladem\n- Motor: elektrický, 500 W\n- Baterie: lithium-iontová, 48 V / 13 Ah\n- Maximální rychlost: až 40 km/h podle dodaných údajů; pro provoz na veřejných komunikacích je nutné dodržet příslušné zákonné podmínky a omezení\n- Dojezd: výrobce uvádí až 60 km; reálně lze podle podmínek očekávat přibližně 40–50 km\n- Kola: 10\" nafukovací pneumatiky\n- Brzdy: přední a zadní kotoučové\n- Odpružení: přední i zadní\n- Úhel stoupání: konkrétní hodnota není v dodaných údajích uvedena\n- Hmotnost: přibližně 20 kg\n- Maximální nosnost: 120 kg\n- Displej: LCD\n- Zabezpečení: alarm, bezpečnostní senzor a dálkový ovladač\n- Osvětlení: přední a zadní osvětlení\n- Další výbava: podsvícení nášlapné desky, stojánek; tempomat podle varianty\n\nMoje hodnocení\n\nTAJFUN 500W zaujme především kombinací 500W motoru, odpružení obou kol, kotoučových brzd a bezpečnostního alarmu. Pro běžné dojíždění a rekreační vyjížďky může jít o zajímavou volbu, zejména pokud je jeho cena příznivá.\n\nZa důležité považuji ověřit si před koupí přesné provedení baterie, skutečné parametry konkrétního kusu a možnosti následného servisu. Samotný výkon motoru totiž ještě nezaručuje, že koloběžka bude dobře zvládat prudká stoupání.\n\nZa nepříjemnou považuji také svou zkušenost s jízdou z kopce, kdy koloběžka sama zpomalovala natolik, že jsem musel přidávat plyn, aby pokračovala v jízdě. Bez potvrzení technické příčiny ale nelze s jistotou říct, zda šlo o rekuperaci, nebo jiný způsob elektronického řízení.\n\nCelkově jde podle dostupných údajů o slušně vybavenou koloběžku, u které bych před nákupem věnoval pozornost především kvalitě zpracování, servisu a ověření technických parametrů.",
-    "pros": [
-      "Alarm a dálkový ovladač",
-      "Deklarovaný dojezd až 60 km",
-      "Přední a zadní odpružení",
-      "Desetipalcové nafukovací pneumatiky",
-      "Kotoučové brzdy na obou kolech",
-      "Podsvícená nášlapná deska",
-      "Cenově dostupnější alternativa k některým prémiovým modelům"
-    ],
-    "cons": [
-      "Skutečný dojezd",
-      "Není uvedena konkrétní hodnota maximálního stoupání",
-      "Dostupnost servisu a náhradních dílů závisí na prodejci",
-      "Nepříjemné zpomalování při jízdě z kopce: Podle mé zkušenosti koloběžka při jízdě z kopce výrazně brzdila",
-      "takže jsem musel přidávat plyn",
-      "aby vůbec pokračovala v jízdě. Působilo to",
-      "jako by motor kladl odpor nebo elektronika jízdu omezovala. Z dostupných podkladů se mi nepodařilo potvrdit",
-      "zda je příčinou rekuperace",
-      "nebo jiné nastavení řídicí jednotky.  Moje bezpečnostního alarmu. Pro běžné dojíždění a rekreační vyjížďky může jít o zajímavou volbu",
-      "zejména pokud je jeho cena příznivá.  Za důležité považuji ověřit si před koupí přesné provedení baterie",
-      "skutečné parametry konkrétního kusu a možnosti následného servisu. Samotný výkon motoru totiž ještě nezaručuje že koloběžka bude dobře zvládat prudká stoupání",
-      "Za nepříjemnou považuji také svou zkušenost s jízdou z kopce kdy koloběžka sama zpomalovala natolik  že jsem musel přidávat plyn",
-      "aby pokračovala v jízdě. Bez potvrzení technické příčiny ale nelze s jistotou říct zda šlo o rekuperaci nebo jiný způsob elektronického řízení."
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 25,
-    "name": "KAABO SKYWALKER 10H (CZ)",
-    "cat": "electric",
-    "catLabel": "ELEKTRO",
-    "verdict": "Doporučuji",
-    "img": "./public/images/scooter-25.jpg",
-    "blurb": "KAABO SKYWALKER 10H ECO800 CZ EDITION je elektrická koloběžka značky Kaabo, určená pro každodenní dojíždění, delší výlety i jízdu po kopcovitějším terénu. Její hlavní předností je motor o výkonu 800 W, desetipalcové nafukovací pneumatiky a přední i zadní pružinové odpružení. Komfort při jízdě doplňují kotoučové brzdy s elektronickým brzděním a podsvícená nášlapná deska.\n\nVerze CZ EDITION je podle dodaných údajů nastavena na maximální rychlost 25 km/h. Uváděná rychlost po odblokování se podle konkrétního provedení pohybuje přibližně mezi 45 a 50 km/h. Takové rychlosti však nelze automaticky považovat za legální pro provoz na veřejných komunikacích.\n\nVýhodou značky Kaabo je servisní zázemí v České republice a dostupnost originálních náhradních dílů. Oficiální distributor nabízí záruční i pozáruční servis a podle podmínek konkrétní služby může být možné řešit reklamaci také u zákazníka doma. To je u koloběžky vážící přibližně 20–21 kg příjemný benefit, protože přenášení těžšího stroje není zrovna pohodlné.\n\nMoje zkušenost s tímto modelem je smíšená. Výkon a výbava mě zaujaly, ale po pouhém měsíci provozu jsem bohužel poškodil řídicí jednotku. Koloběžku jsem měl odblokovanou na vyšší rychlost, což je důležitá okolnost. Přesto mě překvapilo, že k závadě došlo tak brzy. U levnějších modelů, jako jsou Bouyeda S3-11 nebo Toursor E5B, jsem podobný problém nezažil ani při svém používání.\n\nJe ale fér dodat, že závada jednoho kusu nemusí vypovídat o spolehlivosti celého modelu. Je možné, že jsem narazil na vadný kus, a proto bych Kaabo Skywalker 10H nezavrhoval jen na základě této zkušenosti.\n\nSpecifikace\n\n- Značka: Kaabo\n- Model: Skywalker 10H ECO800 CZ EDITION\n- Motor: elektrický, 800 W\n- Baterie: Li-ion; v dodaných údajích se objevují varianty 48 V / 13 Ah a 48 V / 15,6 Ah\n- Maximální rychlost: 25 km/h v nastavení CZ Edition\n- Maximální rychlost po odblokování: podle varianty přibližně 45–50 km/h\n- Dojezd: podle varianty a podmínek až 50–65 km\n- Maximální stoupání: uváděno až 25°; skutečná schopnost zdolávat kopce závisí na podmínkách\n- Kola: 10\" nafukovací pneumatiky\n- Brzdy: přední a zadní kotoučové, elektronické brzdění E-ABS podle specifikace\n- Odpružení: přední a zadní pružinové\n- Hmotnost: přibližně 20–21,4 kg podle varianty\n- Maximální nosnost: 120 kg\n- Doba nabíjení: přibližně 7–8 hodin podle baterie a nabíječky\n- Osvětlení: přední světlomet, zadní LED světlo a boční LED osvětlení podle provedení\n- Displej: LCD\n- Další výbava: podsvícená nášlapná deska, skládací mechanismus\n- Servis: české záruční a pozáruční zázemí oficiálního distributora\n- Náhradní díly: originální díly Kaabo; dostupnost konkrétních dílů je vhodné ověřit u prodejce\n\nPoznámka: U některých parametrů se dodané údaje liší. Před nákupem proto doporučuji ověřit přesnou variantu koloběžky, zejména kapacitu baterie a deklarovaný dojezd.\n\nMoje hodnocení\n\nKAABO SKYWALKER 10H ECO800 CZ EDITION je zajímavá elektrická koloběžka s dobrým výkonem, odpružením obou kol a slušnou výbavou. Pozitivně hodnotím také servisní zázemí značky a dostupnost náhradních dílů, protože právě tyto věci mohou při dlouhodobém používání rozhodovat o tom, zda bude vlastnictví koloběžky příjemné, nebo naopak plné starostí.\n\nPo měsíci provozu jsem však bohužel uvařil řídicí jednotku. To je podle mě opravdu brzy. Je ale nutné dodat, že jsem měl koloběžku odblokovanou na vyšší rychlost. Pokud výrobce umožňuje změnu rychlostního nastavení přímo přes displej, očekával bych, že systém bude mít odpovídající rezervu. Na druhou stranu nelze bez technického posouzení říct, zda závadu způsobilo právě odblokování, přetížení řídicí jednotky, nebo jiná příčina.\n\nU čínských modelů, jako jsou Bouyeda S3-11 nebo Toursor E5B, se mi podobná závada nestala, přestože je někteří mohou považovat za levnou čínskou produkci. To ale samozřejmě samo o sobě neznamená, že jsou tyto modely obecně spolehlivější.\n\nCelkově mohu Kaabo Skywalker 10H doporučit, i když s výhradou. Nepřipadá mi jako špatná koloběžka a je možné, že jsem jednoduše narazil na vadný kus. Moje zkušenost s řídicí jednotkou mě ale zklamala a při výběru bych jí věnoval pozornost.",
-    "pros": [
-      "Motor o výkonu 800 W",
-      "Přední a zadní pružinové tlumiče",
-      "Desetipalcové nafukovací pneumatiky",
-      "Kotoučové brzdy a elektronické brzdění",
-      "Podsvícená nášlapná deska",
-      "Servisní zázemí značky Kaabo v ČR a servis u zákazníka doma",
-      "Dostupnost originálních náhradních dílů"
-    ],
-    "cons": [
-      "Vyšší cena oproti některým levnějším modelům",
-      "Rychlost po odblokování nemusí být legální pro provoz na veřejných komunikacích",
-      "U mého kusu došlo již po měsíci provozu k poškození řídicí jednotky"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 26,
-    "name": "GALAXY CALYPSO",
-    "cat": "sport",
-    "catLabel": "SPORTOVNÍ",
-    "verdict": "Doporučuji",
-    "img": "./public/images/scooter-26.jpg",
-    "blurb": "Popis:\n\nGALAXY CALYPSO je sportovní koloběžka českého distributora a značky Galaxy, určená především dětem a juniorům na rekreační jízdy, cyklostezky, asfalt i zpevněné polní cesty. Obě kola mají průměr 12\" a nafukovací pneumatiky, které lépe tlumí drobné nerovnosti než malá plná kolečka. Díky kompaktním rozměrům je koloběžka obratná a snadno ovladatelná. Zesílený ocelový rám Hi-Ten nabízí robustní konstrukci, jeho nevýhodou je však vyšší hmotnost v porovnání s hliníkovými modely. Přední i zadní V-brzda umožňují účinné brzdění a výškově nastavitelná řídítka pomáhají přizpůsobit koloběžku jezdci. Jde o dostupný model pro běžné rekreační použití, nikoli o koloběžku určenou do náročného terénu.\n\nSpecifikace:\n\n- Rám: zesílená ocel Hi-Ten\n- Vidlice: pevná ocelová Hi-Ten\n- Kola: nafukovací, přední 12\", zadní 12\"\n- Ráfky: hliníkové\n- Brzdy: přední a zadní čelisťové V-brzdy\n- Řídítka: výškově nastavitelná\n- Výška řídítek: přibližně 75–86 cm\n- Šířka řídítek: přibližně 56 cm\n- Délka stupátka: přibližně 29,7 cm\n- Celková délka: přibližně 121 cm\n- Světlá výška: přibližně 5,5 cm\n- Výška stupátka nad zemí: přibližně 8,5 cm\n- Hmotnost: přibližně 6,9 kg\n- Nosnost: až 90 kg\n- Doporučená minimální výška jezdce: přibližně 120 cm\n- Výbava: stojánek, možnost montáže držáku na láhev",
-    "pros": [
-      "Příznivá cena"
-    ],
-    "cons": [
-      "Základní díly"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 27,
-    "name": "BOUYEDA S3-11",
-    "cat": "electric",
-    "catLabel": "ELEKTRO",
-    "verdict": "Bestie",
-    "img": "./public/images/scooter-27.jpg",
-    "blurb": "BOUYEDA S3-11 – šestikilowattová bestie, která si z kopců nic nedělá\n\nPopis\n\nNěkteré elektrické koloběžky jsou určené na pohodové popojíždění po městě. A pak je tu BOUYEDA S3-11 – pořádná elektrická bestie, která svými dvěma motory, velkou baterií a masivní konstrukcí míří do úplně jiné ligy. Tohle není žádné městské přibližovadlo, ale výkonný stroj pro jezdce, kteří chtějí sílu, dynamiku a schopnost poradit si i s náročnějším terénem.\n\nSrdcem koloběžky je dvojice bezkartáčových elektromotorů s celkovým deklarovaným výkonem 6 000 W, tedy 2 × 3 000 W. Výrobce uvádí maximální rychlost až 85 km/h. Takové hodnoty už vyžadují respekt, zkušenosti a zodpovědný přístup. Výkon se hodí nejen na svižnou jízdu, ale především při rozjezdech a ve stoupáních, kde slabší stroje začínají ztrácet dech.\n\nA právě kopce jsou disciplína, ve které tahle mašina umí předvést pořádné divadlo. Stejně jako u Toursoru E5B platí, že se stačí pevně držet řídítek a koloběžka tě dokáže vytáhnout tam, kam potřebuješ. Síla dvou motorů je znát především ve stoupáních, kde nabízí opravdu výraznou dynamiku. S BOUYEDOU S3-11 dokážeš předjet i auto – a někdy dokonce i do kopce.\n\nEnergii dodává lithium-iontová baterie s napětím 60 V a kapacitou 38 Ah, tedy přibližně 2 280 Wh. Výrobce uvádí dojezd kolem 100–120 km, zatímco v jiných údajích se objevuje hodnota kolem 100 km. Moje vlastní zkušenost je, že jsem dojel z Dušné až do Zlína a baterie měla ještě rezervu. To je pro mě mnohem zajímavější údaj než samotné číslo v katalogu. Skutečný dojezd se samozřejmě mění podle hmotnosti jezdce, profilu trasy, teploty, tlaku v pneumatikách, zvoleného jízdního režimu a toho, jak často člověk využívá plný výkon.\n\nPodvozek tvoří jedenáctipalcové široké terénní pneumatiky a odpružení vpředu i vzadu. Díky tomu je S3-11 připravena i na horší povrch než hladký městský asfalt. O zastavení se starají hydraulické kotoučové brzdy; některé specifikace uvádějí také elektronický systém E-ABS. Při rychlostech, kterých je tento stroj schopný dosáhnout, je bezvadný stav brzd, pneumatik, řízení a všech spojů naprosto zásadní.\n\nVýbavu doplňuje barevný LCD displej, USB port pro nabíjení telefonu, dvojice předních světel U7, LED osvětlení včetně takzvaných Angel Eyes, tři jízdní režimy a dva nabíjecí porty. Koloběžka má hliníkový rám a skládací konstrukci. Počítej ale s tím, že je to pořádný kus stroje – podle konkrétního provedení se uvádí hmotnost kolem 43 až 63 kg. Na přenášení do schodů to tedy rozhodně není žádná lehká váha.\n\nDalší příjemnou zprávou je dostupnost náhradních dílů. Na Bouyeda Original Shopu lze sehnat řadu náhradních dílů a jejich ceny nejsou přehnané. To je důležitá výhoda: u výkonné koloběžky, kterou člověk skutečně používá, se dostupné a cenově rozumné náhradní díly hodí.\n\nMoje zkušenosti\n\nTohle je moje vlastní mašina a znám ji z reálného ježdění, ne jen z tabulky výrobce. Její síla se nejlépe projeví v kopcích, kde dokáže nabídnout opravdu výraznou dynamiku. Při jízdě jsem po dojezdu do Zlína naměřil na baterii přibližně 56,5–57 V. A co je podstatné, trasu z Dušné do Zlína jsem zvládl ještě s rezervou v baterii.\n\nNa BOUYEDĚ S3-11 navíc běžně jezdím i v dešti a v zimě. Není to pro mě jen stroj na slunečné dny a suchý asfalt, ale koloběžka, kterou používám i v náročnějších podmínkách. V dešti, chladu a na zimním povrchu je samozřejmě potřeba přizpůsobit rychlost a styl jízdy, protože mokro, listí, námraza nebo sníh výrazně zhoršují přilnavost a prodlužují brzdnou dráhu.\n\nNa koloběžce jsem zažil i několik ošklivých nehod. Přesto mě moje zkušenosti přesvědčily o dvou věcech. Zaprvé, ani levnější čínská koloběžka nemusí být automaticky nekvalitní průšvih. A zadruhé, u takhle výkonného stroje je potřeba mít z jeho síly respekt a dobře vědět, co má člověk pod nohama. Šest kilowattů není hračka a chyba při jízdě může mít vážné následky.\n\nSamotné napětí baterie se mění podle zatížení, teploty a ustálení baterie, takže ho nelze bez dalších údajů převést na přesné procento zbývající energie. V zimě navíc nízké teploty mohou dočasně snížit dostupný výkon i dojezd lithium-iontové baterie. Při nabíjení je důležité dodržovat teplotní limity výrobce a nenabíjet promrzlou baterii.\n\nBOUYEDA S3-11 není lehká ani nenápadná koloběžka. Je velká, těžká, výkonná a vyžaduje zkušeného jezdce. Kdo hledá hlavně snadné přenášení do bytu nebo do autobusu, měl by se poohlédnout jinde. Kdo ale ocení mohutný stroj, vysoký výkon a pořádnou rezervu pro stoupání, najde v S3-11 velmi výrazného parťáka. Výhodou je také možnost sehnat náhradní díly na Bouyeda Original Shopu, aniž by člověk musel automaticky počítat s přemrštěnými cenami.\n\nDůležité upozornění: Výrobcem uváděných 85 km/h neznamená, že je taková rychlost legální v běžném silničním provozu. Před jízdou na veřejných komunikacích je nutné ověřit, zda konkrétní provedení splňuje české právní podmínky pro daný způsob provozu. Plný výkon a vysoké rychlosti patří pouze tam, kde jsou legální a bezpečné, s odpovídajícím ochranným vybavením.\n\nSpecifikace\n\n- Model: BOUYEDA S3-11\n- Typ: výkonná dvoumotorová elektrická koloběžka\n- Motory: 2 × 3 000 W\n- Celkový deklarovaný výkon: 6 000 W\n- Napětí baterie: 60 V\n- Kapacita baterie: 38 Ah\n- Energie baterie: přibližně 2 280 Wh\n- Typ baterie: lithium-iontová, články formátu 21700 dle výrobce\n- Maximální rychlost: až 85 km/h dle výrobce\n- Deklarovaný dojezd: přibližně 100–120 km; reálný dojezd závisí na podmínkách\n- Osobní zkušenost s dojezdem: z Dušné až do Zlína ještě s rezervou v baterii\n- Osobní zkušenost s provozem: běžné ježdění v dešti i v zimě\n- Pneumatiky: 11″ terénní pneumatiky, bezdušové provedení uváděné ve specifikacích\n- Odpružení: přední a zadní\n- Brzdy: hydraulické kotoučové; E-ABS uváděn v některých specifikacích\n- Jízdní režimy: 3\n- Displej: barevný LCD\n- Osvětlení: dvojice předních světel U7, LED osvětlení včetně Angel Eyes podle provedení\n- USB port: ano\n- Nabíjení: dva nabíjecí porty\n- Nabíječky: dva adaptéry podle dodávané výbavy; uváděné parametry 67,2 V / 5 A\n- Doba nabíjení: přibližně 6–8 hodin s jednou nabíječkou nebo 3–4 hodiny se dvěma podle dodaných údajů\n- Rám: hliníková slitina\n- Skládací konstrukce: ano\n- Deklarovaný maximální sklon: až 45° dle výrobce; skutečná schopnost stoupání závisí na podmínkách\n- Světlá výška podvozku: přibližně 18,5 cm dle uváděné specifikace\n- Rozměry nášlapu: přibližně 55 × 28 cm\n- Rozměry rozložené koloběžky: délka přibližně 123 cm; další rozměry se mohou lišit podle nastavení\n- Rozměry ve složeném stavu: přibližně 130 × 28 × 58 cm dle uváděné specifikace\n- Hmotnost: v různých údajích přibližně 43,3–63 kg; konkrétní hodnotu je vhodné ověřit u daného provedení\n- Maximální zatížení: až 200 kg dle výrobce\n- Krytí: IP54 uváděné v některých specifikacích; nejde o záruku vodotěsnosti při ponoření nebo mytí tlakovou vodou\n- Náhradní díly: dostupné mimo jiné přes Bouyeda Original Shop\n\nMoje hodnocení\n\nBOUYEDA S3-11 je moje současná výkonná koloběžka a v praxi mi ukázala, co dokáže stroj se dvěma motory a velkou baterií. Do kopců má síly na rozdávání a moje cesta z Dušné až do Zlína s rezervou v baterii je pro mě přesvědčivější než samotné katalogové sliby.\n\nNa koloběžce jsem zažil i několik ošklivých nehod, takže její výkon rozhodně nepodceňuji. Právě naopak – člověk musí vědět, co řídí, a počítat s tím, že vysoká rychlost a velká hmotnost mají i svou odvrácenou stranu.\n\nZároveň si myslím, že není správné automaticky odsoudit levnější čínské stroje jen kvůli jejich původu. Moje BOUYEDA S3-11 mi v mnoha ohledech dobře slouží a ukázala mi, že i cenově dostupnější stroj může nabídnout pořádnou porci výkonu a praktického využití. Plusovým bodem je pro mě také dostupnost náhradních dílů na Bouyeda Original Shopu a jejich poměrně příznivé ceny.\n\nZa mě je BOUYEDA S3-11 pořádná bestie do kopců a pro náročnější jezdce, kteří vědí, co od ní čekat. Není pro každého, ale pokud hledáš výkon, dynamiku a velkou baterii, rozhodně stojí za pozornost. Respekt k jejím možnostem je však naprostý základ.",
-    "pros": [
-      "Dva motory s celkovým deklarovaným výkonem 6 000 W",
-      "Výrazná dynamika a schopnost zdolávat prudká stoupání",
-      "Velká baterie s kapacitou 38 Ah",
-      "Velký dojezdový potenciál",
-      "Jedenáctipalcové terénní pneumatiky",
-      "Přední a zadní odpružení",
-      "Hydraulické kotoučové brzdy",
-      "LED osvětlení včetně Angel Eyes podle provedení",
-      "Dva nabíjecí porty umožňující použití dvou nabíječek",
-      "Zvládá i náročnější podmínky",
-      "Moje zkušenost s cestou z Dušné do Zlína s rezervou v baterii",
-      "Dobrá dostupnost náhradních dílů na Bouyeda Original Shopu",
-      "Náhradní díly za poměrně rozumné ceny",
-      "Levná",
-      "Extrémně odolná!"
-    ],
-    "cons": [
-      "Váha 63 kg",
-      "Výrobcem deklarovaná rychlost nemusí být legální na veřejných komunikacích",
-      "Není pro začátečníky!"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  },
-  {
-    "id": 1792359353170,
-    "name": "Koloběžka",
-    "cat": "sport",
-    "catLabel": "SPORTOVNÍ",
-    "verdict": "Doporučuji",
-    "img": "./public/images/1000133078.png",
-    "blurb": "No name koloběžka",
-    "pros": [
-      "Obratná",
-      "úzký nízký nášlap"
-    ],
-    "cons": [
-      "úzký nízký nášlap"
-    ],
-    "specs": [
-      "Zátěžový test"
-    ]
-  }
-];;;;;;;;;;;;;;;;;;;;;;;;;;;;
+];
 
     function getVerdictBadge(verdict) {
       if (verdict === 'Bestie') {
@@ -1515,7 +911,7 @@
       m.classList.add('flex');
     }
 
-    function closeScooterModal() {
+    void closeScooterModal() {
       document.getElementById('scooter-modal').classList.add('hidden');
       document.getElementById('scooter-modal').classList.remove('flex');
     }
