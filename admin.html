@@ -67,8 +67,8 @@
             </select>
           </div>
           <textarea id="s-blurb" rows="4" placeholder="Popis / recenze..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
-          <input type="text" id="s-pros" placeholder="Výhody oddělené čárkou (např. Rychlá, Lehká)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
-          <input type="text" id="s-cons" placeholder="Nevýhody oddělené čárkou (např. Malá kola, Váha)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
+          <input type="text" id="s-pros" placeholder="Výhody oddělené čárkou" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
+          <input type="text" id="s-cons" placeholder="Nevýhody oddělené čárkou" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
           
           <div class="bg-stone-950 p-3 rounded-xl border border-stone-800 space-y-2">
             <label class="block font-bold text-stone-300">Fotka koloběžky:</label>
@@ -338,6 +338,99 @@
       } catch (err) { console.error(err); }
     }
 
+    // --- TLAČÍTKO NA OBRÁCENÍ POŘADÍ TIPŮ ---
+    async function reverseTipsOrder() {
+      const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo'), status = document.getElementById('status-msg');
+      if (!token || !repo) { alert('Vyplň token!'); return; }
+      status.innerText = 'Oracím pořadí tipů...';
+      try {
+        const { fileData, htmlContent } = await fetchIndex();
+        let tips = extractVariable(htmlContent, 'tipsData');
+        if (!tips.length) { alert('Žádné tipy k obrácení.'); status.innerText = ''; return; }
+        
+        tips.reverse();
+
+        const newCode = "const tipsData = " + JSON.stringify(tips, null, 2) + ";";
+        const updatedHtml = replaceVariableInHtml(htmlContent, 'tipsData', newCode);
+        await pushToGitHub(fileData, updatedHtml, status, 'Pořadí tipů obráceno');
+        loadData();
+      } catch (err) { status.innerText = 'Chyba: ' + err.message; }
+    }
+
+    // --- SPRÁVA ODKAZŮ ---
+    async function editLink(id) {
+      const { htmlContent } = await fetchIndex();
+      const links = extractVariable(htmlContent, 'linksData');
+      const l = links.find(x => x.id === id);
+      if (!l) return;
+
+      document.getElementById('edit-link-id').value = l.id;
+      document.getElementById('l-name').value = l.name || '';
+      document.getElementById('l-url').value = l.url || '';
+      document.getElementById('l-img').value = l.img || '';
+
+      document.getElementById('link-form-title').innerText = `Úprava: ${l.name}`;
+      document.getElementById('link-cancel-btn').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function resetLinkForm() {
+      document.getElementById('edit-link-id').value = '';
+      document.getElementById('l-name').value = '';
+      document.getElementById('l-url').value = '';
+      document.getElementById('l-img').value = '';
+      document.getElementById('link-form-title').innerText = 'Přidat nový odkaz / banner';
+      document.getElementById('link-cancel-btn').classList.add('hidden');
+    }
+
+    async function deleteLink(id) {
+      if (confirm('Opravdu smazat tento odkaz?')) await saveLinkData(id, true);
+    }
+    async function saveLink() { await saveLinkData(); }
+
+    async function saveLinkData(delId = null, isDel = false) {
+      const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo'), status = document.getElementById('status-msg');
+      if (!token || !repo) { alert('Vyplň token!'); return; }
+      status.innerText = 'Ukládám odkazy na GitHub...';
+
+      try {
+        const { fileData, htmlContent } = await fetchIndex();
+        let links = extractVariable(htmlContent, 'linksData');
+        const editId = document.getElementById('edit-link-id').value;
+
+        if (isDel) {
+          links = links.filter(x => x.id !== delId);
+        } else {
+          const name = document.getElementById('l-name').value.trim();
+          const url = document.getElementById('l-url').value.trim();
+          const img = document.getElementById('l-img').value.trim();
+          if (!name || !url) { alert('Vyplň název a URL adresu!'); return; }
+
+          const item = { id: editId ? Number(editId) : Date.now(), name, url, img };
+
+          if (editId) {
+            const idx = links.findIndex(x => x.id === Number(editId));
+            if (idx !== -1) links[idx] = item; else links.push(item);
+          } else {
+            links.push(item);
+          }
+        }
+
+        const newCode = "const linksData = " + JSON.stringify(links, null, 2) + ";";
+        let updatedHtml = htmlContent;
+        if (htmlContent.includes('const linksData =')) {
+          updatedHtml = replaceVariableInHtml(htmlContent, 'linksData', newCode);
+        } else {
+          updatedHtml = htmlContent.replace('const scooters =', newCode + '\n    const scooters =');
+        }
+
+        await pushToGitHub(fileData, updatedHtml, status, 'Odkazy aktualizovány');
+        resetLinkForm();
+        loadData();
+      } catch (err) { status.innerText = 'Chyba: ' + err.message; }
+    }
+
+    // --- SPRÁVA KOLOBĚŽEK ---
     async function editScooter(id) {
       const { htmlContent } = await fetchIndex();
       const scooters = extractVariable(htmlContent, 'scooters');
@@ -355,7 +448,6 @@
       document.getElementById('scooter-cancel-btn').classList.remove('hidden');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-
     function resetScooterForm() {
       document.getElementById('edit-scooter-id').value = '';
       document.getElementById('s-name').value = '';
@@ -366,10 +458,8 @@
       document.getElementById('scooter-form-title').innerText = 'Přidat novou koloběžku';
       document.getElementById('scooter-cancel-btn').classList.add('hidden');
     }
-
     async function deleteScooter(id) { if (confirm('Opravdu smazat?')) await saveScooterData(id, true); }
     async function saveScooter() { await saveScooterData(); }
-
     async function saveScooterData(delId = null, isDel = false) {
       const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo'), status = document.getElementById('status-msg');
       if (!token || !repo) { alert('Vyplň token!'); return; }
@@ -398,6 +488,112 @@
         const updatedHtml = replaceVariableInHtml(htmlContent, 'scooters', newCode);
         await pushToGitHub(fileData, updatedHtml, status, 'Koloběžky aktualizovány');
         resetScooterForm(); loadData();
+      } catch (err) { status.innerText = 'Chyba: ' + err.message; }
+    }
+
+    // --- SPRÁVA TIPŮ ---
+    async function editTip(id) {
+      const { htmlContent } = await fetchIndex();
+      const tips = extractVariable(htmlContent, 'tipsData');
+      const t = tips.find(x => x.id === id);
+      if (!t) return;
+      document.getElementById('edit-tip-id').value = t.id;
+      document.getElementById('t-title').value = t.title || '';
+      document.getElementById('t-category').value = t.category || '';
+      document.getElementById('t-perex').value = t.perex || '';
+      document.getElementById('t-text').value = t.text || '';
+      document.getElementById('t-img').value = t.img || './public/images/hero.jpg';
+      document.getElementById('tip-form-title').innerText = `Úprava tipu: ${t.title}`;
+      document.getElementById('tip-cancel-btn').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function resetTipForm() {
+      document.getElementById('edit-tip-id').value = '';
+      document.getElementById('t-title').value = '';
+      document.getElementById('t-category').value = '';
+      document.getElementById('t-perex').value = '';
+      document.getElementById('t-text').value = '';
+      document.getElementById('t-img').value = './public/images/hero.jpg';
+      document.getElementById('tip-form-title').innerText = 'Přidat nový tip';
+      document.getElementById('tip-cancel-btn').classList.add('hidden');
+    }
+    async function deleteTip(id) { if (confirm('Opravdu smazat?')) await saveTipData(id, true); }
+    async function saveTip() { await saveTipData(); }
+    async function saveTipData(delId = null, isDel = false) {
+      const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo'), status = document.getElementById('status-msg');
+      if (!token || !repo) { alert('Vyplň token!'); return; }
+      status.innerText = 'Ukládám...';
+      try {
+        const { fileData, htmlContent } = await fetchIndex();
+        let tips = extractVariable(htmlContent, 'tipsData');
+        const editId = document.getElementById('edit-tip-id').value;
+        if (isDel) { tips = tips.filter(x => x.id !== delId); }
+        else {
+          const title = document.getElementById('t-title').value.trim();
+          const category = document.getElementById('t-category').value.trim();
+          const perex = document.getElementById('t-perex').value.trim();
+          const text = document.getElementById('t-text').value.trim();
+          const img = document.getElementById('t-img').value.trim();
+          const item = { id: editId ? Number(editId) : Date.now(), title, category, img, perex, text };
+          if (editId) { const idx = tips.findIndex(x => x.id === Number(editId)); if (idx !== -1) tips[idx] = item; else tips.push(item); }
+          else { tips.push(item); }
+        }
+        const newCode = "const tipsData = " + JSON.stringify(tips, null, 2) + ";";
+        const updatedHtml = replaceVariableInHtml(htmlContent, 'tipsData', newCode);
+        await pushToGitHub(fileData, updatedHtml, status, 'Tipy aktualizovány');
+        resetTipForm(); loadData();
+      } catch (err) { status.innerText = 'Chyba: ' + err.message; }
+    }
+
+    // --- SPRÁVA RUBRIK ---
+    async function editCategory(id) {
+      const { htmlContent } = await fetchIndex();
+      let categories = extractVariable(htmlContent, 'categoriesData');
+      const c = categories.find(x => x.id === id);
+      if (!c) return;
+      document.getElementById('edit-cat-original-id').value = c.id;
+      document.getElementById('c-id').value = c.id;
+      document.getElementById('c-name').value = c.name || '';
+      document.getElementById('c-text').value = c.text || '';
+      document.getElementById('c-img').value = c.img || '';
+      document.getElementById('cat-form-title').innerText = `Úprava rubriky: ${c.name}`;
+      document.getElementById('cat-cancel-btn').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function resetCatForm() {
+      document.getElementById('edit-cat-original-id').value = '';
+      document.getElementById('c-id').value = '';
+      document.getElementById('c-name').value = '';
+      document.getElementById('c-text').value = '';
+      document.getElementById('c-img').value = '';
+      document.getElementById('cat-form-title').innerText = 'Přidat / Upravit rubriku';
+      document.getElementById('cat-cancel-btn').classList.add('hidden');
+    }
+    async function deleteCategory(id) { if (confirm('Opravdu smazat?')) await saveCategoryData(id, true); }
+    async function saveCategory() { await saveCategoryData(); }
+    async function saveCategoryData(delId = null, isDel = false) {
+      const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo'), status = document.getElementById('status-msg');
+      if (!token || !repo) { alert('Vyplň token!'); return; }
+      status.innerText = 'Ukládám...';
+      try {
+        const { fileData, htmlContent } = await fetchIndex();
+        let categories = extractVariable(htmlContent, 'categoriesData');
+        const origId = document.getElementById('edit-cat-original-id').value;
+        if (isDel) { categories = categories.filter(x => x.id !== delId); }
+        else {
+          const idVal = document.getElementById('c-id').value.trim().toLowerCase().replace(/\s+/g, '-');
+          const nameVal = document.getElementById('c-name').value.trim();
+          const textVal = document.getElementById('c-text').value.trim();
+          const imgVal = document.getElementById('c-img').value.trim();
+          if (!idVal || !nameVal) { alert('Vyplň ID i název rubriky!'); return; }
+          const item = { id: idVal, name: nameVal, text: textVal, img: imgVal };
+          if (origId) { const idx = categories.findIndex(x => x.id === origId); if (idx !== -1) categories[idx] = item; else categories.push(item); }
+          else { if (categories.some(x => x.id === idVal)) { alert('ID již existuje!'); return; } categories.push(item); }
+        }
+        const newCode = "const categoriesData = " + JSON.stringify(categories, null, 2) + ";";
+        let updatedHtml = htmlContent.includes('const categoriesData =') ? replaceVariableInHtml(htmlContent, 'categoriesData', newCode) : htmlContent.replace('const scooters =', newCode + '\n    const scooters =');
+        await pushToGitHub(fileData, updatedHtml, status, 'Rubriky aktualizovány');
+        resetCatForm(); loadData();
       } catch (err) { status.innerText = 'Chyba: ' + err.message; }
     }
 
