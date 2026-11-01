@@ -12,7 +12,12 @@
     body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #1C1F1A; color: #F0ECE1; }
     .heading-font { font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: -0.01em; }
     .lime-bg { background-color: #C6F135; }
-    .lime-btn { background-color: #C6F135; color: #111827; font-family: 'Oswald', sans-serif; letter-spacing: 0.05em; }
+    .lime-btn {
+      background-color: #C6F135;
+      color: #111827;
+      font-family: 'Oswald', sans-serif;
+      letter-spacing: 0.05em;
+    }
     .lime-btn:hover { background-color: #b3df22; }
     .tab-btn.active { background-color: #C6F135; color: #000; }
   </style>
@@ -70,7 +75,11 @@
           <div>
             <div class="flex justify-between items-center mb-1">
               <label class="font-bold text-stone-300">Popis / Recenze:</label>
-              <button type="button" onclick="insertLink('s-blurb')" class="bg-stone-800 text-lime-400 px-2.5 py-1 rounded text-xs font-bold">🔗 Vložit odkaz</button>
+              <div class="flex gap-1">
+                <button type="button" onclick="insertLink('s-blurb')" class="bg-stone-800 text-lime-400 px-2 py-1 rounded text-xs font-bold">🔗 Odkaz</button>
+                <button type="button" onclick="document.getElementById('inline-s-img-file').click()" class="bg-stone-800 text-lime-400 px-2 py-1 rounded text-xs font-bold">🖼️ Obrázek</button>
+                <input type="file" id="inline-s-img-file" accept="image/*" class="hidden" onchange="uploadInlineImage(event, 's-blurb')">
+              </div>
             </div>
             <textarea id="s-blurb" rows="5" placeholder="Popis / recenze..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
           </div>
@@ -79,7 +88,7 @@
           <input type="text" id="s-cons" placeholder="Nevýhody oddělené čárkou" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
           
           <div class="bg-stone-950 p-3 rounded-xl border border-stone-800 space-y-2">
-            <label class="block font-bold text-stone-300">Hlavní fotka koloběžky:</label>
+            <label class="block font-bold text-stone-300">Hlavní fotka koloběžky (náhledová):</label>
             <input type="file" id="s-img-file" accept="image/*" class="w-full text-white file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#C6F135] file:text-black">
             <input type="text" id="s-img" value="./public/images/hero.jpg" class="w-full bg-stone-900 border border-stone-800 rounded-lg p-2 text-white font-mono text-[11px]">
           </div>
@@ -115,13 +124,17 @@
           <div>
             <div class="flex justify-between items-center mb-1">
               <label class="font-bold text-stone-300">Plný text článku:</label>
-              <button type="button" onclick="insertLink('t-text')" class="bg-stone-800 text-lime-400 px-2.5 py-1 rounded text-xs font-bold">🔗 Vložit odkaz</button>
+              <div class="flex gap-1">
+                <button type="button" onclick="insertLink('t-text')" class="bg-stone-800 text-lime-400 px-2 py-1 rounded text-xs font-bold">🔗 Odkaz</button>
+                <button type="button" onclick="document.getElementById('inline-t-img-file').click()" class="bg-stone-800 text-lime-400 px-2 py-1 rounded text-xs font-bold">🖼️ Obrázek</button>
+                <input type="file" id="inline-t-img-file" accept="image/*" class="hidden" onchange="uploadInlineImage(event, 't-text')">
+              </div>
             </div>
             <textarea id="t-text" rows="6" placeholder="Plný text článku..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
           </div>
 
           <div class="bg-stone-950 p-3 rounded-xl border border-stone-800 space-y-2">
-            <label class="block font-bold text-stone-300">Hlavní fotka tipu:</label>
+            <label class="block font-bold text-stone-300">Hlavní fotka tipu (náhledová):</label>
             <input type="file" id="t-img-file" accept="image/*" class="w-full text-white file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#C6F135] file:text-black">
             <input type="text" id="t-img" value="./public/images/hero.jpg" class="w-full bg-stone-900 border border-stone-800 rounded-lg p-2 text-white font-mono text-[11px]">
           </div>
@@ -250,6 +263,42 @@
       textarea.focus();
     }
 
+    // Funkce pro nahrání obrázku přímo dovnitř textu (inline)
+    async function uploadInlineImage(event, targetFieldId) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const filename = 'img-' + Date.now() + '-' + file.name.toLowerCase().replace(/\s+/g, '-');
+      const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo'), status = document.getElementById('status-msg');
+      if (!token || !repo) { alert('Vyplň GitHub Token nahoře!'); return; }
+      
+      status.innerText = 'Nahrávám obrázek do textu na GitHub...';
+
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = async function() {
+        const base64 = reader.result.split(',')[1];
+        const path = `public/images/${filename}`;
+        const url = `https://api.github.com/repos/${repo}/contents/${path}`;
+        
+        const body = { message: `Admin: Nahrán obrázek do textu ${filename}`, content: base64 };
+        const put = await fetch(url, { method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        
+        if (put.ok) {
+          status.innerText = 'Obrázek úspěšně vložin do textu!';
+          const imgTag = `<div class="my-4 rounded-2xl overflow-hidden shadow-sm bg-white p-2 border border-stone-300"><img src="./public/images/${filename}" alt="Ilustrační foto" class="w-full h-auto object-contain rounded-lg"></div>`;
+          
+          const textarea = document.getElementById(targetFieldId);
+          const start = textarea.selectionStart;
+          const end = textarea.selectionEnd;
+          textarea.value = textarea.value.substring(0, start) + imgTag + textarea.value.substring(end);
+          textarea.focus();
+        } else {
+          status.innerText = 'Chyba nahrávání obrázku.';
+        }
+      };
+    }
+
     document.getElementById('s-img-file').addEventListener('change', (e) => { if (e.target.files.length) uploadFile(e.target.files[0], 's-img'); });
     document.getElementById('t-img-file').addEventListener('change', (e) => { if (e.target.files.length) uploadFile(e.target.files[0], 't-img'); });
     document.getElementById('c-img-file').addEventListener('change', (e) => { if (e.target.files.length) uploadFile(e.target.files[0], 'c-img'); });
@@ -261,7 +310,7 @@
       
       const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo'), status = document.getElementById('status-msg');
       if (!token || !repo) { alert('Vyplň token nahoře!'); return; }
-      status.innerText = 'Nahrávám obrázek na GitHub...';
+      status.innerText = 'Nahrávám hlavní fotku na GitHub...';
       
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -272,10 +321,10 @@
         let sha = null;
         const check = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
         if (check.ok) sha = (await check.json()).sha;
-        const body = { message: `Admin: Nahrán obrázek ${filename}`, content: base64 };
+        const body = { message: `Admin: Nahrán soubor ${filename}`, content: base64 };
         if (sha) body.sha = sha;
         const put = await fetch(url, { method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-        if (put.ok) status.innerText = 'Obrázek úspěšně nahrán na GitHub!'; else status.innerText = 'Chyba nahrávání obrázku.';
+        if (put.ok) status.innerText = 'Hlavní fotka úspěšně nahrána!'; else status.innerText = 'Chyba nahrávání souboru.';
       };
     }
 
@@ -628,7 +677,6 @@
       const startIdx = html.indexOf(marker);
       let bracketCount = 0, endIdx = -1;
       for (let i = startIdx + marker.length - 1; i < html.length; i++) {
-        if (html[i] === '[') bracketCode = true; // dummy fix
         if (html[i] === '[') bracketCount++;
         if (html[i] === ']') { bracketCount--; if (bracketCount === 0) { endIdx = i + 1; break; } }
       }
