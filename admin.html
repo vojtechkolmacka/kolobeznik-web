@@ -66,7 +66,19 @@
               <option value="Bestie">⚡ Bestie</option>
             </select>
           </div>
-          <textarea id="s-blurb" rows="4" placeholder="Popis / recenze..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
+          
+          <div>
+            <div class="flex justify-between items-center mb-1">
+              <label class="font-bold text-stone-300">Popis / Recenze:</label>
+              <div class="flex gap-1">
+                <button type="button" onclick="insertTag('s-blurb', '<a href=\"URL\" target=\"_blank\">', '</a>')" class="bg-stone-800 text-lime-400 px-2 py-0.5 rounded text-[10px] font-bold">Odkaz</button>
+                <button type="button" onclick="insertTag('s-blurb', '<div class=\"my-4 rounded-2xl overflow-hidden shadow-sm aspect-video\"><iframe class=\"w-full h-full\" src=\"https://www.youtube.com/embed/YID\" frameborder=\"0\" allowfullscreen></iframe></div>', '')" class="bg-stone-800 text-lime-400 px-2 py-0.5 rounded text-[10px] font-bold">YouTube</button>
+                <button type="button" onclick="insertTag('s-blurb', '<img src=\"IMGURL\" alt=\"Obrázek\" class=\"w-full h-auto rounded-2xl my-4\">', '')" class="bg-stone-800 text-lime-400 px-2 py-0.5 rounded text-[10px] font-bold">Obrázek</button>
+              </div>
+            </div>
+            <textarea id="s-blurb" rows="5" placeholder="Popis / recenze..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
+          </div>
+
           <input type="text" id="s-pros" placeholder="Výhody oddělené čárkou" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
           <input type="text" id="s-cons" placeholder="Nevýhody oddělené čárkou" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
           
@@ -103,8 +115,19 @@
           <input type="text" id="t-title" placeholder="Název tipu / článku" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
           <input type="text" id="t-category" placeholder="Kategorie (např. VÝBAVA, BEZPEČNOST)" class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white">
           <textarea id="t-perex" rows="2" placeholder="Krátký perex..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
-          <textarea id="t-text" rows="4" placeholder="Plný text článku..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
           
+          <div>
+            <div class="flex justify-between items-center mb-1">
+              <label class="font-bold text-stone-300">Plný text článku:</label>
+              <div class="flex gap-1">
+                <button type="button" onclick="insertTag('t-text', '<a href=\"URL\" target=\"_blank\">', '</a>')" class="bg-stone-800 text-lime-400 px-2 py-0.5 rounded text-[10px] font-bold">Odkaz</button>
+                <button type="button" onclick="insertTag('t-text', '<div class=\"my-4 rounded-2xl overflow-hidden shadow-sm aspect-video\"><iframe class=\"w-full h-full\" src=\"https://www.youtube.com/embed/YID\" frameborder=\"0\" allowfullscreen></iframe></div>', '')" class="bg-stone-800 text-lime-400 px-2 py-0.5 rounded text-[10px] font-bold">YouTube</button>
+                <button type="button" onclick="insertTag('t-text', '<img src=\"IMGURL\" alt=\"Obrázek\" class=\"w-full h-auto rounded-2xl my-4\">', '')" class="bg-stone-800 text-lime-400 px-2 py-0.5 rounded text-[10px] font-bold">Obrázek</button>
+              </div>
+            </div>
+            <textarea id="t-text" rows="6" placeholder="Plný text článku..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
+          </div>
+
           <div class="bg-stone-950 p-3 rounded-xl border border-stone-800 space-y-2">
             <label class="block font-bold text-stone-300">Fotka tipu:</label>
             <input type="file" id="t-img-file" accept="image/*" class="w-full text-white file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#C6F135] file:text-black">
@@ -220,6 +243,34 @@
       document.getElementById('section-categories').classList.toggle('hidden', tab !== 'categories');
       document.getElementById('section-links').classList.toggle('hidden', tab !== 'links');
       loadData();
+    }
+
+    // Vylepšená funkce pro vkládání značek, odkazů, videí a obrázků přímo do textu
+    function insertTag(fieldId, openTag, closeTag) {
+      const textarea = document.getElementById(fieldId);
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const text = textarea.value;
+      const selected = text.substring(start, end);
+      
+      let replacement = openTag + selected + closeTag;
+
+      if(openTag.includes('URL')) {
+        const url = prompt("Zadejte webovou adresu (URL):", "https://");
+        if(!url) return;
+        replacement = openTag.replace('URL', url) + (selected || "odkaz") + closeTag;
+      } else if(openTag.includes('YID')) {
+        const yid = prompt("Zadejte ID YouTube videa (např. IH4hT_w_g0Q):", "IH4hT_w_g0Q");
+        if(!yid) return;
+        replacement = openTag.replace('YID', yid);
+      } else if(openTag.includes('IMGURL')) {
+        const imgUrl = prompt("Zadejte cestu k obrázku (např. ./public/images/foto.jpg):", "./public/images/");
+        if(!imgUrl) return;
+        replacement = openTag.replace('IMGURL', imgUrl);
+      }
+
+      textarea.value = text.substring(0, start) + replacement + text.substring(end);
+      textarea.focus();
     }
 
     document.getElementById('s-img-file').addEventListener('change', (e) => { if (e.target.files.length) uploadFile(e.target.files[0], 's-img'); });
@@ -338,7 +389,6 @@
       } catch (err) { console.error(err); }
     }
 
-    // --- TLAČÍTKO NA OBRÁCENÍ POŘADÍ TIPŮ ---
     async function reverseTipsOrder() {
       const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo'), status = document.getElementById('status-msg');
       if (!token || !repo) { alert('Vyplň token!'); return; }
@@ -357,7 +407,6 @@
       } catch (err) { status.innerText = 'Chyba: ' + err.message; }
     }
 
-    // --- SPRÁVA ODKAZŮ ---
     async function editLink(id) {
       const { htmlContent } = await fetchIndex();
       const links = extractVariable(htmlContent, 'linksData');
@@ -430,7 +479,6 @@
       } catch (err) { status.innerText = 'Chyba: ' + err.message; }
     }
 
-    // --- SPRÁVA KOLOBĚŽEK ---
     async function editScooter(id) {
       const { htmlContent } = await fetchIndex();
       const scooters = extractVariable(htmlContent, 'scooters');
@@ -491,7 +539,6 @@
       } catch (err) { status.innerText = 'Chyba: ' + err.message; }
     }
 
-    // --- SPRÁVA TIPŮ ---
     async function editTip(id) {
       const { htmlContent } = await fetchIndex();
       const tips = extractVariable(htmlContent, 'tipsData');
@@ -545,7 +592,6 @@
       } catch (err) { status.innerText = 'Chyba: ' + err.message; }
     }
 
-    // --- SPRÁVA RUBRIK ---
     async function editCategory(id) {
       const { htmlContent } = await fetchIndex();
       let categories = extractVariable(htmlContent, 'categoriesData');
