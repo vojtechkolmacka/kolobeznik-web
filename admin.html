@@ -68,13 +68,11 @@
           </div>
           
           <div>
-            <div class="flex justify-between items-center mb-1">
-              <label class="font-bold text-stone-300">Popis / Recenze:</label>
-              <div class="flex gap-1">
-                <button type="button" onclick="insertTag('s-blurb', '<a href=\"URL\" target=\"_blank\">', '</a>')" class="bg-stone-800 text-lime-400 px-2 py-0.5 rounded text-[10px] font-bold">Odkaz</button>
-                <button type="button" onclick="insertTag('s-blurb', '<div class=\"my-4 rounded-2xl overflow-hidden shadow-sm aspect-video\"><iframe class=\"w-full h-full\" src=\"https://www.youtube.com/embed/YID\" frameborder=\"0\" allowfullscreen></iframe></div>', '')" class="bg-stone-800 text-lime-400 px-2 py-0.5 rounded text-[10px] font-bold">YouTube</button>
-                <button type="button" onclick="insertTag('s-blurb', '<img src=\"IMGURL\" alt=\"Obrázek\" class=\"w-full h-auto rounded-2xl my-4\">', '')" class="bg-stone-800 text-lime-400 px-2 py-0.5 rounded text-[10px] font-bold">Obrázek</button>
-              </div>
+            <label class="block font-bold text-stone-300 mb-1">Popis / Recenze:</label>
+            <div class="grid grid-cols-3 gap-1.5 mb-2">
+              <button type="button" onclick="insertTag('s-blurb', '<a href=\"URL\" target=\"_blank\">', '</a>')" class="bg-stone-800 text-lime-400 py-1.5 px-2 rounded-lg text-center font-bold text-[11px]">🔗 Odkaz</button>
+              <button type="button" onclick="insertTag('s-blurb', '<div class=\"my-4 rounded-2xl overflow-hidden shadow-sm aspect-video\"><iframe class=\"w-full h-full\" src=\"https://www.youtube.com/embed/YID\" frameborder=\"0\" allowfullscreen></iframe></div>', '')" class="bg-stone-800 text-lime-400 py-1.5 px-2 rounded-lg text-center font-bold text-[11px]">▶️ YouTube</button>
+              <button type="button" onclick="insertTag('s-blurb', '<img src=\"IMGURL\" alt=\"Obrázek\" class=\"w-full h-auto rounded-2xl my-4\">', '')" class="bg-stone-800 text-lime-400 py-1.5 px-2 rounded-lg text-center font-bold text-[11px]">🖼️ Obrázek</button>
             </div>
             <textarea id="s-blurb" rows="5" placeholder="Popis / recenze..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
           </div>
@@ -117,13 +115,11 @@
           <textarea id="t-perex" rows="2" placeholder="Krátký perex..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
           
           <div>
-            <div class="flex justify-between items-center mb-1">
-              <label class="font-bold text-stone-300">Plný text článku:</label>
-              <div class="flex gap-1">
-                <button type="button" onclick="insertTag('t-text', '<a href=\"URL\" target=\"_blank\">', '</a>')" class="bg-stone-800 text-lime-400 px-2 py-0.5 rounded text-[10px] font-bold">Odkaz</button>
-                <button type="button" onclick="insertTag('t-text', '<div class=\"my-4 rounded-2xl overflow-hidden shadow-sm aspect-video\"><iframe class=\"w-full h-full\" src=\"https://www.youtube.com/embed/YID\" frameborder=\"0\" allowfullscreen></iframe></div>', '')" class="bg-stone-800 text-lime-400 px-2 py-0.5 rounded text-[10px] font-bold">YouTube</button>
-                <button type="button" onclick="insertTag('t-text', '<img src=\"IMGURL\" alt=\"Obrázek\" class=\"w-full h-auto rounded-2xl my-4\">', '')" class="bg-stone-800 text-lime-400 px-2 py-0.5 rounded text-[10px] font-bold">Obrázek</button>
-              </div>
+            <label class="block font-bold text-stone-300 mb-1">Plný text článku:</label>
+            <div class="grid grid-cols-3 gap-1.5 mb-2">
+              <button type="button" onclick="insertTag('t-text', '<a href=\"URL\" target=\"_blank\">', '</a>')" class="bg-stone-800 text-lime-400 py-1.5 px-2 rounded-lg text-center font-bold text-[11px]">🔗 Odkaz</button>
+              <button type="button" onclick="insertTag('t-text', '<div class=\"my-4 rounded-2xl overflow-hidden shadow-sm aspect-video\"><iframe class=\"w-full h-full\" src=\"https://www.youtube.com/embed/YID\" frameborder=\"0\" allowfullscreen></iframe></div>', '')" class="bg-stone-800 text-lime-400 py-1.5 px-2 rounded-lg text-center font-bold text-[11px]">▶️ YouTube</button>
+              <button type="button" onclick="insertTag('t-text', '<img src=\"IMGURL\" alt=\"Obrázek\" class=\"w-full h-auto rounded-2xl my-4\">', '')" class="bg-stone-800 text-lime-400 py-1.5 px-2 rounded-lg text-center font-bold text-[11px]">🖼️ Obrázek</button>
             </div>
             <textarea id="t-text" rows="6" placeholder="Plný text článku..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
           </div>
@@ -245,7 +241,6 @@
       loadData();
     }
 
-    // Vylepšená funkce pro vkládání značek, odkazů, videí a obrázků přímo do textu
     function insertTag(fieldId, openTag, closeTag) {
       const textarea = document.getElementById(fieldId);
       const start = textarea.selectionStart;
