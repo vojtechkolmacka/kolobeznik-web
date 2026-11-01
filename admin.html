@@ -70,9 +70,9 @@
           <div>
             <label class="block font-bold text-stone-300 mb-1.5">Popis / Recenze:</label>
             <div class="flex flex-wrap gap-2 mb-2">
-              <button type="button" onclick="insertTag('s-blurb', '<a href=\"URL\" target=\"_blank\">', '</a>')" class="bg-stone-800 text-lime-400 py-1.5 px-3 rounded-lg font-bold text-xs">🔗 Odkaz</button>
-              <button type="button" onclick="insertTag('s-blurb', '<div class=\"my-4 rounded-2xl overflow-hidden shadow-sm aspect-video\"><iframe class=\"w-full h-full\" src=\"https://www.youtube.com/embed/YID\" frameborder=\"0\" allowfullscreen></iframe></div>', '')" class="bg-stone-800 text-lime-400 py-1.5 px-3 rounded-lg font-bold text-xs">▶️ YouTube</button>
-              <button type="button" onclick="insertTag('s-blurb', '<img src=\"IMGURL\" alt=\"Obrázek\" class=\"w-full h-auto rounded-2xl my-4\">', '')" class="bg-stone-800 text-lime-400 py-1.5 px-3 rounded-lg font-bold text-xs">🖼️ Obrázek</button>
+              <button type="button" onclick="insertLink('s-blurb')" class="bg-stone-800 text-lime-400 py-1.5 px-3 rounded-lg font-bold text-xs">🔗 Odkaz</button>
+              <button type="button" onclick="insertYoutube('s-blurb')" class="bg-stone-800 text-lime-400 py-1.5 px-3 rounded-lg font-bold text-xs">▶️ YouTube</button>
+              <button type="button" onclick="insertImage('s-blurb')" class="bg-stone-800 text-lime-400 py-1.5 px-3 rounded-lg font-bold text-xs">🖼️ Obrázek</button>
             </div>
             <textarea id="s-blurb" rows="5" placeholder="Popis / recenze..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
           </div>
@@ -117,9 +117,9 @@
           <div>
             <label class="block font-bold text-stone-300 mb-1.5">Plný text článku:</label>
             <div class="flex flex-wrap gap-2 mb-2">
-              <button type="button" onclick="insertTag('t-text', '<a href=\"URL\" target=\"_blank\">', '</a>')" class="bg-stone-800 text-lime-400 py-1.5 px-3 rounded-lg font-bold text-xs">🔗 Odkaz</button>
-              <button type="button" onclick="insertTag('t-text', '<div class=\"my-4 rounded-2xl overflow-hidden shadow-sm aspect-video\"><iframe class=\"w-full h-full\" src=\"https://www.youtube.com/embed/YID\" frameborder=\"0\" allowfullscreen></iframe></div>', '')" class="bg-stone-800 text-lime-400 py-1.5 px-3 rounded-lg font-bold text-xs">▶️ YouTube</button>
-              <button type="button" onclick="insertTag('t-text', '<img src=\"IMGURL\" alt=\"Obrázek\" class=\"w-full h-auto rounded-2xl my-4\">', '')" class="bg-stone-800 text-lime-400 py-1.5 px-3 rounded-lg font-bold text-xs">🖼️ Obrázek</button>
+              <button type="button" onclick="insertLink('t-text')" class="bg-stone-800 text-lime-400 py-1.5 px-3 rounded-lg font-bold text-xs">🔗 Odkaz</button>
+              <button type="button" onclick="insertYoutube('t-text')" class="bg-stone-800 text-lime-400 py-1.5 px-3 rounded-lg font-bold text-xs">▶️ YouTube</button>
+              <button type="button" onclick="insertImage('t-text')" class="bg-stone-800 text-lime-400 py-1.5 px-3 rounded-lg font-bold text-xs">🖼️ Obrázek</button>
             </div>
             <textarea id="t-text" rows="6" placeholder="Plný text článku..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
           </div>
@@ -241,31 +241,37 @@
       loadData();
     }
 
-    function insertTag(fieldId, openTag, closeTag) {
+    // Bezpečné funkce pro vkládání prvků do textu
+    function insertLink(fieldId) {
+      const url = prompt("Zadejte webovou adresu (URL):", "https://");
+      if (!url) return;
+      const text = prompt("Zadejte text odkazu:", "odkaz");
+      const tag = `<a href="${url}" target="_blank">${text || "odkaz"}</a>`;
+      insertAtCursor(fieldId, tag);
+    }
+
+    function insertYoutube(fieldId) {
+      const yid = prompt("Zadejte ID YouTube videa (např. IH4hT_w_g0Q):", "IH4hT_w_g0Q");
+      if (!yid) return;
+      const tag = `<div class="my-4 rounded-2xl overflow-hidden shadow-sm aspect-video"><iframe class="w-full h-full" src="https://www.youtube.com/embed/${yid}" frameborder="0" allowfullscreen></iframe></div>`;
+      insertAtCursor(fieldId, tag);
+    }
+
+    function insertImage(fieldId) {
+      const imgUrl = prompt("Zadejte cestu k obrázku (např. ./public/images/foto.jpg):", "./public/images/");
+      if (!imgUrl) return;
+      const tag = `<img src="${imgUrl}" alt="Obrázek" class="w-full h-auto rounded-2xl my-4">`;
+      insertAtCursor(fieldId, tag);
+    }
+
+    function insertAtCursor(fieldId, tag) {
       const textarea = document.getElementById(fieldId);
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
       const text = textarea.value;
-      const selected = text.substring(start, end);
-      
-      let replacement = openTag + selected + closeTag;
-
-      if(openTag.includes('URL')) {
-        const url = prompt("Zadejte webovou adresu (URL):", "https://");
-        if(!url) return;
-        replacement = openTag.replace('URL', url) + (selected || "odkaz") + closeTag;
-      } else if(openTag.includes('YID')) {
-        const yid = prompt("Zadejte ID YouTube videa (např. IH4hT_w_g0Q):", "IH4hT_w_g0Q");
-        if(!yid) return;
-        replacement = openTag.replace('YID', yid);
-      } else if(openTag.includes('IMGURL')) {
-        const imgUrl = prompt("Zadejte cestu k obrázku (např. ./public/images/foto.jpg):", "./public/images/");
-        if(!imgUrl) return;
-        replacement = openTag.replace('IMGURL', imgUrl);
-      }
-
-      textarea.value = text.substring(0, start) + replacement + text.substring(end);
+      textarea.value = text.substring(0, start) + tag + text.substring(end);
       textarea.focus();
+      textarea.selectionStart = textarea.selectionEnd = start + tag.length;
     }
 
     document.getElementById('s-img-file').addEventListener('change', (e) => { if (e.target.files.length) uploadFile(e.target.files[0], 's-img'); });
