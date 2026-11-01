@@ -242,9 +242,8 @@
       if (!url) return;
       const text = prompt("Zadej text odkazu:", "odkaz");
       
-      // Vygenerujeme HTML kód odkazu, který se rovnou ohraničí speciální značkou, 
-      // aby ho hlavní index dokázal na webu vyrenderovat jako klikací tlačítko!
-      const tag = `<a href="${url}" target="_blank" style="color: #C6F135; text-decoration: underline; font-weight: bold;">${text || "odkaz"}</a>`;
+      // Vložíme speciální čistou značku, kterou script v adminu před uložením převede na HTML odkaz všude
+      const tag = ` [${text || "odkaz"}](${url}) `;
       
       const textarea = document.getElementById(fieldId);
       const start = textarea.selectionStart;
@@ -499,10 +498,13 @@
         const editId = document.getElementById('edit-scooter-id').value;
         if (isDel) { scooters = scooters.filter(x => x.id !== delId); }
         else {
+          let blurbText = document.getElementById('s-blurb').value;
+          blurbText = blurbText.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color: #1a56db; text-decoration: underline; font-weight: bold;">$1</a>');
+
           const name = document.getElementById('s-name').value.trim();
           const cat = document.getElementById('s-cat').value;
           const verdict = document.getElementById('s-verdict').value;
-          const blurb = document.getElementById('s-blurb').value.trim();
+          const blurb = blurbText;
           const pros = document.getElementById('s-pros').value.split(',').map(x => x.trim()).filter(Boolean);
           const cons = document.getElementById('s-cons').value.split(',').map(x => x.trim()).filter(Boolean);
           const img = document.getElementById('s-img').value.trim();
@@ -556,10 +558,13 @@
         const editId = document.getElementById('edit-tip-id').value;
         if (isDel) { tips = tips.filter(x => x.id !== delId); }
         else {
+          let textContent = document.getElementById('t-text').value;
+          textContent = textContent.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color: #1a56db; text-decoration: underline; font-weight: bold;">$1</a>');
+
           const title = document.getElementById('t-title').value.trim();
           const category = document.getElementById('t-category').value.trim();
           const perex = document.getElementById('t-perex').value.trim();
-          const text = document.getElementById('t-text').value.trim();
+          const text = textContent;
           const img = document.getElementById('t-img').value.trim();
           const item = { id: editId ? Number(editId) : Date.now(), title, category, img, perex, text };
           if (editId) { const idx = tips.findIndex(x => x.id === Number(editId)); if (idx !== -1) tips[idx] = item; else tips.push(item); }
