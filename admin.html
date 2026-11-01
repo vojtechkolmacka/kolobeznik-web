@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="cs">
 <head>
@@ -69,11 +68,11 @@
           </div>
           
           <div>
-            <label class="block font-bold text-stone-300 mb-1">Popis / Recenze:</label>
-            <div class="grid grid-cols-3 gap-1.5 mb-2">
-              <button type="button" onclick="insertTag('s-blurb', '<a href=\"URL\" target=\"_blank\">', '</a>')" class="bg-stone-800 text-lime-400 py-1.5 px-2 rounded-lg text-center font-bold text-[11px]">🔗 Odkaz</button>
-              <button type="button" onclick="insertTag('s-blurb', '<div class=\"my-4 rounded-2xl overflow-hidden shadow-sm aspect-video\"><iframe class=\"w-full h-full\" src=\"https://www.youtube.com/embed/YID\" frameborder=\"0\" allowfullscreen></iframe></div>', '')" class="bg-stone-800 text-lime-400 py-1.5 px-2 rounded-lg text-center font-bold text-[11px]">▶️ YouTube</button>
-              <button type="button" onclick="insertTag('s-blurb', '<img src=\"IMGURL\" alt=\"Obrázek\" class=\"w-full h-auto rounded-2xl my-4\">', '')" class="bg-stone-800 text-lime-400 py-1.5 px-2 rounded-lg text-center font-bold text-[11px]">🖼️ Obrázek</button>
+            <label class="block font-bold text-stone-300 mb-1.5">Popis / Recenze:</label>
+            <div class="flex flex-wrap gap-2 mb-2">
+              <button type="button" onclick="insertTag('s-blurb', '<a href=\"URL\" target=\"_blank\">', '</a>')" class="bg-stone-800 text-lime-400 py-1.5 px-3 rounded-lg font-bold text-xs">🔗 Odkaz</button>
+              <button type="button" onclick="insertTag('s-blurb', '<div class=\"my-4 rounded-2xl overflow-hidden shadow-sm aspect-video\"><iframe class=\"w-full h-full\" src=\"https://www.youtube.com/embed/YID\" frameborder=\"0\" allowfullscreen></iframe></div>', '')" class="bg-stone-800 text-lime-400 py-1.5 px-3 rounded-lg font-bold text-xs">▶️ YouTube</button>
+              <button type="button" onclick="insertTag('s-blurb', '<img src=\"IMGURL\" alt=\"Obrázek\" class=\"w-full h-auto rounded-2xl my-4\">', '')" class="bg-stone-800 text-lime-400 py-1.5 px-3 rounded-lg font-bold text-xs">🖼️ Obrázek</button>
             </div>
             <textarea id="s-blurb" rows="5" placeholder="Popis / recenze..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
           </div>
@@ -116,11 +115,11 @@
           <textarea id="t-perex" rows="2" placeholder="Krátký perex..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
           
           <div>
-            <label class="block font-bold text-stone-300 mb-1">Plný text článku:</label>
-            <div class="grid grid-cols-3 gap-1.5 mb-2">
-              <button type="button" onclick="insertTag('t-text', '<a href=\"URL\" target=\"_blank\">', '</a>')" class="bg-stone-800 text-lime-400 py-1.5 px-2 rounded-lg text-center font-bold text-[11px]">🔗 Odkaz</button>
-              <button type="button" onclick="insertTag('t-text', '<div class=\"my-4 rounded-2xl overflow-hidden shadow-sm aspect-video\"><iframe class=\"w-full h-full\" src=\"https://www.youtube.com/embed/YID\" frameborder=\"0\" allowfullscreen></iframe></div>', '')" class="bg-stone-800 text-lime-400 py-1.5 px-2 rounded-lg text-center font-bold text-[11px]">▶️ YouTube</button>
-              <button type="button" onclick="insertTag('t-text', '<img src=\"IMGURL\" alt=\"Obrázek\" class=\"w-full h-auto rounded-2xl my-4\">', '')" class="bg-stone-800 text-lime-400 py-1.5 px-2 rounded-lg text-center font-bold text-[11px]">🖼️ Obrázek</button>
+            <label class="block font-bold text-stone-300 mb-1.5">Plný text článku:</label>
+            <div class="flex flex-wrap gap-2 mb-2">
+              <button type="button" onclick="insertTag('t-text', '<a href=\"URL\" target=\"_blank\">', '</a>')" class="bg-stone-800 text-lime-400 py-1.5 px-3 rounded-lg font-bold text-xs">🔗 Odkaz</button>
+              <button type="button" onclick="insertTag('t-text', '<div class=\"my-4 rounded-2xl overflow-hidden shadow-sm aspect-video\"><iframe class=\"w-full h-full\" src=\"https://www.youtube.com/embed/YID\" frameborder=\"0\" allowfullscreen></iframe></div>', '')" class="bg-stone-800 text-lime-400 py-1.5 px-3 rounded-lg font-bold text-xs">▶️ YouTube</button>
+              <button type="button" onclick="insertTag('t-text', '<img src=\"IMGURL\" alt=\"Obrázek\" class=\"w-full h-auto rounded-2xl my-4\">', '')" class="bg-stone-800 text-lime-400 py-1.5 px-3 rounded-lg font-bold text-xs">🖼️ Obrázek</button>
             </div>
             <textarea id="t-text" rows="6" placeholder="Plný text článku..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
           </div>
@@ -599,6 +598,7 @@
       document.getElementById('c-text').value = c.text || '';
       document.getElementById('c-img').value = c.img || '';
       document.getElementById('cat-form-title').innerText = `Úprava rubriky: ${c.name}`;
+      document.getElementById('cat-cancel-id').classList.remove('hidden');
       document.getElementById('cat-cancel-btn').classList.remove('hidden');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
