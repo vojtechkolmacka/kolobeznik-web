@@ -242,8 +242,8 @@
       if (!url) return;
       const text = prompt("Zadej text odkazu:", "odkaz");
       
-      // Vložíme speciální čistou značku, kterou script v adminu před uložením převede na HTML odkaz všude
-      const tag = ` [${text || "odkaz"}](${url}) `;
+      // Vložíme plný HTML tag s hezkým stylováním přímo do textového pole
+      const tag = `<a href="${url}" target="_blank" style="color: #1a56db; text-decoration: underline; font-weight: bold;">${text || "odkaz"}</a>`;
       
       const textarea = document.getElementById(fieldId);
       const start = textarea.selectionStart;
@@ -380,7 +380,8 @@
         tips.reverse();
 
         const newCode = "const tipsData = " + JSON.stringify(tips, null, 2) + ";";
-        const updatedHtml = replaceVariableInHtml(htmlContent, 'tipsData', newCode);
+        let updatedHtml = replaceVariableInHtml(htmlContent, 'tipsData', newCode);
+        updatedHtml = updatedHtml.replace("document.getElementById('tip-modal-content').innerText = tip.text;", "document.getElementById('tip-modal-content').innerHTML = tip.text;");
         await pushToGitHub(fileData, updatedHtml, status, 'Pořadí tipů obráceno');
         loadData();
       } catch (err) { status.innerText = 'Chyba: ' + err.message; }
@@ -498,13 +499,10 @@
         const editId = document.getElementById('edit-scooter-id').value;
         if (isDel) { scooters = scooters.filter(x => x.id !== delId); }
         else {
-          let blurbText = document.getElementById('s-blurb').value;
-          blurbText = blurbText.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color: #1a56db; text-decoration: underline; font-weight: bold;">$1</a>');
-
           const name = document.getElementById('s-name').value.trim();
           const cat = document.getElementById('s-cat').value;
           const verdict = document.getElementById('s-verdict').value;
-          const blurb = blurbText;
+          const blurb = document.getElementById('s-blurb').value.trim();
           const pros = document.getElementById('s-pros').value.split(',').map(x => x.trim()).filter(Boolean);
           const cons = document.getElementById('s-cons').value.split(',').map(x => x.trim()).filter(Boolean);
           const img = document.getElementById('s-img').value.trim();
@@ -515,7 +513,9 @@
           else { scooters.push(item); }
         }
         const newCode = "const scooters = " + JSON.stringify(scooters, null, 2) + ";";
-        const updatedHtml = replaceVariableInHtml(htmlContent, 'scooters', newCode);
+        let updatedHtml = replaceVariableInHtml(htmlContent, 'scooters', newCode);
+        // Automaticky opravíme index, aby uměl vykreslit HTML v modálním okně koloběžek
+        updatedHtml = updatedHtml.replace("document.getElementById('modal-blurb').innerText = s.blurb;", "document.getElementById('modal-blurb').innerHTML = s.blurb;");
         await pushToGitHub(fileData, updatedHtml, status, 'Koloběžky aktualizovány');
         resetScooterForm(); loadData();
       } catch (err) { status.innerText = 'Chyba: ' + err.message; }
@@ -558,20 +558,19 @@
         const editId = document.getElementById('edit-tip-id').value;
         if (isDel) { tips = tips.filter(x => x.id !== delId); }
         else {
-          let textContent = document.getElementById('t-text').value;
-          textContent = textContent.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color: #1a56db; text-decoration: underline; font-weight: bold;">$1</a>');
-
           const title = document.getElementById('t-title').value.trim();
           const category = document.getElementById('t-category').value.trim();
           const perex = document.getElementById('t-perex').value.trim();
-          const text = textContent;
+          const text = document.getElementById('t-text').value.trim();
           const img = document.getElementById('t-img').value.trim();
           const item = { id: editId ? Number(editId) : Date.now(), title, category, img, perex, text };
           if (editId) { const idx = tips.findIndex(x => x.id === Number(editId)); if (idx !== -1) tips[idx] = item; else tips.push(item); }
           else { tips.push(item); }
         }
         const newCode = "const tipsData = " + JSON.stringify(tips, null, 2) + ";";
-        const updatedHtml = replaceVariableInHtml(htmlContent, 'tipsData', newCode);
+        let updatedHtml = replaceVariableInHtml(htmlContent, 'tipsData', newCode);
+        // Automaticky opravíme index, aby uměl vykreslit HTML v modálním okně tipů
+        updatedHtml = updatedHtml.replace("document.getElementById('tip-modal-content').innerText = tip.text;", "document.getElementById('tip-modal-content').innerHTML = tip.text;");
         await pushToGitHub(fileData, updatedHtml, status, 'Tipy aktualizovány');
         resetTipForm(); loadData();
       } catch (err) { status.innerText = 'Chyba: ' + err.message; }
@@ -641,12 +640,19 @@
 
     async function pushToGitHub(fileData, updatedHtml, status, msg) {
       const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo');
-      const put = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, {
+      const put = `https://api.github.com/repos/${repo}/contents/index.html`;
+      // Zde se posílá aktualizovaný index.html včetně automatické opravy vykreslování
+      const res = await fetch(put, {
+        headers: { 'Authorization': `token ${token}` }
+      });
+      const currentFile = await res.json();
+
+      const putRes = await fetch(put, {
         method: 'PUT',
         headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: `Admin: ${msg}`, content: btoa(unescape(encodeURIComponent(updatedHtml))), sha: fileData.sha })
+        body: JSON.stringify({ message: `Admin: ${msg}`, content: btoa(unescape(encodeURIComponent(updatedHtml))), sha: currentFile.sha })
       });
-      if (put.ok) status.innerText = 'Uloženo na GitHub!'; else throw new Error('Chyba zápisu na GitHub.');
+      if (putRes.ok) status.innerText = 'Uloženo na GitHub!'; else throw new Error('Chyba zápisu na GitHub.');
     }
 
     loadData();
