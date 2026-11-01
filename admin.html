@@ -241,7 +241,7 @@
       loadData();
     }
 
-    // Bezpečné funkce pro vkládání prvků do textu
+    // Inteligentní funkce pro vkládání prvků
     function insertLink(fieldId) {
       const url = prompt("Zadejte webovou adresu (URL):", "https://");
       if (!url) return;
@@ -251,8 +251,15 @@
     }
 
     function insertYoutube(fieldId) {
-      const yid = prompt("Zadejte ID YouTube videa (např. IH4hT_w_g0Q):", "IH4hT_w_g0Q");
-      if (!yid) return;
+      let input = prompt("Zadejte ID videa nebo celou URL z YouTube:", "IH4hT_w_g0Q");
+      if (!input) return;
+      // Pokud uživatel zadá celou URL, vytáhneme z ní čisté ID
+      let yid = input;
+      if (input.includes('youtu.be/')) {
+        yid = input.split('youtu.be/')[1].split('?')[0];
+      } else if (input.includes('watch?v=')) {
+        yid = input.split('watch?v=')[1].split('&')[0];
+      }
       const tag = `<div class="my-4 rounded-2xl overflow-hidden shadow-sm aspect-video"><iframe class="w-full h-full" src="https://www.youtube.com/embed/${yid}" frameborder="0" allowfullscreen></iframe></div>`;
       insertAtCursor(fieldId, tag);
     }
@@ -638,7 +645,7 @@
           else { if (categories.some(x => x.id === idVal)) { alert('ID již existuje!'); return; } categories.push(item); }
         }
         const newCode = "const categoriesData = " + JSON.stringify(categories, null, 2) + ";";
-        let updatedHtml = htmlContent.includes('const categoriesData =') ? replaceVariableInHtml(htmlContent, 'categoriesData', newCode) : htmlContent.replace('const scooters =', newCode + '\n    const scooters =');
+        let updatedHtml = htmlContent.includes('const categoriesData =') ? replaceVariableInHtml(htmlContent, 'categoriesData', newCode) : htmlcontent.replace('const scooters =', newCode + '\n    const scooters =');
         await pushToGitHub(fileData, updatedHtml, status, 'Rubriky aktualizovány');
         resetCatForm(); loadData();
       } catch (err) { status.innerText = 'Chyba: ' + err.message; }
@@ -657,7 +664,7 @@
 
     async function pushToGitHub(fileData, updatedHtml, status, msg) {
       const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo');
-      const put = await fetch(`https://api.github.com/repos/${repo}/contents/admin.html`, {
+      const put = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, {
         method: 'PUT',
         headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: `Admin: ${msg}`, content: btoa(unescape(encodeURIComponent(updatedHtml))), sha: fileData.sha })
