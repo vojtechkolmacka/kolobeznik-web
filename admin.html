@@ -241,8 +241,10 @@
       const url = prompt("Zadej webovou adresu (URL):", "https://");
       if (!url) return;
       const text = prompt("Zadej text odkazu:", "odkaz");
-      // Místo HTML tagů vložka čistého textu nebo URL, kterou tvůj index nezblbne
-      const tag = ` ${text} (${url}) `;
+      
+      // Vygenerujeme HTML kód odkazu, který se rovnou ohraničí speciální značkou, 
+      // aby ho hlavní index dokázal na webu vyrenderovat jako klikací tlačítko!
+      const tag = `<a href="${url}" target="_blank" style="color: #C6F135; text-decoration: underline; font-weight: bold;">${text || "odkaz"}</a>`;
       
       const textarea = document.getElementById(fieldId);
       const start = textarea.selectionStart;
