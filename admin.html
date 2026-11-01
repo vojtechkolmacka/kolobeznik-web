@@ -656,7 +656,7 @@
 
     async function pushToGitHub(fileData, updatedHtml, status, msg) {
       const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo');
-      const put = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, {
+      const put = await fetch(`https://api.github.com/repos/${repo}/contents/admin.html`, {
         method: 'PUT',
         headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: `Admin: ${msg}`, content: btoa(unescape(encodeURIComponent(updatedHtml))), sha: fileData.sha })
