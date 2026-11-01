@@ -68,11 +68,9 @@
           </div>
           
           <div>
-            <label class="block font-bold text-stone-300 mb-1.5">Popis / Recenze:</label>
-            <div class="flex flex-wrap gap-2 mb-2">
-              <button type="button" onclick="insertLink('s-blurb')" class="bg-stone-800 text-lime-400 py-1.5 px-3 rounded-lg font-bold text-xs">🔗 Odkaz</button>
-              <button type="button" onclick="insertYoutube('s-blurb')" class="bg-stone-800 text-lime-400 py-1.5 px-3 rounded-lg font-bold text-xs">▶️ YouTube</button>
-              <button type="button" onclick="insertImage('s-blurb')" class="bg-stone-800 text-lime-400 py-1.5 px-3 rounded-lg font-bold text-xs">🖼️ Obrázek</button>
+            <div class="flex justify-between items-center mb-1">
+              <label class="font-bold text-stone-300">Popis / Recenze:</label>
+              <button type="button" onclick="insertLink('s-blurb')" class="bg-stone-800 text-lime-400 px-2.5 py-1 rounded text-xs font-bold">🔗 Vložit odkaz</button>
             </div>
             <textarea id="s-blurb" rows="5" placeholder="Popis / recenze..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
           </div>
@@ -115,11 +113,9 @@
           <textarea id="t-perex" rows="2" placeholder="Krátký perex..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
           
           <div>
-            <label class="block font-bold text-stone-300 mb-1.5">Plný text článku:</label>
-            <div class="flex flex-wrap gap-2 mb-2">
-              <button type="button" onclick="insertLink('t-text')" class="bg-stone-800 text-lime-400 py-1.5 px-3 rounded-lg font-bold text-xs">🔗 Odkaz</button>
-              <button type="button" onclick="insertYoutube('t-text')" class="bg-stone-800 text-lime-400 py-1.5 px-3 rounded-lg font-bold text-xs">▶️ YouTube</button>
-              <button type="button" onclick="insertImage('t-text')" class="bg-stone-800 text-lime-400 py-1.5 px-3 rounded-lg font-bold text-xs">🖼️ Obrázek</button>
+            <div class="flex justify-between items-center mb-1">
+              <label class="font-bold text-stone-300">Plný text článku:</label>
+              <button type="button" onclick="insertLink('t-text')" class="bg-stone-800 text-lime-400 px-2.5 py-1 rounded text-xs font-bold">🔗 Vložit odkaz</button>
             </div>
             <textarea id="t-text" rows="6" placeholder="Plný text článku..." class="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-white"></textarea>
           </div>
@@ -241,44 +237,17 @@
       loadData();
     }
 
-    // Inteligentní funkce pro vkládání prvků
     function insertLink(fieldId) {
-      const url = prompt("Zadejte webovou adresu (URL):", "https://");
+      const url = prompt("Zadej webovou adresu (URL):", "https://");
       if (!url) return;
-      const text = prompt("Zadejte text odkazu:", "odkaz");
+      const text = prompt("Zadej text odkazu:", "odkaz");
       const tag = `<a href="${url}" target="_blank">${text || "odkaz"}</a>`;
-      insertAtCursor(fieldId, tag);
-    }
-
-    function insertYoutube(fieldId) {
-      let input = prompt("Zadejte ID videa nebo celou URL z YouTube:", "IH4hT_w_g0Q");
-      if (!input) return;
-      // Pokud uživatel zadá celou URL, vytáhneme z ní čisté ID
-      let yid = input;
-      if (input.includes('youtu.be/')) {
-        yid = input.split('youtu.be/')[1].split('?')[0];
-      } else if (input.includes('watch?v=')) {
-        yid = input.split('watch?v=')[1].split('&')[0];
-      }
-      const tag = `<div class="my-4 rounded-2xl overflow-hidden shadow-sm aspect-video"><iframe class="w-full h-full" src="https://www.youtube.com/embed/${yid}" frameborder="0" allowfullscreen></iframe></div>`;
-      insertAtCursor(fieldId, tag);
-    }
-
-    function insertImage(fieldId) {
-      const imgUrl = prompt("Zadejte cestu k obrázku (např. ./public/images/foto.jpg):", "./public/images/");
-      if (!imgUrl) return;
-      const tag = `<img src="${imgUrl}" alt="Obrázek" class="w-full h-auto rounded-2xl my-4">`;
-      insertAtCursor(fieldId, tag);
-    }
-
-    function insertAtCursor(fieldId, tag) {
+      
       const textarea = document.getElementById(fieldId);
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
-      const text = textarea.value;
-      textarea.value = text.substring(0, start) + tag + text.substring(end);
+      textarea.value = textarea.value.substring(0, start) + tag + textarea.value.substring(end);
       textarea.focus();
-      textarea.selectionStart = textarea.selectionEnd = start + tag.length;
     }
 
     document.getElementById('s-img-file').addEventListener('change', (e) => { if (e.target.files.length) uploadFile(e.target.files[0], 's-img'); });
@@ -645,7 +614,7 @@
           else { if (categories.some(x => x.id === idVal)) { alert('ID již existuje!'); return; } categories.push(item); }
         }
         const newCode = "const categoriesData = " + JSON.stringify(categories, null, 2) + ";";
-        let updatedHtml = htmlContent.includes('const categoriesData =') ? replaceVariableInHtml(htmlContent, 'categoriesData', newCode) : htmlcontent.replace('const scooters =', newCode + '\n    const scooters =');
+        let updatedHtml = htmlContent.includes('const categoriesData =') ? replaceVariableInHtml(htmlContent, 'categoriesData', newCode) : htmlContent.replace('const scooters =', newCode + '\n    const scooters =');
         await pushToGitHub(fileData, updatedHtml, status, 'Rubriky aktualizovány');
         resetCatForm(); loadData();
       } catch (err) { status.innerText = 'Chyba: ' + err.message; }
@@ -664,7 +633,7 @@
 
     async function pushToGitHub(fileData, updatedHtml, status, msg) {
       const token = localStorage.getItem('kol_token'), repo = localStorage.getItem('kol_repo');
-      const put = await fetch(`https://api.github.com/repos/${repo}/contents/index.html`, {
+      const put = await fetch(`https://api.github.com/repos/${repo}/contents/admin.html`, {
         method: 'PUT',
         headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: `Admin: ${msg}`, content: btoa(unescape(encodeURIComponent(updatedHtml))), sha: fileData.sha })
