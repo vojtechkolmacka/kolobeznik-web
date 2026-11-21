@@ -1448,8 +1448,25 @@
     "specs": [
       "Zátěžový test"
     ]
+  },
+  {
+    "id": 1795275558817,
+    "name": "K-LINE – dětská koloběžka",
+    "cat": "sport",
+    "catLabel": "SPORTOVNÍ",
+    "verdict": "Doporučuji",
+    "img": "./public/images/1000143762.png",
+    "blurb": "K-LINE je starší dětská sportovní koloběžka s ocelovým rámem a nafukovacími koly, určená především pro rekreační jízdu na asfaltových a zpevněných cestách. Charakteristickým prvkem je robustní modrý rám s obloukovou konstrukcí, široká řídítka ve stylu BMX a nízké stupátko s protiskluzovým povrchem. Obě kola mají drátěný výplet a nafukovací pneumatiky o rozměru 12½ × 2¼\". Ty poskytují lepší tlumení drobných nerovností než plná kolečka. Koloběžka je vybavena přední a zadní ráfkovou brzdou ovládanou páčkami na řídítkách. Konstrukce působí robustně a odpovídá staršímu pojetí dětských koloběžek. Díky menším kolům a kompaktnímu provedení je vhodná zejména pro mladší jezdce. Na rámu je uvedena značka K-LINE a internetová adresa původního webu www.k-line.cz. Přesné označení modelu, rok výroby ani výrobce se zatím nepodařilo spolehlivě určit.\n\nSpecifikace:\n\n- Značka: K-LINE\n- Model: přesné označení nezjištěno (pravděpodobně řada č. 4)\n- Rám: ocelový, modré provedení\n- Konstrukce: obloukový rám\n- Kola: nafukovací, přední a zadní\n- Rozměr pneumatik: 12½ × 2¼\"\n- Rozměr ETRTO: 62-203\n- Ráfky: kovové, drátěný výplet\n- Brzdy: přední a zadní ráfkové\n- Řídítka: široká, BMX styl\n- Stupátko: nízké, s protiskluzovým povrchem\n- Výbava: brzdové páčky na řídítkách\n\nHmotnost, nosnost, celkové rozměry a doporučená výška jezdce nejsou ověřeny.",
+    "pros": [
+      "Nafukovací kola",
+      "pevný rám"
+    ],
+    "cons": [],
+    "specs": [
+      "Zátěžový test"
+    ]
   }
-];;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+];;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
     function getVerdictBadge(verdict) {
       if (verdict === 'Bestie') {
@@ -1618,7 +1635,7 @@
       document.getElementById('modal-verdict-badge').innerHTML = getVerdictBadge(s.verdict);
       document.getElementById('modal-image').src = s.img;
       document.getElementById('modal-title').innerText = s.name;
-      document.getElementById('modal-blurb').innerText = s.blurb;
+      document.getElementById('modal-blurb').innerHTML = s.blurb;
 
       const specsWrap = document.getElementById('modal-specs-wrap');
       const specsList = document.getElementById('modal-specs-list');
